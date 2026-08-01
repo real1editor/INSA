@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Orders &amp; Returns to merkato.com</title>
+</head>
+<body>
+
+  <!-- MAIN NAVIGATION HEADER -->
+  <header>
+    <a href="/"><strong>merkato.com</strong></a>
+  </header>
+
+  <hr>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main>
+    <section>
+      <!-- Page Title -->
+      <header>
+        <h1>Your Orders &amp; Returns</h1>
+      </header>
+
+      <!-- Search Bar for Past Orders -->
+      <form action="/orders/search" method="GET">
+        <label for="search_orders">Search all orders:</label>
+        <input type="search" id="search_orders" name="q" placeholder="Search by item, order number, or seller">
+        <button type="submit">Search Orders</button>
+      </form>
+
+      <br>
+
+      <!-- Section Navigation Tabs -->
+      <nav>
+        <ul>
+          <li><a href="#orders"><strong>Orders</strong></a></li>
+          <li><a href="#buy-again">Buy Again</a></li>
+          <li><a href="#open-orders">Not Yet Shipped</a></li>
+          <li><a href="#cancelled">Cancelled Orders</a></li>
+        </ul>
+      </nav>
+
+      <!-- Date Filter Controls -->
+      <p>
+        <label for="order_timeframe">Filter by date:</label>
+        <select id="order_timeframe" name="timeframe">
+          <option value="last_30_days">past 30 days</option>
+          <option value="past_3_months">past 3 months</option>
+          <option value="2026" selected>2026</option>
+          <option value="2025">2025</option>
+        </select>
+      </p>
+
+      <hr>
+
+      <!-- RECENT ORDER CARD 1 -->
+      <article>
+        <!-- Order Summary Header -->
+        <header>
+          <table width="100%" border="0" cellpadding="5" cellspacing="0">
+            <tr>
+              <td>
+                <small>ORDER PLACED</small><br>
+                <strong>July 28, 2026</strong>
+              </td>
+              <td>
+                <small>TOTAL</small><br>
+                <strong>2,450 ETB</strong>
+              </td>
+              <td>
+                <small>SHIP TO</small><br>
+                <a href="#">Addis Ababa, Ethiopia</a>
+              </td>
+              <td align="right">
+                <small>ORDER # 114-8930211-50493</small><br>
+                <a href="/orders/details">View order details</a>
+              </td>
+            </tr>
+          </table>
+        </header>
+
+        <hr>
+
+        <!-- Order Item Details -->
+        <section>
+          <h2>Delivered July 29, 2026</h2>
+          <p><small>Package was handed directly to resident.</small></p>
+
+          <figure>
+            <img src="https://via.placeholder.com/100" alt="Habesha Traditional Dress" width="100">
+            <figcaption>
+              <p>
+                <a href="/product/habesha-dress"><strong>Habesha Dress - Handwoven Cotton (Size M)</strong></a><br>
+                <small>Sold by: Berbere Tera Merchants</small>
+              </p>
+            </figcaption>
+          </figure>
+
+          <!-- Action Items for Returns & Orders -->
+          <nav>
+            <ul>
+              <li><button type="button">Track package</button></li>
+              <li><a href="/returns/start?order_id=114-8930211-50493"><strong>Return or replace items</strong></a></li>
+              <li><a href="/reviews/write">Write a product review</a></li>
+              <li><a href="/seller/feedback">Leave seller feedback</a></li>
+            </ul>
+          </nav>
+        </section>
+      </article>
+
+      <br><hr><br>
+
+      <!-- RETURN INSTRUCTIONS / FAQ SECTION -->
+      <aside>
+        <details>
+          <summary><h2>Need to return an item? Learn about Merkato Returns</h2></summary>
+          <section>
+            <h3>Our Return Policy</h3>
+            <p>Most items purchased on merkato.com can be returned within 30 days of delivery.</p>
+            
+            <h3>How to Return an Item:</h3>
+            <ol>
+              <li>Go to your orders above and click <strong>Return or replace items</strong>.</li>
+              <li>Select the reason for return and choose your preferred refund method (Telebirr, CBE Birr, or Account Credit).</li>
+              <li>Drop off your packaged item at any designated local Merkato drop-off station or schedule a pickup.</li>
+            </ol>
+          </section>
+        </details>
+      </aside>
+
+    </section>
+  </main>
+
+  <br><hr><br>
+
+  <!-- FOOTER -->
+  <footer align="center">
+    <nav>
+      <small>
+        <a href="#">Conditions of Use</a>
+        &nbsp;|&nbsp;
+        <a href="#">Privacy Notice</a>
+        &nbsp;|&nbsp;
+        <a href="#">Help &amp; Support</a>
+      </small>
+    </nav>
+    <br>
+    <p>
+      <small>&copy; 1996-2026, merkato.com, Inc.</small>
+    </p>
+  </footer>
+
+</body>
+</html>

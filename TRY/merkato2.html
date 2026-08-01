@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>merkato.com</title>
+</head>
+<body id="top">
+  <header>
+    <a href="#">
+      <strong>merkato</strong>
+    </a>
+    &nbsp;&nbsp;
+
+    <!-- Delivery Location -->
+    <label>
+      Deliver to
+      <select name="country">
+        <option value="ET" selected>Ethiopia</option>
+        <option value="US">United States</option>
+        <option value="KE">Kenya</option>
+      </select>
+    </label>
+    &nbsp;&nbsp;
+
+    <!-- Search Bar -->
+    <form action="/search" method="GET" style="display: inline;">
+      <select name="category">
+        <option value="all">All</option>
+        <option value="backpacks">Backpacks</option>
+        <option value="lunchbox">Lunch Boxes</option>
+        <option value="bottles">Water Bottles</option>
+        <option value="office">Files &amp; Folders</option>
+        <option value="berbere">Berbere Tera</option>
+        <option value="sebategna">Sebategna</option>
+      </select>
+      <input type="search" name="q" placeholder="Search merkata.com">
+      <button type="submit">Search</button>
+    </form>
+    &nbsp;&nbsp;
+
+    <!-- Language Selector -->
+    <select name="header_language">
+      <option value="en" selected>EN</option>
+      <option value="am">AM</option>
+    </select>
+    &nbsp;&nbsp;
+
+    <!-- Account & Orders -->
+    <a href="#">Hello, sign in <strong>Account &amp; Lists</strong></a>
+    &nbsp;&nbsp;
+    <a href="#">Returns <strong>&amp; Orders</strong></a>
+    &nbsp;&nbsp;
+
+    <!-- Cart with Notification Counter -->
+    <a href="#">
+      Cart (<output name="cart_count">0</output>)
+    </a>
+  </header>
+
+  <!-- ==================== SUB NAVIGATION ==================== -->
+  <nav>
+    <a href="#"><strong>&#9776; All</strong></a> |
+    <a href="#">Today's Deals</a> |
+    <a href="#">Prime Video</a> |
+    <a href="#">Gift Cards</a> |
+    <a href="#">Sell</a> |
+    <a href="#">Customer Service</a> |
+    <a href="#">Registry</a>
+  </nav>
+
+  <hr>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main>
+    <!-- Page / Category Header -->
+    <header>
+      <h1>Back To School</h1>
+    </header>
+
+    <!-- Discount Announcement Pop-up Modal -->
+    <dialog open>
+      <p><strong>Back-to-School Sale!</strong> Get up to 20% off using code <mark>MERKATA20</mark>.</p>
+      <form method="dialog">
+        <button>Close</button>
+      </form>
+    </dialog>
+
+    <!-- Product Showcase Grid -->
+    <section>
+      <!-- Product 1: Backpacks -->
+      <article style="display: inline-block; text-align: center; margin: 10px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Backpacks" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>Backpacks</h3></a>
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Product 2: Lunch Box -->
+      <article style="display: inline-block; text-align: center; margin: 10px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Lunch Box" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>Lunch Box</h3></a>
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Product 3: Water Bottle -->
+      <article style="display: inline-block; text-align: center; margin: 10px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Water Bottle" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>Water Bottle</h3></a>
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Product 4: Files & Folders -->
+      <article style="display: inline-block; text-align: center; margin: 10px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Files & Folders" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>Files &amp; Folders</h3></a>
+          </figcaption>
+        </figure>
+      </article>
+    </section>
+  </main>
+
+  <br><hr><br>
+
+  <!-- ==================== UPPER FOOTER ==================== -->
+  <footer>
+    <!-- Back to Top Link -->
+    <div align="center">
+      <a href="#top">Back to top</a>
+    </div>
+
+    <hr>
+
+    <!-- Main Navigation Columns -->
+    <table width="100%" border="0" cellpadding="10" cellspacing="0">
+      <tr>
+        <!-- Column 1 -->
+        <td valign="top" width="25%">
+          <h3>Get to Know Us</h3>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About Merkata</a></li>
+            <li><a href="#">Investor Relations</a></li>
+            <li><a href="#">Merkata Devices</a></li>
+            <li><a href="#">Merkata Science</a></li>
+          </ul>
+        </td>
+
+        <!-- Column 2 -->
+        <td valign="top" width="25%">
+          <h3>Make Money with Us</h3>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li><a href="#">Sell products on Merkata</a></li>
+            <li><a href="#">Sell on Merkata Business</a></li>
+            <li><a href="#">Sell apps on Merkata</a></li>
+            <li><a href="#">Become an Affiliate</a></li>
+            <li><a href="#">Advertise Your Products</a></li>
+            <li><a href="#">Self-Publish with Us</a></li>
+            <li><a href="#">Host a Merkata Hub</a></li>
+            <li><a href="#">&rsaquo; See More Make Money with Us</a></li>
+          </ul>
+        </td>
+
+        <!-- Column 3 -->
+        <td valign="top" width="25%">
+          <h3>Merkata Payment Products</h3>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li><a href="#">Merkata Business Card</a></li>
+            <li><a href="#">Shop with Points</a></li>
+            <li><a href="#">Reload Your Balance</a></li>
+            <li><a href="#">Merkata Currency Converter</a></li>
+          </ul>
+        </td>
+
+        <!-- Column 4 -->
+        <td valign="top" width="25%">
+          <h3>Let Us Help You</h3>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li><a href="#">Your Account</a></li>
+            <li><a href="#">Your Orders</a></li>
+            <li><a href="#">Shipping Rates &amp; Policies</a></li>
+            <li><a href="#">Returns &amp; Replacements</a></li>
+            <li><a href="#">Manage Your Content and Devices</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+
+    <hr>
+
+    <!-- Footer Settings Bar -->
+    <div align="center">
+      <a href="#"><strong>merkata.com</strong></a>
+      &nbsp;&nbsp;&nbsp;
+
+      <select name="footer_language">
+        <option value="en" selected>English</option>
+        <option value="am">Amharic</option>
+      </select>
+      &nbsp;
+
+      <select name="footer_currency">
+        <option value="ETB">ETB - Birr</option>
+        <option value="USD" selected>$ USD - U.S. Dollar</option>
+      </select>
+      &nbsp;
+
+      <select name="footer_country">
+        <option value="ET">Ethiopia</option>
+        <option value="US" selected>United States</option>
+      </select>
+    </div>
+
+    <br><hr><br>
+
+    <!-- ==================== LOWER FOOTER (SERVICES) ==================== -->
+    <table width="100%" border="0" cellpadding="10" cellspacing="0">
+      <!-- Row 1 -->
+      <tr>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>Merkata Music</strong><br>
+            <small>Stream millions of songs</small>
+          </a>
+        </td>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>Merkata Ads</strong><br>
+            <small>Reach customers wherever they spend their time</small>
+          </a>
+        </td>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>6pm</strong><br>
+            <small>Score deals on fashion brands</small>
+          </a>
+        </td>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>AbeBooks</strong><br>
+            <small>Books, art &amp; collectibles</small>
+          </a>
+        </td>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>ACX</strong><br>
+            <small>Audiobook Publishing Made Easy</small>
+          </a>
+        </td>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>Sell on Merkata</strong><br>
+            <small>Start a Selling Account</small>
+          </a>
+        </td>
+        <td valign="top" width="14%">
+          <a href="#">
+            <strong>Veeqo</strong><br>
+            <small>Shipping Software Inventory Management</small>
+          </a>
+        </td>
+      </tr>
+
+      <!-- Row 2 -->
+      <tr>
+        <td valign="top">
+          <a href="#">
+            <strong>Merkata Business</strong><br>
+            <small>Everything For Your Business</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>MerkataGlobal</strong><br>
+            <small>Ship Orders Internationally</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Merkata Web Services</strong><br>
+            <small>Scalable Cloud Computing Services</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Audible</strong><br>
+            <small>Listen to Books &amp; Original Audio Performances</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Box Office Mojo</strong><br>
+            <small>Find Movie Box Office Data</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Goodreads</strong><br>
+            <small>Book reviews &amp; recommendations</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>IMDb</strong><br>
+            <small>Movies, TV &amp; Celebrities</small>
+          </a>
+        </td>
+      </tr>
+
+      <!-- Row 3 -->
+      <tr>
+        <td valign="top">
+          <a href="#">
+            <strong>IMDbPro</strong><br>
+            <small>Get Info Entertainment Professionals Need</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Kindle Direct Publishing</strong><br>
+            <small>Indie Digital &amp; Print Publishing Made Easy</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Prime Video Direct</strong><br>
+            <small>Video Distribution Made Easy</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Shopbop</strong><br>
+            <small>Designer Fashion Brands</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Woot!</strong><br>
+            <small>Deals and Shenanigans</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Zappos</strong><br>
+            <small>Shoes &amp; Clothing</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Ring</strong><br>
+            <small>Smart Home Security Systems</small>
+          </a>
+        </td>
+      </tr>
+
+      <!-- Row 4 -->
+      <tr>
+        <td valign="top"></td>
+        <td valign="top">
+          <a href="#">
+            <strong>eero WiFi</strong><br>
+            <small>Stream 4K Video in Every Room</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Blink</strong><br>
+            <small>Smart Security for Every Home</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>Neighbors App</strong><br>
+            <small>Real-Time Crime &amp; Safety Alerts</small>
+          </a>
+        </td>
+        <td valign="top">
+          <a href="#">
+            <strong>PillPack</strong><br>
+            <small>Pharmacy Simplified</small>
+          </a>
+        </td>
+        <td valign="top"></td>
+        <td valign="top"></td>
+      </tr>
+    </table>
+
+    <br>
+
+    <!-- Legal & Copyright -->
+    <p align="center">
+      <a href="#">Conditions of Use</a> &nbsp;
+      <a href="#">Privacy Notice</a> &nbsp;
+      <a href="#">Consumer Health Data Privacy Disclosure</a> &nbsp;
+      <a href="#">Your Ads Privacy Choices</a>
+    </p>
+
+    <p align="center">
+      <small>&copy; 1996-2026, merkata.com, Inc. or its affiliates</small>
+    </p>
+  </footer>
+
+</body>
+</html>

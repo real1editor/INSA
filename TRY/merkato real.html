@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>MERKATO</title>
+</head>
+<body id="top">
+
+  <!-- SEMANTIC HEADER -->
+  <header>
+    <!-- Logo -->
+    <a href="#">
+      <strong><img src="img/merkato.jpe"/ alt="Gaming Gear" width="10%"></strong>
+    </a>
+    &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+
+    <!-- Delivery Location Selector -->
+    <label>
+      Deliver to
+      <select name="deliver_to">
+        <option value="ET" selected>Ethiopia</option>
+        <option value="US">United States</option>
+        <option value="KE">Kenya</option>
+         <option value="ET" selected>Uganda</option>
+        <option value="US">Jermen</option>
+        <option value="KE">Zimbabwe</option>
+         <option value="ET" selected>Poland</option>
+        <option value="US">China</option>
+        <option value="KE">Korea</option>
+         <option value="ET" selected>Quatar</option>
+        <option value="US">Dubai</option>
+        <option value="KE">Turkey</option>
+         <option value="ET" selected>Gjibuti</option>
+      </select>
+    </label>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <!-- Search Form -->
+    <form action="/search" method="GET" style="display: inline;">
+      <select name="category">
+        <option value="all" selected>All</option>
+        <option value="berbere">Berbere Tera</option>
+        <option value="sebategna">Tef Tera</option>
+        <option value="minalesh">Game Tera</option>
+        <option value="electronics">Electronics</option>
+      </select>
+
+      <input type="search" name="q" placeholder="Search merkato.com">
+
+      <button type="submit">&#128080; Search</button>
+    </form>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <!-- Header Navigation Links -->
+    <nav style="display: inline;">
+      <select name="language">
+        <option value="en" selected>&#127482;&#127480; EN</option>
+        <option value="am">&#127466;&#127481; AM</option>
+      </select>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <br/> <br/>
+      <a href="#">
+        Hello, sign in<br> <br/>
+        <strong>Account &amp; Lists</strong>
+      </a>
+      &nbsp;&nbsp;&nbsp;&nbsp;   <br/>
+
+      <a href="#">
+        Returns<br>
+        <strong>&amp; Orders</strong>
+      </a>
+      &nbsp;&nbsp;&nbsp;&nbsp; 
+
+      <a href="#">
+        &#128722; <strong>Cart</strong> (<output name="cart_count">0</output>)
+      </a>
+    </nav>
+  </header>
+  <br/><br/>
+  <hr>
+
+  <!-- SEMANTIC MAIN CONTENT -->
+  <main>
+    <!-- Category Showcase Section -->
+    <section>
+      <!-- Card 1: Gaming -->
+      <article style="display: inline-block; width: 23%; vertical-align: top; text-align: center;">
+        <header>
+          <h2 class="go">Get your game on</h2>
+        </header>
+        <figure>
+          <!-- Clicking the online image opens the target web page 
+          <!-- Card 1: Gaming -->
+<article style="display: inline-block; width: 23%; vertical-align: top; text-align: center;">
+  <figure>
+    <a href="#">
+      <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop" alt="PlayStation Controller" width="110%">
+    </a>
+  </figure>
+</article>
+        </figure>
+        <footer>
+          <p><a href="#">Shop gaming</a></p>
+        </footer>
+      </article>
+
+      <!-- Card 2: Student Supplies -->
+      <article style="display: inline-block; width: 23%; vertical-align: top; text-align: center;">
+        <header>
+          <h2 class="go">Must haves for every student</h2>
+        </header>
+        <figure>
+          <a href="#">
+            <img src="img/merkato.jpe"/ alt="Student Supplies" width="100%">
+          </a>
+        </figure>
+        <footer>
+          <p><a href="#">Shop Back to School</a></p>
+        </footer>
+      </article>
+      
+      <!-- Card 3: Fashion Deals -->
+      <article style="display: inline-block; width: 23%; vertical-align: top; text-align: center;"> <br/>
+        <header>
+          <h2 class="go">Shop Fashion for less</h2>
+        </header>
+        <section>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/ alt="Jeans" width="100%">
+              <figcaption><small>Jeans under $50</small></figcaption>
+            </a>
+          </figure>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Tops under $25</small></figcaption>
+            </a>
+          </figure>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Dresses under $30</small></figcaption>
+            </a>
+          </figure>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Shoes under $50</small></figcaption>
+            </a>
+          </figure>
+        </section>
+        <footer>
+          <p><a href="#">See all deals</a></p>
+        </footer>
+      </article>
+
+      <!-- Card 4: School Supplies -->
+      <article style="display: inline-block; width: 23%; vertical-align: top; text-align: center;">
+        <header>
+          <h2 class="go">Must have school supplies</h2>
+        </header>
+        <section>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Backpacks</small></figcaption>
+            </a>
+          </figure>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Electronics</small></figcaption>
+            </a>
+          </figure>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="https://via.placeholder.com/120" alt="Stationery" width="100%"><img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Stationery</small></figcaption>
+            </a>
+          </figure>
+          <figure style="display: inline-block; width: 45%; margin: 0;">
+            <a href="#">
+              <img src="img/merkato.jpe"/   alt="Tops" width="100%">
+              <figcaption><small>Fashion</small></figcaption>
+            </a>
+          </figure>
+        </section>
+        <footer>
+          <p><a href="#">Shop Back to School</a></p>
+        </footer>
+      </article>
+    </section> <br/>
+
+    <hr>
+
+    <!-- Personalized Recommendations Section -->
+    <aside style="text-align: center;">
+      <h2>See personalized recommendations</h2>
+      <a href="">Sign in</a>
+      
+      
+      <br><br>
+      
+      <small>
+        New customer? <a href="/register">Start here.</a>
+      </small>
+    </aside>
+  </main>
+
+  <hr>
+
+  <!-- SEMANTIC FOOTER -->
+  <footer>
+    <nav style="text-align: center;">
+      <small>
+        <a href="#">Conditions of Use</a> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#">Privacy Notice</a> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#">Consumer Health Data Privacy Disclosure</a> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#">Your Ads Privacy Choices &#9745;&#9746;</a>
+      </small>
+    </nav>
+    <br>
+    <p align="center">
+      <small>&copy; 1996-2026, merkato.com, Inc.</small>
+    </p>
+  </footer>
+
+</body>
+</html>

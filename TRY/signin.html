@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In to merkato.com</title>
+</head>
+<body>
+
+  <!-- MAIN CONTAINER -->
+  <main>
+    <section>
+      <!-- Logo Header -->
+      <header align="center">
+        <a href="/">
+          <strong>merkato.com</strong>
+        </a>
+      </header>
+
+      <br>
+
+      <!-- Sign In Form Box -->
+      <article>
+        <form action="/signin" method="POST">
+          <fieldset>
+            <legend><h2>Sign in</h2></legend>
+
+            <!-- Email / Phone Input -->
+            <p>
+              <label for="user_email">
+                <strong>Email or mobile phone number</strong>
+              </label>
+              <br>
+              <input 
+                type="text" 
+                id="user_email" 
+                name="email_or_phone" 
+                required 
+                autocomplete="username"
+              >
+            </p>
+
+            <!-- Password Input -->
+            <p>
+              <label for="user_password">
+                <strong>Password</strong>
+              </label>
+              <br>
+              <input 
+                type="password" 
+                id="user_password" 
+                name="password" 
+                required 
+                autocomplete="current-password"
+              >
+            </p>
+
+            <!-- Submit Button -->
+            <p>
+              <button type="submit">Continue</button>
+            </p>
+
+            <!-- Keep Signed In Checkbox -->
+            <p>
+              <label>
+                <input type="checkbox" name="remember_me" value="true">
+                Keep me signed in
+              </label>
+            </p>
+
+            <!-- Help Links -->
+            <p>
+              <details>
+                <summary>Need help?</summary>
+                <ul>
+                  <li><a href="/forgot-password">Forgot your password?</a></li>
+                  <li><a href="/help">Other issues with Sign-In</a></li>
+                </ul>
+              </details>
+            </p>
+          </fieldset>
+        </form>
+      </article>
+
+      <br>
+
+      <!-- New Customer / Registration Section -->
+      <aside align="center">
+        <p><small>New to Merkato?</small></p>
+        <form action="/register" method="GET">
+          <button type="submit">Create your Merkato account</button>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <br><hr><br>
+
+  <!-- FOOTER -->
+  <footer align="center">
+    <nav>
+      <small>
+        <a href="#">Conditions of Use</a>
+        &nbsp;|&nbsp;
+        <a href="#">Privacy Notice</a>
+        &nbsp;|&nbsp;
+        <a href="#">Help</a>
+      </small>
+    </nav>
+    <br>
+    <p>
+      <small>&copy; 1996-2026, merkato.com, Inc.</small>
+    </p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <title>merkata.com - የኢትዮጵያ ትልቁ ዲጂታል ገበያ (Ethiopia's Digital Market)</title>
+</head>
+<body id="top">
+
+  <!-- ==================== MINIMAL TOP HEADER ==================== -->
+  <header>
+    <!-- Brand Logo -->
+    <a href="#">
+      <strong>merkata.com</strong>
+    </a>
+    &nbsp;&nbsp;
+
+    <!-- Delivery Location Dropdown -->
+    <select name="city">
+      <option value="AA" selected>Deliver to: Addis Ababa</option>
+      <option value="DD">Deliver to: Dire Dawa</option>
+      <option value="BD">Deliver to: Bahir Dar</option>
+      <option value="WS">Deliver to: Wolaita Sodo</option>
+    </select>
+    &nbsp;&nbsp;
+
+    <!-- Streamlined Search Form -->
+    <form action="/search" method="GET" style="display: inline;">
+      <select name="tera">
+        <option value="all">All Market Quarters</option>
+        <option value="berbere">Berbere Tera</option>
+        <option value="sebategna">Sebategna</option>
+        <option value="minalesh">Minalesh Tera</option>
+      </select>
+      <input type="search" name="q" placeholder="Search merkata...">
+      <button type="submit">Search</button>
+    </form>
+    &nbsp;&nbsp;
+
+    <!-- Condensed Settings & Links -->
+    <select name="header_language">
+      <option value="am" selected>አማርኛ</option>
+      <option value="en">EN</option>
+    </select>
+    &nbsp;&nbsp;
+
+    <a href="#">Sign In</a>
+    &nbsp;&nbsp;
+
+    <a href="#">Cart (<output name="cart_count">0</output>)</a>
+  </header>
+
+  <!-- ==================== MINIMAL SUB NAVIGATION ==================== -->
+  <nav>
+    <a href="#"><strong>&#9776; All Markets</strong></a> |
+    <a href="#">Today's Deals</a> |
+    <a href="#">Wholesale</a> |
+    <a href="#">Help</a>
+  </nav>
+
+  <hr>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main>
+    <!-- Page Header -->
+    <header>
+      <h1>የሳምንቱ ታዋቂ የገበያ ተራዎች (Popular Market Sections)</h1>
+    </header>
+
+    <!-- Discount Announcement Pop-up Modal -->
+    <dialog open>
+      <p><strong>የገና እና የዓመት በዓል ልዩ ቅናሽ!</strong> Use code <mark>MERKATO10</mark> for 10% off local goods.</p>
+      <form method="dialog">
+        <button>ዝጋ (Close)</button>
+      </form>
+    </dialog>
+
+    <!-- Localized Product Grid -->
+    <section>
+      <!-- Product 1: Berbere Tera -->
+      <article style="display: inline-block; text-align: center; margin: 15px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Berbere Tera" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>በርበሬ ተራ (Berbere Tera)</h3></a>
+            <p><small>Pure Spices, Chili, &amp; Coffee</small></p>
+            <p><strong>250 ETB / kg</strong></p>
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Product 2: Sebategna -->
+      <article style="display: inline-block; text-align: center; margin: 15px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Sebategna Textiles" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>ሰባተኛ (Sebategna)</h3></a>
+            <p><small>Habesha Kemis &amp; Textiles</small></p>
+            <p><strong>3,500 ETB</strong></p>
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Product 3: Minalesh Tera -->
+      <article style="display: inline-block; text-align: center; margin: 15px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Minalesh Tera Hardware" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>ምናለሽ ተራ (Minalesh Tera)</h3></a>
+            <p><small>Kitchenware &amp; Home Goods</small></p>
+            <p><strong>1,200 ETB</strong></p>
+          </figcaption>
+        </figure>
+      </article>
+
+      <!-- Product 4: Yirgacheffe Coffee -->
+      <article style="display: inline-block; text-align: center; margin: 15px; vertical-align: top;">
+        <figure>
+          <a href="#">
+            <img src="https://via.placeholder.com/200" alt="Yirgacheffe Coffee" width="200" height="200">
+          </a>
+          <figcaption>
+            <a href="#"><h3>የይርጋጨፌ ቡና (Yirgacheffe Coffee)</h3></a>
+            <p><small>Organic Roasted Beans</small></p>
+            <p><strong>850 ETB / kg</strong></p>
+          </figcaption>
+        </figure>
+      </article>
+    </section>
+
+    <br><hr><br>
+
+    <!-- Local Checkout & Payment Section -->
+    <section>
+      <h2>የክፍያ እና የማድረሻ ቅጽ (Checkout &amp; Local Payment)</h2>
+      <form action="/checkout" method="POST">
+        
+        <!-- Address Details -->
+        <fieldset>
+          <legend>የማድረሻ አድራሻ (Delivery Address)</legend>
+          <label>ሙሉ ስም (Full Name): <input type="text" name="fullname" required></label><br><br>
+          <label>ስልክ ቁጥር (Phone Number): <input type="tel" name="phone" placeholder="0911..." required></label><br><br>
+          <label>ክፍለ ከተማ / ወረዳ (Sub-city / Woreda):<br>
+            <textarea name="address" rows="3" cols="40" placeholder="e.g., Addis Ketema, Woreda 01..."></textarea>
+          </label>
+        </fieldset>
+
+        <br>
+
+        <!-- Payment Options -->
+        <fieldset>
+          <legend>የክፍያ አማራጮች (Payment Options)</legend>
+          <label><input type="radio" name="payment" value="telebirr" checked> Telebirr (ቴሌብር)</label><br>
+          <label><input type="radio" name="payment" value="cbe_birr"> CBE Birr (ሲቢኢ ብር)</label><br>
+          <label><input type="radio" name="payment" value="chapa"> Chapa / Local Debit Cards</label><br>
+          <label><input type="radio" name="payment" value="cod"> እቃው ሲደርስ መክፈል (Cash on Delivery)</label>
+        </fieldset>
+
+        <br>
+        <button type="submit">ትዕዛዙን አጽድቅ (Confirm Order)</button>
+      </form>
+    </section>
+  </main>
+
+  <br><hr><br>
+
+  <!-- ==================== MINIMIZED FOOTER ==================== -->
+  <footer>
+    <!-- Back to Top -->
+    <div align="center">
+      <a href="#top">ወደ ላይ ተመለስ (Back to top)</a>
+    </div>
+
+    <hr>
+
+    <!-- Simplified 4-Column Navigation -->
+    <table width="100%" border="0" cellpadding="5" cellspacing="0">
+      <tr>
+        <td valign="top" width="25%">
+          <h4>ስለ እኛ (About)</h4>
+          <p><a href="#">ስለ መርካቶ.ኮም</a></p>
+          <p><a href="#">የስራ እድሎች</a></p>
+        </td>
+        <td valign="top" width="25%">
+          <h4>አብረውን ይሰሩ (Partner)</h4>
+          <p><a href="#">በመርካቶ ላይ ይሸጡ</a></p>
+          <p><a href="#">የጅምላ አቅራቢ ይሁኑ</a></p>
+        </td>
+        <td valign="top" width="25%">
+          <h4>ክፍያ (Payments)</h4>
+          <p><a href="#">ቴሌብር / CBE Birr</a></p>
+          <p><a href="#">በካርድ መክፈል</a></p>
+        </td>
+        <td valign="top" width="25%">
+          <h4>እርዳታ (Help)</h4>
+          <p><a href="#">የእርስዎ መለያ</a></p>
+          <p><a href="#">የእቃ መመለስ ፖሊሲ</a></p>
+        </td>
+      </tr>
+    </table>
+
+    <hr>
+
+    <!-- Minimal Settings Bar -->
+    <div align="center">
+      <a href="#"><strong>merkata.com</strong></a> &nbsp;|&nbsp;
+      <select name="footer_language">
+        <option value="am" selected>አማርኛ</option>
+        <option value="en">English</option>
+      </select> &nbsp;|&nbsp;
+      <select name="footer_currency">
+        <option value="ETB" selected>ETB (ብር)</option>
+        <option value="USD">$ USD</option>
+      </select> &nbsp;|&nbsp;
+      <select name="footer_country">
+        <option value="ET" selected>Ethiopia</option>
+      </select>
+    </div>
+
+    <br>
+
+    <!-- Concise Legal & Copyright -->
+    <p align="center">
+      <small>
+        <a href="#">የአገልግሎት ውሎች</a> &bull; 
+        <a href="#">የግላዊነት ፖሊሲ</a><br>
+        &copy; 2026 merkata.com, Inc. or its affiliates
+      </small>
+    </p>
+  </footer>
+
+</body>
+</html>

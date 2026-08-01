@@ -1,0 +1,271 @@
+/* 1. GLOBAL RESETS & BASE STYLES */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #eaeded;
+  color: #000000;
+  line-height: 1.5;
+  padding: 0;
+}
+
+a {
+  color: #1ee649f7;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0e0b09;
+  text-decoration: underline;
+}
+
+.go{color: #0e0b09;
+}
+hr {
+  border: none;
+  border-top: 1px solid #bbbfbf;
+  margin: 20px 0;
+}
+
+/* Helper to clean up standard break tags now that CSS layout handles spacing */
+br {
+  display: none;
+}
+
+/* 2. HEADER & NAVIGATION STYLES */
+header {
+  background-color: #2536f0de;
+  color: #ffffff;
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+header a {
+  color: #ffffff;
+}
+
+/* Logo */
+header strong img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* Delivery & Language Selectors */
+header label,
+header select {
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+header select {
+  background-color: #312f0cc9;
+  border: 1px solid #dc2cff;
+  border-radius: 4px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+/* Search Form */
+header form[action="/search"] {
+  display: flex !important;
+  flex-grow: 1;
+  max-width: 600px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+header form[action="/search"] select {
+  background-color: #f3f3f3;
+  color: #3d4bdbee;
+  border: none;
+  border-right: 1px solid #cdcdcd;
+  padding: 8px;
+  border-radius: 0;
+}
+
+header form[action="/search"] input[type="search"] {
+  flex-grow: 1;
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+header form[action="/search"] button {
+  background-color: #e4972a;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+header form[action="/search"] button:hover {
+  background-color: #000000;
+}
+
+/* Header Links Area */
+header nav {
+  display: flex !important;
+  align-items: center;
+  gap: 20px;
+}
+
+header nav a {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+/* 3. MAIN CONTENT & CATEGORY GRID*/
+main {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+/* Category Grid layout overriding inline attributes */
+main section:first-of-type {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Category Cards */
+article {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(242, 240, 138, 0.116);
+  width: 100% !important; /* Overrides inline 23% width */
+}
+
+article header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #0ababa;
+  text-align: left;
+}
+
+/* Card Images */
+article figure {
+  margin: 0;
+  padding: 0;
+}
+
+article figure img {
+  border-radius: 4px;
+  object-fit: cover;
+  max-height: 270px;
+}
+
+/* 2x2 Sub-Grid inside Fashion & School Cards */
+article section {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+article section figure {
+  width: 100% !important; /* Overrides inline 45% width */
+  text-align: left;
+}
+
+article section figure img {
+  height: 110px;
+  width: 100%;
+  object-fit: cover;
+}
+
+figcaption small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: hsl(95, 97%, 46%);
+}
+
+article footer {
+  margin-top: 15px;
+  text-align: left;
+}
+
+article footer a {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* 4. RECOMMENDATIONS ASIDE */
+aside {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 25px;
+  margin: 25px 0;
+}
+
+aside h2 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+aside a[href="/signin"] {
+  display: inline-block;
+  background-color: #ffd814;
+  color: #52f4f4;
+  padding: 6px 40px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.53);
+  margin-bottom: 8px;
+}
+
+aside a[href="/signin"]:hover {
+  background-color: #1b1604;
+  text-decoration: none;
+}
+
+/* 5. FOOTER STYLES */
+footer {
+  background-color: #1e5dd2;
+  color: #ffffff;
+  padding: 30px 15px;
+  margin-top: 30px;
+}
+
+footer nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+footer nav a {
+  color: #dddddd;
+  font-size: 0.85rem;
+}
+
+footer nav a:hover {
+  color: #ffffff;
+}
+
+footer p {
+  color: #999999;
+  font-size: 0.8rem;
+  margin-top: 15px;
+}

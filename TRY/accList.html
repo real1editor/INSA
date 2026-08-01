@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account & Lists</title>
+</head>
+<body>
+    <!-- ACCOUNT & LISTS SEMANTIC COMPONENT -->
+<section>
+  <!-- Summary Header Trigger -->
+  <details>
+    <summary>
+      <small>Hello, sign in</small><br>
+      <strong>Account &amp; Lists &#9660;</strong>
+    </summary>
+
+    <br>
+
+    <!-- Dropdown Content Container -->
+    <article>
+      <!-- Sign In CTA Section -->
+      <header align="center">
+        <form action="/signin" method="GET">
+          <button type="submit"><strong>Sign in</strong></button>
+        </form>
+        <small>New customer? <a href="/register">Start here.</a></small>
+      </header>
+
+      <hr>
+
+      <!-- Account & Lists Navigation Grid -->
+      <nav>
+        <table width="100%" border="0" cellpadding="5" cellspacing="0">
+          <tr>
+            <!-- Column 1: Your Lists -->
+            <td valign="top" width="50%">
+              <h3>Your Lists</h3>
+              <ul>
+                <li><a href="/lists/create">Create a List</a></li>
+                <li><a href="/lists/wishlist">Wish List</a></li>
+                <li><a href="/lists/saved">Saved Items</a></li>
+              </ul>
+            </td>
+
+            <!-- Column 2: Your Account -->
+            <td valign="top" width="50%">
+              <h3>Your Account</h3>
+              <ul>
+                <li><a href="/account">Your Account</a></li>
+                <li><a href="/orders">Your Orders</a></li>
+                <li><a href="/recommendations">Your Recommendations</a></li>
+                <li><a href="/telebirr-wallet">Telebirr / Payment Methods</a></li>
+                <li><a href="/seller/dashboard">Your Seller Account (Merkato Merchant)</a></li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </nav>
+    </article>
+  </details>
+</section>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>merkato.com - Ethiopian Online Marketplace</title>
+</head>
+<body>
+
+  <!-- ============================================================ -->
+  <!-- 1. HEADER & NAVIGATION                                       -->
+  <!-- ============================================================ -->
+  <header>
+    <!-- Brand Logo -->
+    <a href="/">
+      <img src="insa/img/merkato.png" alt="merkato.com Logo" width="120">
+    </a>
+
+    <!-- Location / Country Selector -->
+    <label for="deliver-country"><small>Deliver to</small></label>
+    <select id="deliver-country" name="country">
+      <option value="ET" selected>Ethiopia 🇪🇹</option>
+      <option value="KE">Kenya 🇰🇪</option>
+      <option value="US">United States 🇺🇸</option>
+    </select>
+
+    <!-- Single-Line Search Bar -->
+    <form action="/search" method="GET">
+      <select name="category" aria-label="Select Category">
+        <option value="all">All Departments</option>
+        <option value="electronics">Electronics</option>
+        <option value="fashion">Fashion</option>
+        <option value="spices">Spices & Groceries</option>
+      </select>
+      <input type="search" name="q" placeholder="Search merkata.com" required>
+      <button type="submit" aria-label="Search">🔍</button>
+    </form>
+
+    <!-- Language Selector -->
+    <select name="language" aria-label="Select Language">
+      <option value="en">EN</option>
+      <option value="am">AM</option>
+    </select>
+
+    <!-- User Account & Login Link -->
+    <a href="#login-section">
+      <small>Hello, Sign in</small>
+      <strong>Account & Lists</strong>
+    </a>
+
+    <!-- Returns & Orders -->
+    <a href="#orders">
+      <small>Returns</small>
+      <strong>& Orders</strong>
+    </a>
+
+    <!-- Cart with Counter Output -->
+    <a href="#cart">
+      <strong>🛒 Cart</strong>
+      <output>3</output>
+    </a>
+
+    <!-- Sub-Navigation Links -->
+    <nav>
+      <ul>
+        <li><a href="#all">☰ All</a></li>
+        <li><a href="#deals">Today's Deals</a></li>
+        <li><a href="#customer-service">Customer Service</a></li>
+        <li><a href="#registry">Registry</a></li>
+        <li><a href="#sell">Sell</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <hr>
+
+  <!-- ============================================================ -->
+  <!-- 2. DISCOUNT POP-UP DIALOG                                    -->
+  <!-- ============================================================ -->
+  <dialog id="discount-popup" open>
+    <form method="dialog">
+      <h3>🎉 Exclusive Welcome Offer!</h3>
+      <p>Get a <mark>15% DISCOUNT</mark> on your first order with code: <strong>MERKATO15</strong></p>
+      <button type="submit">Claim Offer & Close</button>
+    </form>
+  </dialog>
+
+  <!-- ============================================================ -->
+  <!-- 3. SIDEBAR PRODUCT FILTERS                                   -->
+  <!-- ============================================================ -->
+  <aside>
+    <h2>Filter Products</h2>
+    <form action="/filter" method="GET">
+      
+      <!-- Price Filter -->
+      <fieldset>
+        <legend>Price Range</legend>
+        <label for="price-range">Max Price ($):</label><br>
+        <input type="range" id="price-range" name="max_price" min="10" max="1000" step="10">
+      </fieldset>
+
+      <!-- Brand Filter -->
+      <fieldset>
+        <legend>Brand</legend>
+        <input type="checkbox" id="brand1" name="brand" value="tekno">
+        <label for="brand1">Tekno</label><br>
+        <input type="checkbox" id="brand2" name="brand" value="samsung">
+        <label for="brand2">Samsung</label><br>
+        <input type="checkbox" id="brand3" name="brand" value="local">
+        <label for="brand3">Local Artisans</label>
+      </fieldset>
+
+      <!-- Rating Filter -->
+      <fieldset>
+        <legend>Customer Review</legend>
+        <input type="radio" id="4star" name="rating_filter" value="4">
+        <label for="4star">4 Stars & Up</label><br>
+        <input type="radio" id="3star" name="rating_filter" value="3">
+        <label for="3star">3 Stars & Up</label>
+      </fieldset>
+
+      <br>
+      <button type="submit">Apply Filters</button>
+    </form>
+  </aside>
+
+  <hr>
+
+  <!-- ============================================================ -->
+  <!-- 4. MAIN PRODUCT LISTINGS                                     -->
+  <!-- ============================================================ -->
+  <main>
+    <section>
+      <h2>Featured Items</h2>
+
+      <!-- Product Item 1 -->
+      <article>
+        <figure>
+          <img src="coffee-beans.jpg" alt="Ethiopian Yirgacheffe Coffee Beans" width="200">
+          <figcaption>Authentic Yirgacheffe Coffee</figcaption>
+        </figure>
+        <h3>Ethiopian Organic Coffee (1kg)</h3>
+        <p><mark>Save 20%</mark></p>
+        <p>Price: <strong>$24.99</strong> <del>$31.25</del></p>
+        
+        <!-- Rating Bar -->
+        <label for="item1-rating">Rating:</label>
+        <meter id="item1-rating" value="4.8" min="0" max="5">4.8 out of 5</meter>
+        <span>(128 reviews)</span>
+
+        <!-- Quantity Input -->
+        <p>
+          <label for="qty1">Quantity:</label>
+          <input type="number" id="qty1" name="quantity" min="1" max="10" value="1">
+        </p>
+
+        <blockquote>"The best aromatic coffee beans I've bought online!"</blockquote>
+        <button type="button">Add to Cart</button>
+      </article>
+
+      <hr>
+
+      <!-- Product Item 2 -->
+      <article>
+        <figure>
+          <img src="traditional-scarf.jpg" alt="Handwoven Habesha Netela Scarf" width="200">
+          <figcaption>Handwoven Traditional Scarf</figcaption>
+        </figure>
+        <h3>Handmade Netela / Scarf</h3>
+        <p>Price: <strong>$45.00</strong></p>
+        
+        <!-- Rating Bar -->
+        <label for="item2-rating">Rating:</label>
+        <meter id="item2-rating" value="4.2" min="0" max="5">4.2 out of 5</meter>
+        <span>(45 reviews)</span>
+
+        <!-- Quantity Input -->
+        <p>
+          <label for="qty2">Quantity:</label>
+          <input type="number" id="qty2" name="quantity" min="1" max="5" value="1">
+        </p>
+
+        <blockquote>"Beautiful quality and authentic craftsmanship."</blockquote>
+        <button type="button">Add to Cart</button>
+      </article>
+    </section>
+  </main>
+
+  <hr>
+
+  <!-- ============================================================ -->
+  <!-- 5. CHECKOUT & USER LOGIN FORM TAG SECTION                   -->
+  <!-- ============================================================ -->
+  <section id="checkout-section">
+    <h2>Customer Login & Express Checkout</h2>
+
+    <!-- Checkout Form Tag -->
+    <form action="/process-checkout" method="POST">
+      
+      <!-- Account Login Information -->
+      <fieldset id="login-section">
+        <legend><strong>1. Login Information</strong></legend>
+        <p>
+          <label for="user-email">Email Address:</label><br>
+          <input type="email" id="user-email" name="email" placeholder="name@example.com" required>
+        </p>
+        <p>
+          <label for="user-password">Password:</label><br>
+          <input type="password" id="user-password" name="password" required>
+        </p>
+      </fieldset>
+
+      <!-- Delivery Details & Location -->
+      <fieldset>
+        <legend><strong>2. Delivery Location & Options</strong></legend>
+        <p>
+          <label for="full-name">Full Name:</label><br>
+          <input type="text" id="full-name" name="fullname" required>
+        </p>
+        <p>
+          <label for="phone">Phone Number:</label><br>
+          <input type="tel" id="phone" name="phone_number" required>
+        </p>
+        <p>
+          <label for="delivery-address">Street Address / Location Details:</label><br>
+          <textarea id="delivery-address" name="address" rows="3" cols="30" placeholder="Enter your full street address or nearby landmark"></textarea>
+        </p>
+        
+        <p><strong>Select Delivery Speed:</strong></p>
+        <input type="radio" id="standard" name="delivery_option" value="standard" checked>
+        <label for="standard">Standard Delivery (3-5 Business Days)</label><br>
+        
+        <input type="radio" id="express" name="delivery_option" value="express">
+        <label for="express">Express Delivery (Same Day Shipping)</label>
+      </fieldset>
+
+      <!-- Payment Options -->
+      <fieldset>
+        <legend><strong>3. Payment Method Options</strong></legend>
+        
+        <input type="radio" id="cbe" name="payment_method" value="cbe_birr" checked>
+        <label for="cbe">CBE Birr / Telebirr</label><br>
+
+        <input type="radio" id="card" name="payment_method" value="credit_card">
+        <label for="card">Credit or Debit Card</label><br>
+
+        <input type="radio" id="cod" name="payment_method" value="cash_on_delivery">
+        <label for="cod">Cash on Delivery</label>
+      </fieldset>
+
+      <!-- Order Submission -->
+      <br>
+      <button type="submit">Place Your Order</button>
+    </form>
+  </section>
+
+  <hr>
+
+  <!-- ============================================================ -->
+  <!-- 6. FOOTER SECTION                                            -->
+  <!-- ============================================================ -->
+  <footer>
+    <p><a href="#">Back to top</a></p>
+    <hr>
+    <nav>
+      <h3>Get to Know Us</h3>
+      <ul>
+        <li><a href="#about">About merkata.com</a></li>
+        <li><a href="#careers">Careers</a></li>
+      </ul>
+
+      <h3>Make Money with Us</h3>
+      <ul>
+        <li><a href="#sell">Sell products on Merkata</a></li>
+        <li><a href="#affiliate">Become an Affiliate</a></li>
+      </ul>
+    </nav>
+    <p><small>&copy; 2026, merkata.com, Inc. or its affiliates</small></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merkato</title>
+  <!-- stylesheet is linked in head, no inline CSS, no JS -->
+  <link rel="stylesheet" href="merkato.css">
+</head>
+<body>
+  <!-- BACK TO TOP ANCHOR -->
+  <a id="top"></a>
+
+  <!-- ===== HEADER ===== -->
+  <header class="main-header">
+    <div class="header-inner">
+      <!-- LOGO -->
+      <div class="logo-area">
+        <img src="img/merkato.jpe" alt="Merkato logo" class="brand-logo" width="110" height="70">
+    &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+      </div>
+
+      <!-- DELIVERY LOCATION -->
+      <div class="delivery-selector">
+        <span class="delivery-label">Deliver to</span>
+        <select class="location-select" aria-label="Delivery location">
+          <option value="ET" selected>Ethiopia</option>
+          <option value="UG">Uganda</option>
+          <option value="ZM">Zimbabwe</option>
+          <option value="KE">Kenya</option>
+          <option value="NG">Nigeria</option>
+        </select>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="search-wrapper">
+        <select class="search-category" aria-label="Search category">
+          <option value="all">All</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Fashion</option>
+          <option value="books">Books</option>
+          <option value="home">Home</option>
+        </select>
+        <input type="search" class="search-input" placeholder="Search Merkato ..." aria-label="Search">
+        <button class="search-submit" type="submit" aria-label="Submit search">🔍</button>
+      </div>
+
+      <!-- USER NAV -->
+      <div class="user-nav">
+        <div class="language-selector">
+          <span class="lang-flag">🇪🇹</span>
+          <select class="lang-select" aria-label="Language">
+            <option value="en" selected>EN</option>
+            <option value="am">AM</option>
+          </select>
+        </div>
+        <a href="#" class="account-link">Account</a>
+        <a href="#" class="orders-link">Orders</a>
+        <a href="#" class="cart-link">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SUB-NAV ===== -->
+  <nav class="sub-nav">
+    <ul class="sub-nav-list">
+      <li><a href="#">All</a></li>
+      <li><a href="#">Today's Deals</a></li>
+      <li><a href="#">Berbere Tera</a></li>
+      <li><a href="#">Customer Service</a></li>
+      <li><a href="#">Registry</a></li>
+      <li><a href="#">Gift Cards</a></li>
+      <li><a href="#">Sell</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero-slider">
+    <div class="hero-content">
+      <h2 class="hero-headline">Grand Merkato Savings</h2>
+      <p class="hero-sub">Discover thousands of deals from tech to traditional crafts</p>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCT GRID (4 cards) ===== -->
+  <section class="card-grid">
+    <!-- CARD 1: Gaming Gear -->
+    <article class="product-card">
+      <div class="card-badge best-seller">Best Seller</div>
+      <div class="card-image">🎮</div>
+      <h3 class="card-title">Gaming Gear Pro</h3>
+      <div class="star-rating">★★★★★</div>
+      <div class="pricing">
+        <span class="price-current">$49.99</span>
+        <span class="price-list">$79.99</span>
+      </div>
+    </article>
+
+    <!-- CARD 2: Student Essentials -->
+    <article class="product-card">
+      <div class="card-badge limited-deal">Limited Deal</div>
+      <div class="card-image">📚</div>
+      <h3 class="card-title">Student Essentials</h3>
+      <div class="star-rating">★★★★☆</div>
+      <div class="pricing">
+        <span class="price-current">$29.99</span>
+        <span class="price-list">$49.99</span>
+      </div>
+    </article>
+
+    <!-- CARD 3: Shop Fashion for less (2x2 sub-grid) -->
+    <article class="product-card subgrid-card">
+      <h3 class="card-title subgrid-title">Shop Fashion for less</h3>
+      <div class="subgrid-2x2">
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">👖</span>
+          <figcaption>Jeans</figcaption>
+        </figure>
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">👕</span>
+          <figcaption>Tops</figcaption>
+        </figure>
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">👗</span>
+          <figcaption>Dresses</figcaption>
+        </figure>
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">👟</span>
+          <figcaption>Shoes</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <!-- CARD 4: School Essentials (2x2 sub-grid) -->
+    <article class="product-card subgrid-card">
+      <h3 class="card-title subgrid-title">School Essentials</h3> 
+      <div class="subgrid-2x2">
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">🎒</span>
+          <figcaption>Backpacks</figcaption>
+        </figure>
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">💻</span>
+          <figcaption>Electronics</figcaption>
+        </figure>
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">✏️</span>
+          <figcaption>Stationery</figcaption>
+        </figure>
+        <figure class="subgrid-item">
+          <span class="subgrid-icon">👚</span>
+          <figcaption>Fashion</figcaption>
+        </figure>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===== ASIDE: PERSONALIZED SIGN-IN ===== -->
+  <aside class="sign-in-callout">
+    <div class="callout-box">
+      <p class="callout-text">See personalized recommendations</p>
+      <a href="#" class="btn-signin">Sign in</a>
+      <p class="register-link">New customer? <a href="#">Start here</a></p>
+    </div>
+  </aside>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="main-footer">
+    <a href="#top" class="back-to-top">Back to top</a>
+    <div class="footer-links">
+      <nav class="footer-nav">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">About</a>
+      </nav>
+      <p class="copyright">&copy; 1996-2026, merkato.com, Inc.</p>
+    </div>
+  </footer>
+</body>
+</html>

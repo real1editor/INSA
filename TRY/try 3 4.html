@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERKATO</title>
+</head>
+<body>
+    <header>
+  <!-- 1. Logo -->
+  <a href="#">
+    <strong>merkato.com</strong>
+  </a>
+  
+
+  <!-- 2. Deliver to Location -->
+  <label>
+    Deliver to
+    <select name="deliver_to">
+      <option value="ET" selected>Ethiopia</option>
+      <option value="US">United States</option>
+      <option value="KE">Kenya</option>
+    </select>
+  </label>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- 3. Search Bar Form -->
+  <form action="/search" method="GET" style="display: inline;">
+    <!-- Category Dropdown ("All") -->
+    <select name="category">
+      <option value="all" selected>All</option>
+      <option value="berbere">Berbere Tera</option>
+      <option value="sebategna">Sebategna</option>
+      <option value="minalesh">Minalesh Tera</option>
+      <option value="electronics">Electronics</option>
+    </select>
+
+    <!-- Search Input Field -->
+    <input type="search" name="q" placeholder="Search merkata.com">
+
+    <!-- Search Submit Button -->
+    <button type="submit">&#128080; Search</button>
+  </form>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- 4. Language Selector -->
+  <select name="language">
+    <option value="en" selected>&#127482;&#127480; EN</option>
+    <option value="am">&#127466;&#127481; AM</option>
+  </select>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- 5. Account & Lists -->
+  <a href="#">
+    Hello, sign in<br>
+    <strong>Account &amp; Lists</strong>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- 6. Returns & Orders -->
+  <a href="#">
+    Returns<br>
+    <strong>&amp; Orders</strong>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+
+  <!-- 7. Shopping Cart with Counter -->
+  <a href="#">
+    &#128722; <strong>Cart</strong> (<output name="cart_count">0</output>)
+  </a>
+</header>
+
+<!-- MAIN CATEGORY GRID SECTION -->
+<section>
+  <table width="100%" border="0" cellpadding="15" cellspacing="0">
+    <tr>
+      
+      <!-- CARD 1: Single Large Image (Gaming) -->
+      <td valign="top" width="25%">
+        <article>
+          <h2>Get your game on</h2>
+          <figure>
+            <a href="#">
+              <img src="https://via.placeholder.com/300x300" alt="Gaming Gear" width="100%">
+            </a>
+          </figure>
+          <p><a href="#">Shop gaming</a></p>
+        </article>
+      </td>
+
+      <!-- CARD 2: Single Large Image (Student Supplies) -->
+      <td valign="top" width="25%">
+        <article>
+          <h2>Must-haves for every student</h2>
+          <figure>
+            <a href="#">
+              <img src="https://via.placeholder.com/300x300" alt="Student Supplies" width="100%">
+            </a>
+          </figure>
+          <p><a href="#">Shop Back to School</a></p>
+        </article>
+      </td>
+
+      <!-- CARD 3: 2x2 Sub-Grid (Fashion Deals) -->
+      <td valign="top" width="25%">
+        <article>
+          <h2>Shop Fashion for less</h2>
+          <table width="100%" border="0" cellpadding="5" cellspacing="0">
+            <tr>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Jeans" width="100%"><br>
+                  <small>Jeans under $50</small>
+                </a>
+              </td>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Tops" width="100%"><br>
+                  <small>Tops under $25</small>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Dresses" width="100%"><br>
+                  <small>Dresses under $30</small>
+                </a>
+              </td>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Shoes" width="100%"><br>
+                  <small>Shoes under $50</small>
+                </a>
+              </td>
+            </tr>
+          </table>
+          <p><a href="#">See all deals</a></p>
+        </article>
+      </td>
+
+      <!-- CARD 4: 2x2 Sub-Grid (School Supplies) -->
+      <td valign="top" width="25%">
+        <article>
+          <h2>Must-have school supplies</h2>
+          <table width="100%" border="0" cellpadding="5" cellspacing="0">
+            <tr>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Backpacks" width="100%"><br>
+                  <small>Backpacks</small>
+                </a>
+              </td>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Electronics" width="100%"><br>
+                  <small>Electronics</small>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Stationery" width="100%"><br>
+                  <small>Stationery</small>
+                </a>
+              </td>
+              <td align="center" width="50%">
+                <a href="#">
+                  <img src="https://via.placeholder.com/120" alt="Fashion" width="100%"><br>
+                  <small>Fashion</small>
+                </a>
+              </td>
+            </tr>
+          </table>
+          <p><a href="#">Shop Back to School</a></p>
+        </article>
+      </td>
+
+    </tr>
+  </table>
+</section>
+
+<!-- PERSONALIZED RECOMMENDATIONS SECTION -->
+<section>
+  <div align="center">
+    <hr width="100%" size="1">
+    <br>
+    
+    <h2>See personalized recommendations</h2>
+    
+    <!-- Sign In Button -->
+    <form action="/signin" method="GET" style="display: inline;">
+      <button type="submit"><strong>Sign in</strong></button>
+    </form>
+    
+    <br><br>
+    
+    <!-- New Customer Link -->
+    <small>
+      New customer? <a href="/register">Start here.</a>
+    </small>
+    
+    <br><br>
+    <hr width="100%" size="1">
+  </div>
+</section>
+
+
+<!-- BOTTOM LEGAL & COPYRIGHT FOOTER -->
+<footer>
+  <div align="center">
+    <small>
+      <a href="#">Conditions of Use</a> &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="#">Privacy Notice</a> &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="#">Consumer Health Data Privacy Disclosure</a> &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="#">Your Ads Privacy Choices &#9745;&#9746;</a>
+      <br><br>
+      &copy; 1996-2026, merkata.com, Inc. or its affiliates
+    </small>
+  </div>
+</footer>
+
+
+
+</body>
+</html>
