@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merkato Online Store</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- NAVBAR HEADER -->
+  <header class="navbar">
+    <div class="logo">MERKATO</div>
+    <nav class="nav-links">
+      <a href="#account" class="nav-item">Account</a>
+      <a href="#orders" class="nav-item">Orders</a>
+      
+      <!-- CART BUTTON & BADGE -->
+      <a href="cart.html" class="cart-container" id="cartBtn" aria-label="Shopping Cart">
+        <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge" id="cartCount">0</span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- PRODUCT GRID -->
+  <main class="container">
+    <h1 class="page-title">Featured Products</h1>
+    
+    <div class="product-grid">
+      <!-- Product Card 1 -->
+      <div class="product-card">
+        <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop');"></div>
+        <div class="product-info">
+          <h3>Ethiopian Premium Coffee</h3>
+          <p class="price">$15.00</p>
+          <button class="add-to-cart-btn" onclick="addToCart('Ethiopian Premium Coffee', 15.00)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product Card 2 -->
+      <div class="product-card">
+        <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop');"></div>
+        <div class="product-info">
+          <h3>Traditional Woven Scarf</h3>
+          <p class="price">$25.00</p>
+          <button class="add-to-cart-btn" onclick="addToCart('Traditional Woven Scarf', 25.00)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product Card 3 -->
+      <div class="product-card">
+        <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop');"></div>
+        <div class="product-info">
+          <h3>Organic Spice Mix</h3>
+          <p class="price">$10.00</p>
+          <button class="add-to-cart-btn" onclick="addToCart('Organic Spice Mix', 10.00)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- CART SLIDING DRAWER -->
+  <div class="cart-drawer-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h2>Your Cart</h2>
+      <button class="close-btn" id="closeCartBtn">&times;</button>
+    </div>
+    <div class="drawer-body" id="cartItemsList">
+      <p class="empty-msg">Your cart is currently empty.</p>
+    </div>
+    <div class="drawer-footer">
+      <div class="total-row">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </aside>
+</body>
+</html>
