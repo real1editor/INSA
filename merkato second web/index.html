@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merkato Wolaita – Authentic Ethiopian Crafts &amp; Goods</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- External custom styles -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome (for icons, optional but we use Lucide via CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header" class="sticky top-0 z-50 w-full bg-gray-900 dark:bg-gray-950 text-white shadow transition-shadow">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+            <div class="flex items-center h-14 sm:h-16 gap-2 sm:gap-4">
+                <!-- Mobile menu toggle -->
+                <button id="mobile-menu-toggle" class="lg:hidden p-2 hover:bg-gray-800 rounded-md" aria-label="Toggle menu">
+                    <i class="fas fa-bars w-5 h-5"></i>
+                </button>
+
+                <!-- Logo -->
+                <a href="/" class="flex items-center gap-1 shrink-0 hover:opacity-80">
+                    <span class="text-2xl font-bold text-red-600">Merkato</span>
+                </a>
+
+                <!-- Location (desktop) -->
+                <div class="hidden lg:flex flex-col items-start px-2 py-1 hover:bg-gray-800 rounded-md cursor-pointer">
+                    <span class="text-[10px] text-gray-300 leading-none">Deliver to</span>
+                    <div class="flex items-center gap-0.5 text-sm font-semibold text-white">
+                        <i class="fas fa-map-pin text-red-600 w-3.5 h-3.5"></i>
+                        <span>Wolaita Sodo, Ethiopia</span>
+                        <i class="fas fa-chevron-down w-3.5 h-3.5 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 flex items-center max-w-3xl mx-2 sm:mx-4">
+                    <div class="relative w-full flex items-center">
+                        <!-- Category dropdown (simplified) -->
+                        <button id="category-dropdown-btn" class="h-10 px-3 sm:px-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs sm:text-sm font-medium rounded-l-md flex items-center gap-1 border-r border-gray-300 dark:border-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 transition whitespace-nowrap">
+                            <span class="hidden xs:inline">All Categories</span>
+                            <span class="xs:hidden">Category</span>
+                            <i class="fas fa-chevron-down w-3.5 h-3.5"></i>
+                        </button>
+                        <input type="text" id="search-input" placeholder="Search for products, brands and more..." class="w-full h-10 px-4 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent rounded-r-md rounded-l-none placeholder:text-gray-400 dark:placeholder:text-gray-500 transition" />
+                        <button id="search-btn" class="absolute right-0 h-10 px-4 bg-red-600 hover:bg-red-700 text-white rounded-r-md flex items-center justify-center transition">
+                            <i class="fas fa-search w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right actions -->
+                <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+                    <button id="theme-toggle" class="p-2 rounded-md hover:bg-gray-800 text-gray-300 hover:text-white transition" aria-label="Toggle theme">
+                        <i class="fas fa-moon w-5 h-5"></i>
+                    </button>
+
+                    <!-- User menu -->
+                    <div class="relative" id="user-menu">
+                        <button class="flex flex-col items-start px-2 py-1 hover:bg-gray-800 rounded-md text-xs leading-tight" id="user-menu-btn">
+                            <span class="text-gray-300">Hello, John</span>
+                            <div class="flex items-center gap-0.5 font-bold text-white">
+                                <span>Account</span>
+                                <i class="fas fa-chevron-down w-3.5 h-3.5 text-gray-400 transition-transform duration-200" id="user-chevron"></i>
+                            </div>
+                        </button>
+                        <!-- dropdown (hidden) -->
+                        <div id="user-dropdown" class="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl py-1 z-50 hidden">
+                            <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                                <p class="font-semibold text-gray-900 dark:text-white">John Doe</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">john@example.com</p>
+                            </div>
+                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Your Account</a>
+                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Wishlist</a>
+                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+                            <button class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-full border-t border-gray-100 dark:border-gray-700">Sign Out</button>
+                        </div>
+                    </div>
+
+                    <!-- Orders -->
+                    <a href="/orders" class="hidden sm:flex flex-col items-start px-2 py-1 hover:bg-gray-800 rounded-md text-xs leading-tight">
+                        <span class="text-gray-300">Returns</span>
+                        <span class="font-bold text-white">&amp; Orders</span>
+                    </a>
+
+                    <!-- Cart -->
+                    <button id="cart-icon" class="relative flex items-center gap-1 px-2 py-1 hover:bg-gray-800 rounded-md group" aria-label="Cart">
+                        <div class="relative">
+                            <i class="fas fa-shopping-cart w-6 h-6 sm:w-7 sm:h-7 text-white"></i>
+                            <span id="cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-gray-900 dark:border-gray-950 hidden">0</span>
+                        </div>
+                        <span class="hidden sm:inline text-sm font-bold text-white">Cart</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile location -->
+        <div class="lg:hidden px-4 pb-2">
+            <div class="flex items-center gap-1.5 text-xs text-gray-300">
+                <i class="fas fa-map-pin text-red-600"></i>
+                <span>Deliver to <span class="font-semibold text-white">Wolaita Sodo, Ethiopia</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sub Navigation -->
+    <nav class="w-full bg-gray-800 dark:bg-gray-900 border-b border-gray-700 text-white text-sm hidden sm:block">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+            <div class="flex items-center h-10 gap-1 overflow-x-auto custom-scrollbar">
+                <a href="/" class="flex items-center gap-1 px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap font-medium">
+                    <span class="text-red-600">☰</span> All Categories
+                </a>
+                <a href="/deals" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Today's Deals</a>
+                <a href="/service" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Customer Service</a>
+                <a href="/registry" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Registry</a>
+                <a href="/gift-cards" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Gift Cards</a>
+                <a href="/sell" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Sell</a>
+                <div class="flex-1"></div>
+                <a href="/prime" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-red-300 font-medium flex items-center gap-1">Prime <i class="fas fa-chevron-right w-4 h-4"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="relative w-full overflow-hidden" id="hero">
+        <div class="relative h-48 sm:h-64 md:h-80 lg:h-[420px] bg-gradient-to-r from-red-800 via-yellow-700 to-red-900 flex items-center justify-center transition-all duration-700" id="hero-slide">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1)_0%,transparent_60%)]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.05)_0%,transparent_50%)]"></div>
+            </div>
+            <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
+                    <div class="text-center md:text-left text-white space-y-3 md:space-y-4 flex-1">
+                        <div class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold uppercase tracking-wider">Wolaita Heritage</div>
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" id="hero-title">Discover Wolaita's Rich Cultural Heritage</h1>
+                        <p class="text-base sm:text-lg md:text-xl text-white/90 max-w-md mx-auto md:mx-0" id="hero-subtitle">Authentic handmade textiles, spices &amp; local goods from Wolaita Sodo</p>
+                        <button class="mt-2 px-6 py-2.5 sm:px-8 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg hover:bg-red-700 transition transform hover:scale-105 shadow-lg shadow-red-900/30 text-sm sm:text-base">Explore Now →</button>
+                    </div>
+                    <div class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl select-none animate-bounce-slow" id="hero-emoji">🏺</div>
+                </div>
+            </div>
+            <button id="hero-prev" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm border border-white/20 transition hover:scale-110"><i class="fas fa-chevron-left w-5 h-5"></i></button>
+            <button id="hero-next" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm border border-white/20 transition hover:scale-110"><i class="fas fa-chevron-right w-5 h-5"></i></button>
+            <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2" id="hero-dots"></div>
+        </div>
+    </section>
+
+    <!-- Top Sellers Carousel -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">⭐ Top Sellers</h2>
+            <div class="flex gap-2">
+                <button id="carousel-prev" class="p-2 rounded-full border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"><i class="fas fa-chevron-left w-5 h-5"></i></button>
+                <button id="carousel-next" class="p-2 rounded-full border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"><i class="fas fa-chevron-right w-5 h-5"></i></button>
+            </div>
+        </div>
+        <div id="carousel-track" class="flex gap-4 overflow-x-auto scroll-smooth pb-4 -mx-1 px-1 custom-scrollbar" style="scrollbar-width: thin;"></div>
+    </section>
+
+    <!-- Product Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" id="product-grid-section">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white" id="grid-title">Featured Products</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" id="grid-subtitle">Handpicked just for you</p>
+            </div>
+            <a href="/products" class="text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 flex items-center gap-1 transition">View All →</a>
+        </div>
+        <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 min-w-0"></div>
+        <div id="no-results" class="hidden text-center py-12 text-gray-500 dark:text-gray-400">No products found matching your search.</div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-gray-950 text-gray-300 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+                <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+                    <a href="/" class="flex items-center gap-1 mb-4">
+                        <span class="text-2xl font-bold text-red-600">Merkato</span>
+                    </a>
+                    <p class="text-sm text-gray-400 max-w-xs">Your one-stop destination for authentic Wolaita crafts, textiles, spices, and local goods.</p>
+                    <div class="flex gap-3 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube w-5 h-5"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-3">Shop</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/deals" class="hover:text-white transition">Today's Deals</a></li>
+                        <li><a href="/gift-cards" class="hover:text-white transition">Gift Cards</a></li>
+                        <li><a href="/registry" class="hover:text-white transition">Registry</a></li>
+                        <li><a href="/sell" class="hover:text-white transition">Sell</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-semibold mb-3">Support</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/help" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="/returns" class="hover:text-white transition">Returns</a></li>
+                        <li><a href="/shipping" class="hover:text-white transition">Shipping</a></li>
+                        <li><a href="/contact" class="hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="hidden sm:block">
+                    <h3 class="text-white font-semibold mb-3">Company</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/about" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="/careers" class="hover:text-white transition">Careers</a></li>
+                        <li><a href="/press" class="hover:text-white transition">Press</a></li>
+                        <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="hidden lg:block">
+                    <h3 class="text-white font-semibold mb-3">Get in Touch</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2"><i class="fas fa-envelope w-4 h-4 text-gray-400"></i> support@merkato.et</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-phone w-4 h-4 text-gray-400"></i> +251 900 000 000</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt w-4 h-4 text-gray-400"></i> Wolaita Sodo, Ethiopia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>© 2026 Merkato Wolaita. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="/privacy" class="hover:text-gray-300 transition">Privacy Policy</a>
+                    <a href="/terms" class="hover:text-gray-300 transition">Terms of Service</a>
+                    <a href="/cookies" class="hover:text-gray-300 transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[480px] bg-white dark:bg-gray-950 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-shopping-bag w-5 h-5 text-gray-700 dark:text-gray-300"></i>
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Your Cart</h2>
+                <span class="text-sm text-gray-500 dark:text-gray-400" id="cart-item-count">(0 items)</span>
+            </div>
+            <button id="cart-close" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-700 dark:text-gray-300"></i></button>
+        </div>
+        <div class="flex flex-col h-[calc(100%-140px)]">
+            <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+            <div class="border-t border-gray-200 dark:border-gray-800 p-4 space-y-4 bg-gray-50 dark:bg-gray-900/50">
+                <div class="flex justify-between text-base font-semibold text-gray-900 dark:text-white">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Shipping and taxes calculated at checkout.</p>
+                <button id="checkout-btn" class="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold text-base rounded-lg transition hover:shadow-lg hover:shadow-red-600/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

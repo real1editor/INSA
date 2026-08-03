@@ -1,0 +1,85 @@
+/* Custom styles beyond Tailwind */
+
+/* Wolaita cultural color palette */
+:root {
+    --wolaita-red: #9B1B30;
+    --wolaita-red-light: #C42B3C;
+    --wolaita-red-dark: #7A1525;
+    --wolaita-gold: #D4A017;
+    --wolaita-gold-light: #F0C848;
+    --wolaita-gold-dark: #B8860B;
+    --wolaita-black: #1A1A1A;
+    --wolaita-black-light: #2D2D2D;
+}
+
+/* Custom scrollbar for dropdowns and carousel */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+/* Hero cultural gradient animation */
+@keyframes cultural-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Hero bounce animation */
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+.animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+}
+
+/* Cart badge pulse once */
+@keyframes pulse-once {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.animate-pulse-once {
+    animation: pulse-once 0.3s ease-out;
+}
+
+/* Dark mode overrides */
+.dark .bg-white { background-color: #1a1a2e; }
+.dark .text-gray-900 { color: #e5e7eb; }
+
+/* Product card image sizing */
+.product-image-container {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+.product-image-container img {
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+.group:hover .product-image-container img {
+    transform: scale(1.05);
+}
+
+/* Ensure grid items don't overflow */
+#product-grid > * {
+    min-width: 0;
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-width: 480px) {
+    .xs\:inline { display: inline; }
+    .xs\:hidden { display: none; }
+}
