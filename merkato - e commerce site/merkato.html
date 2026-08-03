@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merkato - Ethiopian Online Marketplace</title>
+  <link rel="stylesheet" href="merkato.css">
+</head>
+<body>
+  <!-- Skip link for keyboard users -->
+  <a id="top" class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ===== MAIN HEADER ===== -->
+  <header class="main-header" role="banner">
+    <div class="header-container">
+      <!-- Hamburger All-menu -->
+      <button type="button" class="all-menu-btn" aria-expanded="false" aria-label="Open All menu">
+        <span class="hamburger" aria-hidden="true"></span>
+        <span class="all-menu-text">All</span>
+      </button>
+
+      <!-- Brand logo -->
+      <a href="index.html" class="logo" aria-label="Merkato home">
+        <img src="../media/picture/merkato.jpe" alt="Merkato" class="brand-logo" width="100" height="65" loading="lazy">
+      </a>
+
+      <!-- Location badge -->
+      <div class="location-badge">
+        <span class="location-icon" aria-hidden="true">📍</span>
+        <div class="location-text">
+          <span class="location-label">Deliver to</span>
+          <span class="location-name">Ethiopia</span>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <form class="search-bar" action="/search" method="GET" role="search">
+        <select id="search-category" name="category" class="search-category">
+          <option value="all">All</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Fashion</option>
+          <option value="home">Home</option>
+          <option value="books">Books</option>
+        </select>
+        <input type="search" id="search-input" name="q" class="search-input" placeholder="Search Merkato" autocomplete="off">
+        <button type="submit" class="search-button" aria-label="Search">
+          <span aria-hidden="true">🔍</span>
+        </button>
+      </form>
+
+      <!-- Account & Cart -->
+      <div class="header-actions">
+        <a href="signin.html" class="account-link">
+          <span class="account-greeting">Hello, sign in</span>
+          <span class="account-label">Account &amp; Lists</span>
+        </a>
+        <a href="cart.html" class="cart-link">
+          <span class="cart-wrapper">
+            <span class="cart-icon" aria-hidden="true">🛒</span>
+            <span id="cart-count" class="cart-count">0</span>
+          </span>
+          <span class="cart-label">Cart</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SECONDARY CATEGORY NAV ===== -->
+  <nav class="category-nav" aria-label="Shop by category">
+    <ul class="category-nav-list">
+      <li><a href="#" class="category-nav-link active">All</a></li>
+      <li><a href="#" class="category-nav-link">Electronics</a></li>
+      <li><a href="#" class="category-nav-link">Fashion</a></li>
+      <li><a href="#" class="category-nav-link">Home</a></li>
+      <li><a href="#" class="category-nav-link">Sports</a></li>
+      <li><a href="#" class="category-nav-link">Books</a></li>
+      <li><a href="#" class="category-nav-link">Toys &amp; Games</a></li>
+      <li><a href="#" class="category-nav-link">Beauty</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content" class="main-content">
+    <!-- ===== HERO BANNER ===== -->
+    <section class="hero-banner" aria-label="Featured promotions">
+      <div class="hero-content">
+        <h1 class="hero-headline">Grand Merkato Savings</h1>
+        <p class="hero-sub">Find deals on electronics, fashion, home goods, and Ethiopian crafts.</p>
+        <a href="/deals" class="hero-cta btn">Shop now</a>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCT GRID ===== -->
+    <section class="product-section">
+      <h2 class="section-title">Featured products</h2>
+
+      <ul id="product-grid" class="product-grid">
+        <li class="product-card" data-category="electronics">
+          <div class="card-image">
+            <img src="https://via.placeholder.com/300x300/e0e0e0/757575?text=Gaming+Gear" alt="Gaming Gear Pro" loading="lazy">
+          </div>
+          <h3 class="card-title">Gaming Gear Pro Controller</h3>
+          <div class="card-rating" aria-label="4.5 out of 5 stars">
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star" aria-hidden="true">★</span>
+          </div>
+          <div class="card-price">
+            <span class="price-current">$49.99</span>
+            <span class="price-list">$79.99</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-cart" aria-label="Add Gaming Gear Pro to cart">
+            Add to Cart
+          </button>
+        </li>
+
+        <li class="product-card" data-category="fashion">
+          <div class="card-badge best-seller">Best Seller</div>
+          <div class="card-image">
+            <img src="https://via.placeholder.com/300x300/e0e0e0/757575?text=Student+ Essentials" alt="Student Essentials" loading="lazy">
+          </div>
+          <h3 class="card-title">Student Essentials Kit</h3>
+          <div class="card-rating" aria-label="4 out of 5 stars">
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star" aria-hidden="true">★</span>
+          </div>
+          <div class="card-price">
+            <span class="price-current">$29.99</span>
+            <span class="price-list">$49.99</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-cart" aria-label="Add Student Essentials Kit to cart">
+            Add to Cart
+          </button>
+        </li>
+
+        <li class="product-card" data-category="electronics">
+          <div class="card-badge new-badge">New</div>
+          <div class="card-image">
+            <img src="https://via.placeholder.com/300x300/e0e0e0/757575?text=Headphones+X200" alt="Wireless Headphones X200" loading="lazy">
+          </div>
+          <h3 class="card-title">Wireless Headphones X200</h3>
+          <div class="card-rating" aria-label="4.7 out of 5 stars">
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star half" aria-hidden="true">★</span>
+          </div>
+          <div class="card-price">
+            <span class="price-current">$79.99</span>
+            <span class="price-list">$119.99</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-cart" aria-label="Add Wireless Headphones X200 to cart">
+            Add to Cart
+          </button>
+        </li>
+
+        <li class="product-card" data-category="electronics">
+          <div class="card-image">
+            <img src="https://via.placeholder.com/300x300/e0e0e0/757575?text=Smart+Watch+Series+5" alt="Smart Watch Series 5" loading="lazy">
+          </div>
+          <h3 class="card-title">Smart Watch Series 5</h3>
+          <div class="card-rating" aria-label="4.3 out of 5 stars">
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star" aria-hidden="true">★</span>
+            <span class="star" aria-hidden="true">★</span>
+          </div>
+          <div class="card-price">
+            <span class="price-current">$129.99</span>
+            <span class="price-list">$179.99</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-cart" aria-label="Add Smart Watch Series 5 to cart">
+            Add to Cart
+          </button>
+        </li>
+
+        <li class="product-card" data-category="home">
+          <div class="card-badge limited-deal">Limited Deal</div>
+          <div class="card-image">
+            <img src="https://via.placeholder.com/300x300/e0e0e0/757575?text=Coffee+Maker" alt="Premium Coffee Maker" loading="lazy">
+          </div>
+          <h3 class="card-title">Premium Coffee Maker</h3>
+          <div class="card-rating" aria-label="4.6 out of 5 stars">
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star half" aria-hidden="true">★</span>
+          </div>
+          <div class="card-price">
+            <span class="price-current">$54.99</span>
+            <span class="price-list">$89.99</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-cart" aria-label="Add Premium Coffee Maker to cart">
+            Add to Cart
+          </button>
+        </li>
+
+        <li class="product-card" data-category="fashion">
+          <div class="card-image">
+            <img src="https://via.placeholder.com/300x300/e0e0e0/757575?text=Fitness+Tracker" alt="Fitness Tracker Band" loading="lazy">
+          </div>
+          <h3 class="card-title">Fitness Tracker Band</h3>
+          <div class="card-rating" aria-label="4.2 out of 5 stars">
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star filled" aria-hidden="true">★</span>
+            <span class="star" aria-hidden="true">★</span>
+            <span class="star" aria-hidden="true">★</span>
+          </div>
+          <div class="card-price">
+            <span class="price-current">$39.99</span>
+            <span class="price-list">$59.99</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-cart" aria-label="Add Fitness Tracker Band to cart">
+            Add to Cart
+          </button>
+        </li>
+
+        <li class="product-card no-results" id="no-results">
+          <p>No products match your search.</p>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="main-footer" role="contentinfo">
+    <a href="#top" class="back-to-top">Back to top</a>
+    <div class="footer-links">
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">About</a>
+      </nav>
+      <p class="copyright">&copy; 1996-2026, merkato.com, Inc.</p>
+    </div>
+  </footer>
+
+  <script src="merkato.js"></script>
+</body>
+</html>
