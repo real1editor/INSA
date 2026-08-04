@@ -707,6 +707,11 @@ document.addEventListener('DOMContentLoaded', function() {
         openCategoriesDrawer();
     });
 
+    document.getElementById('category-dropdown-btn')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        openCategoriesDrawer();
+    });
+
     document.getElementById('nav-deals-btn')?.addEventListener('click', (e) => {
         e.preventDefault();
         showToast('Today\'s Deals feature coming soon!');
@@ -750,10 +755,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Category filter links
+    const categoryBtn = document.getElementById('category-dropdown-btn');
     document.querySelectorAll('.category-filter-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const category = link.dataset.category;
+            closeCategoriesDrawer();
+            if (categoryBtn) {
+                const label = category === 'all' ? 'All Categories' : category;
+                categoryBtn.querySelector('span').textContent = label;
+            }
             renderProductGrid(category);
             document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
         });
@@ -778,20 +789,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 showToast(`Delivery set to ${loc}`);
                 closeLocationModal();
-            }
-        });
-    });
-
-    // Category selection
-    document.querySelectorAll('.cat-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const cat = link.dataset.category;
-            closeCategoriesDrawer();
-            if (cat === 'All') {
-                renderProductGrid();
-            } else {
-                renderProductGrid(cat);
             }
         });
     });
@@ -823,4 +820,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial cart UI
     updateCartUI();
+
+    // Expose crucial variables and functions to window for the ES module agent
+    window.products = products;
+    window.cart = cart;
+    window.addToCart = addToCart;
+    window.updateCartUI = updateCartUI;
+    window.openCart = openCart;
+    window.showToast = showToast;
 });
