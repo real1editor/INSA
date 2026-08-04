@@ -37,7 +37,9 @@ function initDOMElements() {
  * Handle API Key initialization and persistence
  */
 function initApiKey() {
-  const savedKey = localStorage.getItem('GEMINI_API_KEY');
+  const configKey = window.MERKATO_CONFIG?.GEMINI_API_KEY;
+  const savedKey = configKey || localStorage.getItem('GEMINI_API_KEY');
+  
   if (savedKey) {
     window.GEMINI_API_KEY = savedKey;
     if (apiKeyInput) apiKeyInput.value = savedKey;
@@ -159,6 +161,16 @@ async function handleMerkatoUserMessage() {
   const text = chatInput.value.trim();
   if (!text) return;
 
+  const apiKey = window.MERKATO_CONFIG?.GEMINI_API_KEY || window.GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
+  if (!apiKey) {
+    appendMessageBubble('model', 'Please set your Gemini API key in the chat settings above to activate the assistant.');
+    if (chatStatus) {
+      chatStatus.textContent = '⚠️ API Key not configured';
+      chatStatus.classList.remove('hidden');
+    }
+    return;
+  }
+
   // Render User Message UI
   appendMessageBubble('user', text);
   chatInput.value = '';
@@ -201,7 +213,11 @@ async function handleMerkatoUserMessage() {
   } catch (error) {
     setStatus(null);
     console.error('Agent Turn Error:', error);
-    appendErrorBubble(`Error: ${error.message}`);
+    if (error.message === 'API_KEY_MISSING') {
+      appendErrorBubble('Please set your Gemini API key to activate the assistant.');
+    } else {
+      appendErrorBubble(`Error: ${error.message}`);
+    }
   }
 }
 

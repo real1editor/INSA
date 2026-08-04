@@ -6,9 +6,9 @@
 
 export async function runAgentTurn({ systemInstruction, messages, tools, toolHandlers, onStatusUpdate }) {
   // Retrieve API Key from window or localStorage
-  const apiKey = window.GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
+  const apiKey = (typeof window !== 'undefined' && (window.MERKATO_CONFIG?.GEMINI_API_KEY || window.GEMINI_API_KEY)) || (typeof localStorage !== 'undefined' ? localStorage.getItem('GEMINI_API_KEY') : null);
   if (!apiKey) {
-    throw new Error('Gemini API Key is missing. Please set it in the chat interface or window.GEMINI_API_KEY.');
+    throw new Error('API_KEY_MISSING');
   }
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
