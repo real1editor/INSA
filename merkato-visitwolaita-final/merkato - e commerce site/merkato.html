@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Merkato Wolaita – Authentic Ethiopian Crafts &amp; Goods</title>
     <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {5
+        darkMode: 'class',
+      }
+    </script>
     <!-- External custom styles -->
     <link rel="stylesheet" href="merkato.css" />
     <!-- Font Awesome (for icons, optional but we use Lucide via CDN) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen">
     <!-- Header -->
-    <header id="main-header" class="sticky top-0 z-50 w-full bg-gray-900 dark:bg-gray-950 text-white shadow transition-shadow">
+    <header id="main-header" class="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow transition-shadow border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
             <div class="flex items-center h-14 sm:h-16 gap-2 sm:gap-4">
                 <!-- Mobile menu toggle -->
-                <button id="mobile-menu-toggle" class="lg:hidden p-2 hover:bg-gray-800 rounded-md" aria-label="Toggle menu">
+                <button id="mobile-menu-toggle" class="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md text-gray-900 dark:text-white" aria-label="Toggle menu">
                     <i class="fas fa-bars w-5 h-5"></i>
                 </button>
 
@@ -27,14 +32,14 @@
                 </a>
 
                 <!-- Location (desktop) -->
-                <div class="hidden lg:flex flex-col items-start px-2 py-1 hover:bg-gray-800 rounded-md cursor-pointer">
-                    <span class="text-[10px] text-gray-300 leading-none">Deliver to</span>
-                    <div class="flex items-center gap-0.5 text-sm font-semibold text-white">
+                <a href="#" id="nav-location-btn" class="hidden lg:flex flex-col items-start px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md cursor-pointer">
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400 leading-none">Deliver to</span>
+                    <div class="flex items-center gap-0.5 text-sm font-semibold text-gray-900 dark:text-white">
                         <i class="fas fa-map-pin text-red-600 w-3.5 h-3.5"></i>
                         <span>Wolaita Sodo, Ethiopia</span>
-                        <i class="fas fa-chevron-down w-3.5 h-3.5 text-gray-400"></i>
+                        <i class="fas fa-chevron-down w-3.5 h-3.5 text-gray-400 dark:text-gray-500"></i>
                     </div>
-                </div>
+                </a>
 
                 <!-- Search Bar -->
                 <div class="flex-1 flex items-center max-w-3xl mx-2 sm:mx-4">
@@ -46,7 +51,7 @@
                             <i class="fas fa-chevron-down w-3.5 h-3.5"></i>
                         </button>
                         <input type="text" id="search-input" placeholder="Search for products, brands and more..." class="w-full h-10 px-4 py-2 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent rounded-r-md rounded-l-none placeholder:text-gray-400 dark:placeholder:text-gray-500 transition" />
-                        <button id="search-btn" class="absolute right-0 h-10 px-4 bg-red-600 hover:bg-red-700 text-white rounded-r-md flex items-center justify-center transition">
+                        <button id="search-btn" class="absolute right-0 h-10 px-4 bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-800 hover:to-amber-700 text-white rounded-r-md flex items-center justify-center transition">
                             <i class="fas fa-search w-5 h-5"></i>
                         </button>
                     </div>
@@ -54,72 +59,73 @@
 
                 <!-- Right actions -->
                 <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-                    <button id="theme-toggle" class="p-2 rounded-md hover:bg-gray-800 text-gray-300 hover:text-white transition" aria-label="Toggle theme">
+                    <button id="theme-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition" aria-label="Toggle theme">
                         <i class="fas fa-moon w-5 h-5"></i>
+                        <i class="fas fa-sun w-5 h-5 hidden"></i>
                     </button>
 
                     <!-- User menu -->
                     <div class="relative" id="user-menu">
-                        <button class="flex flex-col items-start px-2 py-1 hover:bg-gray-800 rounded-md text-xs leading-tight" id="user-menu-btn">
-                            <span class="text-gray-300">Hello, John</span>
-                            <div class="flex items-center gap-0.5 font-bold text-white">
+                        <button class="flex flex-col items-start px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md text-xs leading-tight" id="user-menu-btn">
+                            <span class="text-gray-500 dark:text-gray-400">Hello, John</span>
+                            <div class="flex items-center gap-0.5 font-bold text-gray-900 dark:text-white">
                                 <span>Account</span>
-                                <i class="fas fa-chevron-down w-3.5 h-3.5 text-gray-400 transition-transform duration-200" id="user-chevron"></i>
+                                <i class="fas fa-chevron-down w-3.5 h-3.5 text-gray-400 dark:text-gray-500 transition-transform duration-200" id="user-chevron"></i>
                             </div>
                         </button>
                         <!-- dropdown (hidden) -->
                         <div id="user-dropdown" class="absolute right-0 top-full mt-1 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl py-1 z-50 hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                                 <p class="font-semibold text-gray-900 dark:text-white">John Doe</p>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">john@example.com</p>
                             </div>
                             <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Your Account</a>
                             <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Wishlist</a>
                             <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
-                            <button class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-full border-t border-gray-100 dark:border-gray-700">Sign Out</button>
+                            <button class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 w-full border-t border-gray-200 dark:border-gray-700">Sign Out</button>
                         </div>
                     </div>
 
                     <!-- Orders -->
-                    <a href="/orders" class="hidden sm:flex flex-col items-start px-2 py-1 hover:bg-gray-800 rounded-md text-xs leading-tight">
-                        <span class="text-gray-300">Returns</span>
-                        <span class="font-bold text-white">&amp; Orders</span>
+                    <a href="#" id="nav-orders-btn" class="hidden sm:flex flex-col items-start px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md text-xs leading-tight">
+                        <span class="text-gray-500 dark:text-gray-400">Returns</span>
+                        <span class="font-bold text-gray-900 dark:text-white">&amp; Orders</span>
                     </a>
 
                     <!-- Cart -->
-                    <button id="cart-icon" class="relative flex items-center gap-1 px-2 py-1 hover:bg-gray-800 rounded-md group" aria-label="Cart">
+                    <button id="cart-icon" class="relative flex items-center gap-1 px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md group" aria-label="Cart">
                         <div class="relative">
-                            <i class="fas fa-shopping-cart w-6 h-6 sm:w-7 sm:h-7 text-white"></i>
-                            <span id="cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-gray-900 dark:border-gray-950 hidden">0</span>
+                            <i class="fas fa-shopping-cart w-6 h-6 sm:w-7 sm:h-7 text-gray-700 dark:text-gray-200"></i>
+                            <span id="cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-gray-100 dark:border-gray-900 hidden">0</span>
                         </div>
-                        <span class="hidden sm:inline text-sm font-bold text-white">Cart</span>
+                        <span class="hidden sm:inline text-sm font-bold text-gray-900 dark:text-white">Cart</span>
                     </button>
                 </div>
             </div>
         </div>
         <!-- Mobile location -->
         <div class="lg:hidden px-4 pb-2">
-            <div class="flex items-center gap-1.5 text-xs text-gray-300">
+            <div class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
                 <i class="fas fa-map-pin text-red-600"></i>
-                <span>Deliver to <span class="font-semibold text-white">Wolaita Sodo, Ethiopia</span></span>
+                <span>Deliver to <span class="font-semibold text-gray-900 dark:text-white">Wolaita Sodo, Ethiopia</span></span>
             </div>
         </div>
     </header>
 
     <!-- Sub Navigation -->
-    <nav class="w-full bg-gray-800 dark:bg-gray-900 border-b border-gray-700 text-white text-sm hidden sm:block">
+    <nav class="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 text-sm hidden sm:block">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
             <div class="flex items-center h-10 gap-1 overflow-x-auto custom-scrollbar">
-                <a href="/" class="flex items-center gap-1 px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap font-medium">
+                <a href="#" id="nav-all-categories-btn" class="flex items-center gap-1 px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     <span class="text-red-600">☰</span> All Categories
                 </a>
-                <a href="/deals" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Today's Deals</a>
-                <a href="/service" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Customer Service</a>
-                <a href="/registry" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Registry</a>
-                <a href="/gift-cards" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Gift Cards</a>
-                <a href="/sell" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-gray-200 hover:text-white">Sell</a>
+                <a href="#" id="nav-deals-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Today's Deals</a>
+                <a href="#" id="nav-service-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Customer Service</a>
+                <a href="#" id="nav-registry-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Registry</a>
+                <a href="#" id="nav-gift-cards-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Gift Cards</a>
+                <a href="#" id="nav-sell-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Sell</a>
                 <div class="flex-1"></div>
-                <a href="/prime" class="px-3 py-1.5 hover:bg-gray-700 rounded-md whitespace-nowrap text-red-300 font-medium flex items-center gap-1">Prime <i class="fas fa-chevron-right w-4 h-4"></i></a>
+                <a href="#" id="nav-prime-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-red-600 font-medium flex items-center gap-1 transition">Prime <i class="fas fa-chevron-right w-4 h-4"></i></a>
             </div>
         </div>
     </nav>
@@ -135,9 +141,9 @@
                 <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
                     <div class="text-center md:text-left text-white space-y-3 md:space-y-4 flex-1">
                         <div class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold uppercase tracking-wider">Wolaita Heritage</div>
-                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" id="hero-title">Discover Wolaita's Rich Cultural Heritage</h1>
+                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white" id="hero-title">Discover Wolaita's Rich Cultural Heritage</h1>
                         <p class="text-base sm:text-lg md:text-xl text-white/90 max-w-md mx-auto md:mx-0" id="hero-subtitle">Authentic handmade textiles, spices &amp; local goods from Wolaita Sodo</p>
-                        <button class="mt-2 px-6 py-2.5 sm:px-8 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg hover:bg-red-700 transition transform hover:scale-105 shadow-lg shadow-red-900/30 text-sm sm:text-base">Explore Now →</button>
+                        <button id="hero-cta-btn" class="mt-2 px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-800 hover:to-amber-700 text-white font-semibold rounded-lg transition transform hover:scale-105 shadow-lg shadow-red-900/30 text-sm sm:text-base">Explore Now →</button>
                     </div>
                     <div class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl select-none animate-bounce-slow" id="hero-emoji">🏺</div>
                 </div>
@@ -151,7 +157,7 @@
     <!-- Top Sellers Carousel -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">⭐ Top Sellers</h2>
+            <h2 class="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-800 via-red-600 to-amber-600 border-l-4 border-amber-500 pl-3">⭐ Top Sellers</h2>
             <div class="flex gap-2">
                 <button id="carousel-prev" class="p-2 rounded-full border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"><i class="fas fa-chevron-left w-5 h-5"></i></button>
                 <button id="carousel-next" class="p-2 rounded-full border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"><i class="fas fa-chevron-right w-5 h-5"></i></button>
@@ -161,63 +167,63 @@
     </section>
 
     <!-- Product Grid -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" id="product-grid-section">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" id="products-section">
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white" id="grid-title">Featured Products</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" id="grid-subtitle">Handpicked just for you</p>
+                <h2 class="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-800 via-red-600 to-amber-600 border-l-4 border-amber-500 pl-3" id="grid-title">Featured Products</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1" id="grid-subtitle">Handpicked just for you</p>
             </div>
-            <a href="/products" class="text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 flex items-center gap-1 transition">View All →</a>
+            <a href="#products-section" id="view-all-products-btn" class="text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 flex items-center gap-1 transition">View All →</a>
         </div>
         <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 min-w-0"></div>
         <div id="no-results" class="hidden text-center py-12 text-gray-500 dark:text-gray-400">No products found matching your search.</div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 dark:bg-gray-950 text-gray-300 border-t border-gray-800">
+    <footer class="bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
                 <div class="col-span-2 sm:col-span-3 lg:col-span-1">
                     <a href="/" class="flex items-center gap-1 mb-4">
                         <span class="text-2xl font-bold text-red-600">Merkato</span>
                     </a>
-                    <p class="text-sm text-gray-400 max-w-xs">Your one-stop destination for authentic Wolaita crafts, textiles, spices, and local goods.</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 max-w-xs">Your one-stop destination for authentic Wolaita crafts, textiles, spices, and local goods.</p>
                     <div class="flex gap-3 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook w-5 h-5"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter w-5 h-5"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram w-5 h-5"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube w-5 h-5"></i></a>
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition"><i class="fab fa-facebook w-5 h-5"></i></a>
+                        <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition"><i class="fab fa-twitter w-5 h-5"></i></a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition"><i class="fab fa-instagram w-5 h-5"></i></a>
+                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition"><i class="fab fa-youtube w-5 h-5"></i></a>
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-white font-semibold mb-3">Shop</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-3">Shop</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="/deals" class="hover:text-white transition">Today's Deals</a></li>
-                        <li><a href="/gift-cards" class="hover:text-white transition">Gift Cards</a></li>
-                        <li><a href="/registry" class="hover:text-white transition">Registry</a></li>
-                        <li><a href="/sell" class="hover:text-white transition">Sell</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Today's Deals" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Today's Deals</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Gift Cards" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Gift Cards</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Registry" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Registry</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Sell" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Sell</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-white font-semibold mb-3">Support</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-3">Support</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="/help" class="hover:text-white transition">Help Center</a></li>
-                        <li><a href="/returns" class="hover:text-white transition">Returns</a></li>
-                        <li><a href="/shipping" class="hover:text-white transition">Shipping</a></li>
-                        <li><a href="/contact" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="javascript:void(0);" data-footer-modal="help" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Help Center</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Returns" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Returns</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Shipping" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Shipping</a></li>
+                        <li><a href="javascript:void(0);" data-footer-modal="contact" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="hidden sm:block">
-                    <h3 class="text-white font-semibold mb-3">Company</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-3">Company</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="/about" class="hover:text-white transition">About Us</a></li>
-                        <li><a href="/careers" class="hover:text-white transition">Careers</a></li>
-                        <li><a href="/press" class="hover:text-white transition">Press</a></li>
-                        <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="javascript:void(0);" data-footer-modal="about" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">About Us</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Careers" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Careers</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Press" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Press</a></li>
+                        <li><a href="javascript:void(0);" data-footer-toast="Blog" class="text-gray-600 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 transition">Blog</a></li>
                     </ul>
                 </div>
                 <div class="hidden lg:block">
-                    <h3 class="text-white font-semibold mb-3">Get in Touch</h3>
+                    <h3 class="text-gray-900 dark:text-white font-semibold mb-3">Get in Touch</h3>
                     <ul class="space-y-2 text-sm">
                         <li class="flex items-center gap-2"><i class="fas fa-envelope w-4 h-4 text-gray-400"></i> support@merkato.et</li>
                         <li class="flex items-center gap-2"><i class="fas fa-phone w-4 h-4 text-gray-400"></i> +251 900 000 000</li>
@@ -225,40 +231,202 @@
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-6 text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="border-t border-gray-200 dark:border-gray-800 mt-8 pt-6 text-xs text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p>© 2026 Merkato Wolaita. All rights reserved.</p>
                 <div class="flex gap-6">
-                    <a href="/privacy" class="hover:text-gray-300 transition">Privacy Policy</a>
-                    <a href="/terms" class="hover:text-gray-300 transition">Terms of Service</a>
-                    <a href="/cookies" class="hover:text-gray-300 transition">Cookie Policy</a>
+                    <a href="javascript:void(0);" data-footer-toast="Privacy Policy" class="hover:text-gray-700 dark:hover:text-gray-300 transition">Privacy Policy</a>
+                    <a href="javascript:void(0);" data-footer-toast="Terms of Service" class="hover:text-gray-700 dark:hover:text-gray-300 transition">Terms of Service</a>
+                    <a href="javascript:void(0);" data-footer-toast="Cookie Policy" class="hover:text-gray-700 dark:hover:text-gray-300 transition">Cookie Policy</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Footer Modals -->
+    <div id="about-modal" class="fixed inset-0 z-50 hidden">
+        <div class="footer-overlay fixed inset-0 bg-black/50 transition-opacity opacity-0"></div>
+        <div class="footer-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">About Merkato & Visit Wolaita</h2>
+                <button class="footer-close p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
+            </div>
+            <div class="p-4 space-y-4 overflow-y-auto h-[calc(100%-64px)] text-sm text-gray-600 dark:text-gray-300">
+                <p>Merkato Wolaita is your one-stop destination for authentic Wolaita crafts, textiles, spices, and local goods. We connect local artisans with the world, preserving Wolaita's rich cultural heritage.</p>
+                <p>Our marketplace celebrates the vibrant traditions of Wolaita Sodo—from handwoven Kuta cloth and Buluko dresses to artisan clay pots and pure wild honey.</p>
+                <p class="font-semibold text-gray-900 dark:text-white">Our Vision</p>
+                <p>To empower local communities by providing a modern, trusted platform that honors tradition while embracing technology.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="fixed inset-0 z-50 hidden">
+        <div class="footer-overlay fixed inset-0 bg-black/50 transition-opacity opacity-0"></div>
+        <div class="footer-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Contact & Support</h2>
+                <button class="footer-close p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
+            </div>
+            <div class="p-4 space-y-4 overflow-y-auto h-[calc(100%-64px)] text-sm text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-envelope w-5 h-5 text-gray-400 mt-0.5"></i>
+                    <div>
+                        <p class="font-medium text-gray-900 dark:text-white">Email</p>
+                        <p>support@merkato.et</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-phone w-5 h-5 text-gray-400 mt-0.5"></i>
+                    <div>
+                        <p class="font-medium text-gray-900 dark:text-white">Phone</p>
+                        <p>+251 900 000 000</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-map-marker-alt w-5 h-5 text-gray-400 mt-0.5"></i>
+                    <div>
+                        <p class="font-medium text-gray-900 dark:text-white">Location</p>
+                        <p>Wolaita Sodo, Ethiopia</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                    <p class="font-medium text-gray-900 dark:text-white mb-2">Send us a message</p>
+                    <textarea class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm" rows="4" placeholder="How can we help you?"></textarea>
+                    <button class="mt-2 px-4 py-2 bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-800 hover:to-amber-700 text-white font-semibold rounded-lg text-sm transition">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-modal" class="fixed inset-0 z-50 hidden">
+        <div class="footer-overlay fixed inset-0 bg-black/50 transition-opacity opacity-0"></div>
+        <div class="footer-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Help Center</h2>
+                <button class="footer-close p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto h-[calc(100%-64px)] text-sm text-gray-600 dark:text-gray-300">
+                <div class="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <p class="font-medium text-gray-900 dark:text-white">How do I place an order?</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Browse products, add items to your cart, and proceed to checkout. We accept mobile money and cash on delivery.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <p class="font-medium text-gray-900 dark:text-white">What are the delivery options?</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">We deliver nationwide across Ethiopia. FREE delivery on orders over $200 within Wolaita Sodo.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <p class="font-medium text-gray-900 dark:text-white">How can I return an item?</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Contact our support team within 7 days of delivery. Returns are accepted for unused items in original packaging.</p>
+                </div>
+                <div class="p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <p class="font-medium text-gray-900 dark:text-white">Are my payments secure?</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Yes, we use encrypted payment gateways and never store your card details.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Cart Drawer -->
     <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity"></div>
-    <div id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[480px] bg-white dark:bg-gray-950 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full">
-        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+    <div id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full sm:w-[400px] md:w-[480px] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 dark:border-gray-800">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
-                <i class="fas fa-shopping-bag w-5 h-5 text-gray-700 dark:text-gray-300"></i>
+                <i class="fas fa-shopping-bag w-5 h-5 text-gray-500 dark:text-gray-400"></i>
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Your Cart</h2>
                 <span class="text-sm text-gray-500 dark:text-gray-400" id="cart-item-count">(0 items)</span>
             </div>
-            <button id="cart-close" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-700 dark:text-gray-300"></i></button>
+            <button id="cart-close" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
         </div>
         <div class="flex flex-col h-[calc(100%-140px)]">
             <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
-            <div class="border-t border-gray-200 dark:border-gray-800 p-4 space-y-4 bg-gray-50 dark:bg-gray-900/50">
+            <div class="border-t border-gray-200 dark:border-gray-700 p-4 space-y-4 bg-gray-50 dark:bg-gray-800">
                 <div class="flex justify-between text-base font-semibold text-gray-900 dark:text-white">
                     <span>Subtotal</span>
                     <span id="cart-subtotal">$0.00</span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Shipping and taxes calculated at checkout.</p>
-                <button id="checkout-btn" class="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold text-base rounded-lg transition hover:shadow-lg hover:shadow-red-600/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">Proceed to Checkout</button>
+                <button id="checkout-btn" class="w-full py-3 px-4 bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-800 hover:to-amber-700 text-white font-bold text-base rounded-lg transition hover:shadow-lg hover:shadow-red-600/30 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">Proceed to Checkout</button>
             </div>
         </div>
     </div>
+
+    <!-- Orders Modal -->
+    <div id="orders-modal" class="fixed inset-0 z-50 hidden">
+        <div class="orders-overlay fixed inset-0 bg-black/50 transition-opacity opacity-0"></div>
+        <div class="slide-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[480px] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Your Recent Orders</h2>
+                <button id="orders-close" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto h-[calc(100%-64px)]" id="orders-list"></div>
+        </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div id="location-modal" class="fixed inset-0 z-50 hidden">
+        <div class="location-overlay fixed inset-0 bg-black/50 transition-opacity opacity-0"></div>
+        <div class="slide-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Select Delivery Location</h2>
+                <button id="location-close" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto h-[calc(100%-64px)]">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Choose a delivery address</p>
+                <button class="location-option w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition" data-location="Wolaita Sodo, Ethiopia">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-map-marker-alt text-red-600 w-5 h-5"></i>
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white">Wolaita Sodo, Ethiopia</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Default address</p>
+                        </div>
+                    </div>
+                </button>
+                <button class="location-option w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition" data-location="Addis Ababa, Ethiopia">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-map-marker-alt text-gray-400 w-5 h-5"></i>
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white">Addis Ababa, Ethiopia</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Bole, Addis Ababa</p>
+                        </div>
+                    </div>
+                </button>
+                <button class="location-option w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition" data-location="Hawassa, Ethiopia">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-map-marker-alt text-gray-400 w-5 h-5"></i>
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white">Hawassa, Ethiopia</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Sidama Region</p>
+                        </div>
+                    </div>
+                </button>
+                <button class="location-option w-full text-left p-3 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 hover:border-red-500 dark:hover:border-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition" data-location="custom">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-plus-circle text-gray-400 w-5 h-5"></i>
+                        <p class="font-medium text-gray-900 dark:text-white">Add a new address</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Drawer -->
+    <div id="categories-drawer" class="fixed top-0 left-0 z-50 h-full w-72 bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out -translate-x-full border-r border-gray-200 dark:border-gray-800">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <span class="text-xl font-bold text-red-600">Categories</span>
+            <button id="categories-close" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"><i class="fas fa-times w-5 h-5 text-gray-500 dark:text-gray-400"></i></button>
+        </div>
+        <nav class="p-4 space-y-2 overflow-y-auto h-[calc(100%-60px)]">
+            <a href="#" class="category-filter-link block py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 rounded-md text-gray-700 dark:text-gray-300 transition" data-category="all">☰ All Categories</a>
+            <a href="#" class="category-filter-link block py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 rounded-md text-gray-700 dark:text-gray-300 transition" data-category="Traditional Clothing">Traditional Clothing</a>
+            <a href="#" class="category-filter-link block py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 rounded-md text-gray-700 dark:text-gray-300 transition" data-category="Local Crafts">Local Crafts</a>
+            <a href="#" class="category-filter-link block py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 rounded-md text-gray-700 dark:text-gray-300 transition" data-category="Food & Spices">Food & Spices</a>
+            <a href="#" class="category-filter-link block py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 rounded-md text-gray-700 dark:text-gray-300 transition" data-category="Household Artifacts">Household Artifacts</a>
+            <a href="#" class="category-filter-link block py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-amber-600 dark:hover:text-amber-400 rounded-md text-gray-700 dark:text-gray-300 transition" data-category="Prime">Prime Eligible</a>
+        </nav>
+    </div>
+    <div id="categories-overlay" class="fixed inset-0 z-40 bg-black/50 hidden"></div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-[60] flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- External JavaScript -->
     <script src="merkato.js"></script>

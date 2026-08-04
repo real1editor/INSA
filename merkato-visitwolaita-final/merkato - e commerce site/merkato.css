@@ -54,9 +54,13 @@
     animation: pulse-once 0.3s ease-out;
 }
 
-/* Dark mode overrides */
-.dark .bg-white { background-color: #1a1a2e; }
-.dark .text-gray-900 { color: #e5e7eb; }
+/* Branded heading fallbacks for gradient text */
+h2, #grid-title {
+    color: #991b1b;
+}
+.dark h2, .dark #grid-title {
+    color: #f59e0b;
+}
 
 /* Product card image sizing */
 .product-image-container {
@@ -82,4 +86,60 @@
 @media (max-width: 480px) {
     .xs\:inline { display: inline; }
     .xs\:hidden { display: none; }
+}
+
+/* Modal & Drawer Styles */
+.slide-panel {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+.slide-panel.active {
+    transform: translateX(0);
+}
+.slide-panel-left {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+.slide-panel-left.active {
+    transform: translateX(0);
+}
+.modal-overlay, .orders-overlay, .location-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+.modal-overlay.active, .orders-overlay.active, .location-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Toast Notifications */
+#toast-container {
+    z-index: 60;
+}
+.toast {
+    pointer-events: auto;
+    transform: translateX(120%);
+    transition: transform 0.3s ease-in-out;
+}
+.toast.show {
+    transform: translateX(0);
+}
+
+/* Footer Modal & Panel Styles */
+.footer-panel {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+.footer-panel.active {
+    transform: translateX(0);
+}
+.footer-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+.footer-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
 }
