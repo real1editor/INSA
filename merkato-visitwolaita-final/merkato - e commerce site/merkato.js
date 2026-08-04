@@ -49,6 +49,7 @@ function updateQuantity(productId, delta) {
     const newQty = item.quantity + delta;
     if (newQty <= 0) {
         cart = cart.filter(i => i.id !== productId);
+        window.cart = cart;
     } else {
         item.quantity = newQty;
     }
@@ -57,11 +58,13 @@ function updateQuantity(productId, delta) {
 
 function removeFromCart(productId) {
     cart = cart.filter(i => i.id !== productId);
+    window.cart = cart;
     updateCartUI();
 }
 
 function clearCart() {
     cart = [];
+    window.cart = cart;
     updateCartUI();
 }
 
