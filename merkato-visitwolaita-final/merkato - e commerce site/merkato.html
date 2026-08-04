@@ -113,19 +113,22 @@
     </header>
 
     <!-- Sub Navigation -->
-    <nav class="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 text-sm hidden sm:block">
-        <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
-            <div class="flex items-center h-10 gap-1 overflow-x-auto custom-scrollbar">
-                <a href="#" id="nav-all-categories-btn" class="flex items-center gap-1 px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    <span class="text-red-600">☰</span> All Categories
-                </a>
-                <a href="#" id="nav-deals-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Today's Deals</a>
-                <a href="#" id="nav-service-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Customer Service</a>
-                <a href="#" id="nav-registry-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Registry</a>
-                <a href="#" id="nav-gift-cards-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Gift Cards</a>
-                <a href="#" id="nav-sell-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 transition">Sell</a>
-                <div class="flex-1"></div>
-                <a href="#" id="nav-prime-btn" class="px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md whitespace-nowrap text-red-600 font-medium flex items-center gap-1 transition">Prime <i class="fas fa-chevron-right w-4 h-4"></i></a>
+    <nav class="bg-slate-900 text-white text-sm px-4 py-2 flex items-center justify-between overflow-x-auto whitespace-nowrap border-t border-slate-800 scrollbar-none">
+        <div class="flex items-center space-x-6">
+            <!-- All Categories Button -->
+            <button id="nav-all-categories-btn" class="flex items-center gap-2 font-bold hover:text-amber-400 transition-colors py-1 px-2 rounded focus:outline-none">
+                <i class="fas fa-bars text-red-500 text-base"></i>
+                <span>All Categories</span>
+            </button>
+
+            <!-- Links Group -->
+            <div class="flex items-center space-x-6">
+                <a href="#" id="nav-deals-btn" class="hover:text-amber-400 transition-colors py-1">Today's Deals</a>
+                <a href="#" id="nav-service-btn" class="hover:text-amber-400 transition-colors py-1">Customer Service</a>
+                <a href="#" id="nav-registry-btn" class="hover:text-amber-400 transition-colors py-1">Registry</a>
+                <a href="#" id="nav-gift-cards-btn" class="hover:text-amber-400 transition-colors py-1">Gift Cards</a>
+                <a href="#" id="nav-sell-btn" class="hover:text-amber-400 transition-colors py-1">Sell</a>
+                <a href="#" id="nav-prime-btn" class="hover:text-amber-400 transition-colors py-1 font-medium text-red-400 flex items-center gap-1">Prime <i class="fas fa-chevron-right w-3 h-3"></i></a>
             </div>
         </div>
     </nav>

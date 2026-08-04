@@ -28,6 +28,15 @@
     background: #333;
 }
 
+/* Hide scrollbar for sub-nav while keeping scroll functionality */
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 /* Hero cultural gradient animation */
 @keyframes cultural-shift {
     0% { background-position: 0% 50%; }
