@@ -12,6 +12,9 @@ window.MERKATO_CONFIG = {
   // Paste your Gemini API key below, or leave empty to use the chat input.
   GEMINI_API_KEY: '',
 
-  // Optional: override the Gemini model endpoint
-  // GEMINI_MODEL: 'gemini-1.5-flash'
+  // Gemini model name. Recommended options:
+  // - gemini-3.6-flash         (default; latest stable Flash release)
+  // - gemini-2.5-flash         (retired; may return 404)
+  // - gemini-flash-latest      (alias for latest Flash; may change without notice)
+  GEMINI_MODEL: 'gemini-3.6-flash',
 };

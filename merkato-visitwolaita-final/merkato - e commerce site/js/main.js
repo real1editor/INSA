@@ -194,6 +194,10 @@ async function handleMerkatoUserMessage() {
 
   setStatus('⚡ Thinking...');
 
+  // Disable input controls during API call to prevent duplicate requests
+  if (chatSend) chatSend.disabled = true;
+  if (chatInput) chatInput.disabled = true;
+
   try {
     // Run loop in Agent Core
     const finalModelResponse = await runAgentTurn({
@@ -218,6 +222,11 @@ async function handleMerkatoUserMessage() {
     } else {
       appendErrorBubble(`Error: ${error.message}`);
     }
+  } finally {
+    // Re-enable input controls after API call completes
+    if (chatSend) chatSend.disabled = false;
+    if (chatInput) chatInput.disabled = false;
+    if (chatInput) chatInput.focus();
   }
 }
 

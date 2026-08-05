@@ -11,7 +11,8 @@ export async function runAgentTurn({ systemInstruction, messages, tools, toolHan
     throw new Error('API_KEY_MISSING');
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const modelName = (typeof window !== 'undefined' && window.MERKATO_CONFIG?.GEMINI_MODEL) || 'gemini-3.6-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
   let loopLimit = 10; // Prevent infinite tool call loops
   let currentTurn = 0;
@@ -38,18 +39,37 @@ export async function runAgentTurn({ systemInstruction, messages, tools, toolHan
       ];
     }
 
-    // Call Gemini API
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
+    // Call Gemini API with retry for rate limiting
+    let response;
+    const maxRetries = 3;
+    let retryCount = 0;
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Gemini API Error (${response.status}): ${errorText}`);
+    while (retryCount <= maxRetries) {
+      const fetchResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (fetchResponse.ok) {
+        response = fetchResponse;
+        break;
+      }
+
+      if (fetchResponse.status === 429 && retryCount < maxRetries) {
+        retryCount++;
+        const waitSeconds = 4;
+        if (onStatusUpdate) {
+          onStatusUpdate(`⚡ Rate limited. Retrying in ${waitSeconds}s... (${retryCount}/${maxRetries})`);
+        }
+        await new Promise(resolve => setTimeout(resolve, waitSeconds * 1000));
+        continue;
+      }
+
+      const errorText = await fetchResponse.text();
+      throw new Error(`Gemini API Error (${fetchResponse.status}): ${errorText}`);
     }
 
     const data = await response.json();
@@ -107,7 +127,7 @@ export async function runAgentTurn({ systemInstruction, messages, tools, toolHan
 
       // Add tool responses back to history
       messages.push({
-        role: 'tool',
+        role: 'user',
         parts: toolResponseParts
       });
 
