@@ -1,150 +1,137 @@
 /**
  * Agent Core Module
- * Provides reusable async handler for interacting with the Gemini REST API,
- * including handling multi-turn tool loops.
+ * Handles the core conversational turn logic, including API calls,
+ * retry mechanisms, and tool execution.
  */
 
+const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/";
+const MODEL_NAME = "gemini-3.6-flash"; // Primary model
+const FALLBACK_MODEL_NAME = "gemini-flash-latest"; // Fallback model
+
+/**
+ * Executes a single conversational turn with the Gemini API,
+ * including retry logic for rate limits and tool execution.
+ * @param {object} params - Parameters for the agent turn.
+ * @param {string} params.systemInstruction - The system instruction for the model.
+ * @param {Array<object>} params.messages - The conversation history.
+ * @param {Array<object>} params.tools - Function declarations for the model.
+ * @param {object} params.toolHandlers - Mappings of tool names to their client-side implementations.
+ * @param {function} params.onStatusUpdate - Callback for status updates.
+ * @returns {Promise<object>} The final model response.
+ */
 export async function runAgentTurn({ systemInstruction, messages, tools, toolHandlers, onStatusUpdate }) {
-  // Retrieve API Key from window or localStorage
-  const apiKey = (typeof window !== 'undefined' && (window.MERKATO_CONFIG?.GEMINI_API_KEY || window.GEMINI_API_KEY)) || (typeof localStorage !== 'undefined' ? localStorage.getItem('GEMINI_API_KEY') : null);
+  const apiKey = window.MERKATO_CONFIG?.GEMINI_API_KEY || window.GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
   if (!apiKey) {
     throw new Error('API_KEY_MISSING');
   }
 
-  const modelName = (typeof window !== 'undefined' && window.MERKATO_CONFIG?.GEMINI_MODEL) || 'gemini-3.6-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+  let retries = 0;
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY_MS = 4000;
 
-  let loopLimit = 10; // Prevent infinite tool call loops
-  let currentTurn = 0;
+  let currentModel = MODEL_NAME;
 
-  while (currentTurn < loopLimit) {
-    currentTurn++;
+  while (retries <= MAX_RETRIES) {
+    try {
+      onStatusUpdate(`⚡ Thinking with ${currentModel}...`);
 
-    // Prepare Request Payload
-    const payload = {
-      contents: messages
-    };
-
-    if (systemInstruction) {
-      payload.systemInstruction = {
-        parts: [{ text: systemInstruction }]
+      const requestBody = {
+        contents: [
+          { role: "user", parts: [{ text: systemInstruction }] },
+          ...messages
+        ],
+        tools: [{ functionDeclarations: tools }]
       };
-    }
 
-    if (tools && tools.length > 0) {
-      payload.tools = [
+      const response = await fetch(
+        `${API_BASE_URL}${currentModel}:generateContent?key=${apiKey}`,
         {
-          functionDeclarations: tools
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
         }
-      ];
-    }
+      );
 
-    // Call Gemini API with retry for rate limiting
-    let response;
-    const maxRetries = 3;
-    let retryCount = 0;
-
-    while (retryCount <= maxRetries) {
-      const fetchResponse = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (fetchResponse.ok) {
-        response = fetchResponse;
-        break;
+      if (response.status === 429) {
+        if (retries < MAX_RETRIES) {
+          onStatusUpdate(`Rate limit hit. Retrying in ${RETRY_DELAY_MS / 1000}s...`);
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+          retries++;
+          continue; // Retry the request
+        } else {
+          throw new Error('Rate limit exceeded after multiple retries.');
+        }
       }
 
-      if (fetchResponse.status === 429 && retryCount < maxRetries) {
-        retryCount++;
-        const waitSeconds = 4;
-        if (onStatusUpdate) {
-          onStatusUpdate(`⚡ Rate limited. Retrying in ${waitSeconds}s... (${retryCount}/${maxRetries})`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("API Error:", errorData);
+        throw new Error(`API error: ${response.status} - ${errorData.error?.message || response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.candidates || data.candidates.length === 0) {
+        throw new Error('No candidates returned from API.');
+      }
+
+      const candidate = data.candidates[0];
+      const finishReason = candidate.finishReason;
+
+      if (finishReason === 'STOP' || finishReason === 'MAX_TOKENS') {
+        // Model returned a text response or finished normally
+        return candidate.content;
+      } else if (finishReason === 'TOOL_CODE') {
+        // Model wants to call a tool
+        const functionCall = candidate.content.parts[0].functionCall;
+        if (functionCall) {
+          onStatusUpdate(`⚙️ Calling tool: ${functionCall.name}...`);
+          const toolOutput = await handleToolCall(functionCall, toolHandlers);
+          onStatusUpdate(`✅ Tool '${functionCall.name}' executed.`);
+
+          // Send tool output back to the model
+          messages.push(candidate.content); // Add the tool_code message
+          messages.push({
+            role: "user",
+            parts: [{ functionResponse: { name: functionCall.name, response: toolOutput } }]
+          });
+
+          // Continue the conversation turn with the tool output
+          // This will effectively re-enter the loop with the updated messages
+          retries = 0; // Reset retries for the next API call
+          continue;
         }
-        await new Promise(resolve => setTimeout(resolve, waitSeconds * 1000));
+      }
+      
+      // If we reach here, it's an unexpected finishReason or content structure
+      throw new Error(`Unexpected API response finish reason: ${finishReason}`);
+
+    } catch (error) {
+      if (currentModel === MODEL_NAME && error.message.includes('API error')) {
+        onStatusUpdate(`Primary model failed. Falling back to ${FALLBACK_MODEL_NAME}...`);
+        currentModel = FALLBACK_MODEL_NAME;
+        retries = 0; // Reset retries for fallback model
         continue;
       }
-
-      const errorText = await fetchResponse.text();
-      throw new Error(`Gemini API Error (${fetchResponse.status}): ${errorText}`);
-    }
-
-    const data = await response.json();
-    const candidate = data.candidates?.[0];
-    if (!candidate || !candidate.content) {
-      throw new Error('Invalid or empty response from Gemini API.');
-    }
-
-    const modelContent = candidate.content;
-    const parts = modelContent.parts || [];
-
-    // Find any function calls
-    const functionCalls = parts.filter(part => part.functionCall);
-
-    if (functionCalls.length > 0) {
-      // Add the model's assistant message (containing functionCalls) to history
-      messages.push(modelContent);
-
-      const toolResponseParts = [];
-
-      for (const part of functionCalls) {
-        const call = part.functionCall;
-        const name = call.name;
-        const args = call.args || {};
-
-        if (onStatusUpdate) {
-          if (name === 'searchCatalog') {
-            onStatusUpdate('⚡ Searching Merkato catalog...');
-          } else if (name === 'addToCart') {
-            onStatusUpdate('⚡ Adding item to cart...');
-          } else {
-            onStatusUpdate(`⚡ Executing tool ${name}...`);
-          }
-        }
-
-        const handler = toolHandlers[name];
-        let result;
-        if (handler) {
-          try {
-            result = await handler(args);
-          } catch (err) {
-            result = { error: err.message };
-          }
-        } else {
-          result = { error: `Tool handler for '${name}' not found.` };
-        }
-
-        toolResponseParts.push({
-          functionResponse: {
-            name: name,
-            response: { result: result }
-          }
-        });
-      }
-
-      // Add tool responses back to history
-      messages.push({
-        role: 'user',
-        parts: toolResponseParts
-      });
-
-      // Clear the temporary status update
-      if (onStatusUpdate) {
-        onStatusUpdate(null);
-      }
-
-      // Continue the loop to send tool responses back to Gemini
-      continue;
-    } else {
-      // No function calls, we have the final assistant message.
-      // Append assistant's final text message to history and return.
-      messages.push(modelContent);
-      return modelContent;
+      throw error; // Re-throw if fallback also fails or other error
     }
   }
+  throw new Error('Failed to get a response after multiple retries and model fallback.');
+}
 
-  throw new Error('Exceeded maximum tool loop limit.');
+/**
+ * Dynamically executes the appropriate tool handler based on the function call.
+ * @param {object} functionCall - The functionCall object from the Gemini API.
+ * @param {object} toolHandlers - Mappings of tool names to their client-side implementations.
+ * @returns {Promise<any>} The result of the tool execution.
+ */
+async function handleToolCall(functionCall, toolHandlers) {
+  const handler = toolHandlers[functionCall.name];
+  if (handler) {
+    return await handler(functionCall.args);
+  } else {
+    throw new Error(`No handler found for tool: ${functionCall.name}`);
+  }
 }
