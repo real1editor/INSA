@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NuroTewedede - Neighborhood Group-Buying Platform</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-emerald-700 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight">NuroTewedede</h1>
+                <p class="text-xs text-emerald-100">Digitized Neighborhood Group-Buying Platform</p>
+            </div>
+            <button onclick="openModal()" class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-50 transition shadow">
+                + Launch a Pool
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-emerald-800 to-teal-700 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-lg">
+            <h2 class="text-3xl font-extrabold mb-2">Combat Food Inflation Together</h2>
+            <p class="text-emerald-100 max-w-2xl mb-6 text-sm md:text-base">
+                Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.
+            </p>
+            
+            <!-- Town Filter Bar -->
+            <div class="flex flex-wrap gap-2 items-center bg-white/10 p-3 rounded-xl backdrop-blur-md">
+                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 mr-2">Filter Town:</span>
+                <button onclick="filterTown('All')" id="btn-All" class="filter-btn bg-white text-emerald-900 px-3 py-1.5 rounded-lg text-xs font-bold transition">All Hubs</button>
+                <button onclick="filterTown('Addis Ababa')" id="btn-Addis Ababa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Addis Ababa</button>
+                <button onclick="filterTown('Adama')" id="btn-Adama" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Adama</button>
+                <button onclick="filterTown('Hawassa')" id="btn-Hawassa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Hawassa</button>
+                <button onclick="filterTown('Bahir Dar')" id="btn-Bahir Dar" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Bahir Dar</button>
+            </div>
+        </section>
+
+        <!-- Pool Cards Section Grid -->
+        <div class="mb-4 flex justify-between items-center">
+            <h3 class="text-xl font-bold text-slate-800">Active Group Pools</h3>
+            <span id="pool-count" class="text-xs text-slate-500 font-medium">Showing all pools</span>
+        </div>
+        
+        <div id="pools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Cards Populated via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Create Pool Modal Form -->
+    <div id="pool-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <h3 class="text-xl font-bold text-slate-800 mb-4">Launch a New Buying Pool</h3>
+            <form id="create-form" onsubmit="handleCreatePool(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Item / Produce Name</label>
+                    <input type="text" id="item-name" required placeholder="e.g. Teff (White Gojjam) - 50kg" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Town / Hub</label>
+                        <select id="item-town" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            <option value="Addis Ababa">Addis Ababa</option>
+                            <option value="Adama">Adama</option>
+                            <option value="Hawassa">Hawassa</option>
+                            <option value="Bahir Dar">Bahir Dar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Price per Share (ETB)</label>
+                        <input type="number" id="item-price" required placeholder="1250" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Shares</label>
+                        <input type="number" id="item-target" required placeholder="20" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Woreda Origin</label>
+                        <input type="text" id="item-woreda" required placeholder="e.g. Debre Markos" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 text-slate-600 text-sm font-semibold hover:bg-slate-100 rounded-lg transition">Cancel</button>
+                    <button type="submit" class="bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-800 transition shadow">Create Pool</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-12">
+        <p>NuroTewedede Prototype • Designed for Community Group Buying</p>
+    </footer>
+
+    <!-- JavaScript Link -->
+    <script src="script.js"></script>
+</body>
+</html>

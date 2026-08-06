@@ -1,0 +1,10 @@
+/* Custom styles to complement Tailwind v4 layout */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for interactive elements */
+button {
+    cursor: pointer;
+}
