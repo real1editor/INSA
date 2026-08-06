@@ -11,14 +11,31 @@
 <body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
 
     <!-- Header Navigation -->
-    <header class="bg-emerald-700 text-white shadow-md">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">NuroTewedede</h1>
-                <p class="text-xs text-emerald-100">Digitized Neighborhood Group-Buying Platform</p>
-            </div>
+    <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-emerald-600 transition" aria-label="Toggle dark mode">
+                <div class="bg-white/10 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight leading-tight">NuroTewedede</h1>
+                    <p class="text-[10px] text-emerald-100 leading-tight">Neighborhood Group-Buying Platform</p>
+                </div>
+            </div>
+            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <nav id="desktop-nav" class="hidden md:flex items-center gap-1">
+                <a href="#home" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="home">Home</a>
+                <a href="#what-we-do" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="service">Service</a>
+                <a href="#about" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="about">About Us</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle dark mode">
                     <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                     </svg>
@@ -29,6 +46,14 @@
                 <button onclick="openModal()" class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-50 transition shadow">
                     + Launch a Pool
                 </button>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-emerald-800 border-t border-emerald-600">
+            <div class="px-4 py-3 space-y-1">
+                <a href="#home" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="home">Home</a>
+                <a href="#what-we-do" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="service">Service</a>
+                <a href="#about" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="about">About Us</a>
             </div>
         </div>
     </header>
@@ -53,6 +78,40 @@
                 <button onclick="filterTown('Bahir Dar')" id="btn-Bahir Dar" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Bahir Dar</button>
                 <button onclick="filterTown('Jimma')" id="btn-Jimma" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Jimma</button>
                 <button onclick="filterTown('Wolaita Sodo')" id="btn-Wolaita Sodo" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Wolaita Sodo</button>
+            </div>
+        </section>
+
+        <!-- What We Do Section -->
+        <section id="what-we-do" class="py-12 md:py-16 bg-slate-50">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-10">
+                    <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">What We Do</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-3">We're passionate about bringing communities together through group buying</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto text-sm md:text-base">NuroTewedede empowers neighborhoods across Ethiopia to access affordable produce, support local farmers, and build resilient food systems through collective purchasing power.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="bg-emerald-100 text-emerald-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Combat Food Inflation</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Pool orders together to unlock wholesale pricing directly from regional farming woredas and beat retail price hikes.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="bg-teal-100 text-teal-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Support Ethiopian Farmers</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Directly connect urban neighborhood distribution hubs to local agricultural producers for fair trade and sustainable livelihoods.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                        <div class="bg-indigo-100 text-indigo-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Seamless Group Logistics</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Easily join active community buying pools or launch your own distribution hub in seconds with transparent progress tracking.</p>
+                    </div>
+                </div>
             </div>
         </section>
 

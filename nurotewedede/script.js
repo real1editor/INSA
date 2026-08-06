@@ -6,7 +6,10 @@ let pools = [
     { id: 4, title: "Sidamo Organic Coffee Beans (10kg)", town: "Wolaita Sodo", price: 4200, retailPrice: 5100, currentShares: 5, targetShares: 10, woreda: "Boloso Sore Woreda" },
     { id: 5, title: "Maize / Corn Bulk Supply (100kg)", town: "Wolaita Sodo", price: 3100, retailPrice: 3800, currentShares: 12, targetShares: 20, woreda: "Damot Gale Hub" },
     { id: 6, title: "Barley Wholesale Package (40kg)", town: "Jimma", price: 3800, retailPrice: 4700, currentShares: 9, targetShares: 15, woreda: "Agaro Farm Hub" },
-    { id: 7, title: "Chickpea (Shimbra) Wholesale (30kg)", town: "Jimma", price: 2900, retailPrice: 3600, currentShares: 12, targetShares: 20, woreda: "Mana Woreda" }
+    { id: 7, title: "Chickpea (Shimbra) Wholesale (30kg)", town: "Jimma", price: 2900, retailPrice: 3600, currentShares: 12, targetShares: 20, woreda: "Mana Woreda" },
+    { id: 8, title: "Gesho (Hop) Fresh Bundle (10kg)", town: "Bahir Dar", price: 1500, retailPrice: 2100, currentShares: 11, targetShares: 20, woreda: "Bahir Dar City Hub" },
+    { id: 9, title: "Teff (White) Bulk Bag (50kg)", town: "Bahir Dar", price: 7200, retailPrice: 9200, currentShares: 18, targetShares: 25, woreda: "Gondar Zone Hub" },
+    { id: 10, title: "Injera Teff Flour (25kg)", town: "Bahir Dar", price: 3400, retailPrice: 4600, currentShares: 8, targetShares: 12, woreda: "Debre Markos Woreda" }
 ];
 
 let currentFilter = 'All';
@@ -227,7 +230,55 @@ function initSearchAndSort() {
     }
 }
 
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    if (menu) {
+        menu.classList.toggle('hidden');
+    }
+}
+
+function handleNavClick(navItem) {
+    const value = navItem.getAttribute('data-nav');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+    }
+
+    switch (value) {
+        case 'home':
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            break;
+        case 'service':
+            const target = document.getElementById('what-we-do');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            break;
+        case 'about':
+            alert('About NuroTewedede:\n\nNuroTewedede is a digitized neighborhood group-buying platform designed to combat food inflation by connecting regional farming production directly to local communities. We empower neighborhoods to pool resources, access bulk wholesale prices, and build food security together.');
+            break;
+        default:
+            break;
+    }
+}
+
+function initNavigation() {
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', toggleMobileMenu);
+    }
+
+    document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleNavClick(link);
+        });
+    });
+}
+
 // Initialize display on load
 initTheme();
 initSearchAndSort();
+initNavigation();
 renderPools();
