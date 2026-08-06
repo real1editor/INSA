@@ -256,7 +256,16 @@ function handleNavClick(navItem) {
             }
             break;
         case 'about':
-            alert('About NuroTewedede:\n\nNuroTewedede is a digitized neighborhood group-buying platform designed to combat food inflation by connecting regional farming production directly to local communities. We empower neighborhoods to pool resources, access bulk wholesale prices, and build food security together.');
+            const aboutTarget = document.getElementById('about');
+            if (aboutTarget) {
+                aboutTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            break;
+        case 'how-it-works':
+            const howTarget = document.getElementById('how-it-works');
+            if (howTarget) {
+                howTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
             break;
         default:
             break;
@@ -277,8 +286,38 @@ function initNavigation() {
     });
 }
 
+function initCountdown() {
+    const timerEl = document.getElementById('countdown-timer');
+    if (!timerEl) return;
+
+    const deadline = new Date();
+    deadline.setDate(deadline.getDate() + 20);
+    deadline.setHours(0, 0, 0, 0);
+
+    function updateCountdown() {
+        const now = new Date();
+        const diff = deadline - now;
+
+        if (diff <= 0) {
+            timerEl.textContent = '00 : 00 : 00 : 00';
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        timerEl.textContent = `${String(days).padStart(2, '0')} : ${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
 // Initialize display on load
 initTheme();
 initSearchAndSort();
 initNavigation();
+initCountdown();
 renderPools();
