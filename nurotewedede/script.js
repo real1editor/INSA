@@ -250,9 +250,9 @@ function handleNavClick(navItem) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             break;
         case 'service':
-            const target = document.getElementById('what-we-do');
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const serviceTarget = document.getElementById('service');
+            if (serviceTarget) {
+                serviceTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             break;
         case 'about':

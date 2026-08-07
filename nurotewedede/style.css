@@ -1,4 +1,7 @@
 /* Custom styles to complement Tailwind v4 layout */
+html {
+    scroll-behavior: smooth;
+}
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -125,23 +128,28 @@ button {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
-[data-theme="dark"] #pool-modal .bg-white {
+[data-theme="dark"] #pool-modal .bg-white,
+[data-theme="dark"] #auth-modal .bg-white {
     background-color: #1e293b !important;
 }
 
-[data-theme="dark"] #pool-modal .text-slate-800 {
+[data-theme="dark"] #pool-modal .text-slate-800,
+[data-theme="dark"] #auth-modal .text-slate-800 {
     color: #f1f5f9 !important;
 }
 
-[data-theme="dark"] #pool-modal .text-slate-600 {
+[data-theme="dark"] #pool-modal .text-slate-600,
+[data-theme="dark"] #auth-modal .text-slate-600 {
     color: #94a3b8 !important;
 }
 
-[data-theme="dark"] #pool-modal .border-slate-300 {
+[data-theme="dark"] #pool-modal .border-slate-300,
+[data-theme="dark"] #auth-modal .border-slate-300 {
     border-color: #475569 !important;
 }
 
-[data-theme="dark"] #pool-modal .focus\:ring-emerald-600:focus {
+[data-theme="dark"] #pool-modal .focus\:ring-emerald-600:focus,
+[data-theme="dark"] #auth-modal .focus\:ring-emerald-600:focus {
     --tw-ring-color: #10b981;
 }
 
