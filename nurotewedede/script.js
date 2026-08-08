@@ -1,35 +1,36 @@
-// Initial mock database state representing active neighborhood group pools
-let pools = [
-    { id: 1, title: "Highland White Teff (50kg Bag)", town: "Addis Ababa", price: 6800, retailPrice: 8500, currentShares: 14, targetShares: 20, woreda: "Gojjam Woreda" },
-    { id: 2, title: "Red Onion Bulk Package (25kg)", town: "Adama", price: 1850, retailPrice: 2400, currentShares: 8, targetShares: 15, woreda: "Ziway Farm Hub" },
-    { id: 3, title: "Cooking Oil Bulk Cartons (20L)", town: "Hawassa", price: 3400, retailPrice: 4200, currentShares: 18, targetShares: 25, woreda: "Hawassa Industrial Hub" },
-    { id: 4, title: "Sidamo Organic Coffee Beans (10kg)", town: "Wolaita Sodo", price: 4200, retailPrice: 5100, currentShares: 5, targetShares: 10, woreda: "Boloso Sore Woreda" },
-    { id: 5, title: "Maize / Corn Bulk Supply (100kg)", town: "Wolaita Sodo", price: 3100, retailPrice: 3800, currentShares: 12, targetShares: 20, woreda: "Damot Gale Hub" },
-    { id: 6, title: "Barley Wholesale Package (40kg)", town: "Jimma", price: 3800, retailPrice: 4700, currentShares: 9, targetShares: 15, woreda: "Agaro Farm Hub" },
-    { id: 7, title: "Chickpea (Shimbra) Wholesale (30kg)", town: "Jimma", price: 2900, retailPrice: 3600, currentShares: 12, targetShares: 20, woreda: "Mana Woreda" },
-    { id: 8, title: "Gesho (Hop) Fresh Bundle (10kg)", town: "Bahir Dar", price: 1500, retailPrice: 2100, currentShares: 11, targetShares: 20, woreda: "Bahir Dar City Hub" },
-    { id: 9, title: "Teff (White) Bulk Bag (50kg)", town: "Bahir Dar", price: 7200, retailPrice: 9200, currentShares: 18, targetShares: 25, woreda: "Gondar Zone Hub" },
-    { id: 10, title: "Injera Teff Flour (25kg)", town: "Bahir Dar", price: 3400, retailPrice: 4600, currentShares: 8, targetShares: 12, woreda: "Debre Markos Woreda" }
-];
+// NuroTewedede - Frontend logic (talks to the Express + Supabase API)
 
+let pools = [];
 let currentFilter = 'All';
 let currentSearchQuery = '';
 let currentSort = 'default';
+let currentUser = null;
+let authMode = 'signin';
+
+async function api(path, options = {}) {
+    const res = await fetch(`http://localhost:5000${path}`, {
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Crucial for sending cookies/session tokens across ports
+        ...options,
+    });
+    let body = {};
+    try { body = await res.json(); } catch (e) { /* non-JSON response */ }
+    if (!res.ok) {
+        const err = new Error(body.error || 'Request failed');
+        err.status = res.status;
+        throw err;
+    }
+    return body;
+}
+
+// ---------- Theme ----------
 
 function toggleTheme() {
     const html = document.documentElement;
     const isDark = html.getAttribute('data-theme') === 'dark';
-
-    if (isDark) {
-        html.setAttribute('data-theme', 'light');
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-    } else {
-        html.setAttribute('data-theme', 'dark');
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-    }
-
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    html.classList.toggle('dark', !isDark);
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
     updateThemeIcons();
 }
 
@@ -37,7 +38,6 @@ function updateThemeIcons() {
     const sunIcon = document.getElementById('theme-icon-sun');
     const moonIcon = document.getElementById('theme-icon-moon');
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
     if (sunIcon && moonIcon) {
         sunIcon.classList.toggle('hidden', !isDark);
         moonIcon.classList.toggle('hidden', isDark);
@@ -48,27 +48,41 @@ function initTheme() {
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const theme = saved || (prefersDark ? 'dark' : 'light');
-
     document.documentElement.setAttribute('data-theme', theme);
-    if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-
+    document.documentElement.classList.toggle('dark', theme === 'dark');
     updateThemeIcons();
+}
+
+// ---------- Pools ----------
+
+async function fetchPools() {
+    try {
+        const data = await api('/api/pools');
+        pools = data.pools || [];
+    } catch (err) {
+        console.error('Error fetching pools:', err.message);
+        pools = [];
+    }
+    renderPools();
 }
 
 function updateMetrics() {
     const totalPools = pools.length;
     const uniqueWoredas = new Set(pools.map(p => p.woreda)).size;
     const avgSavings = pools.length > 0
-        ? Math.round(pools.reduce((sum, p) => sum + ((p.retailPrice - p.price) / p.retailPrice) * 100, 0) / pools.length)
+        ? Math.round(pools.reduce((sum, p) => {
+            const retail = p.retail_price || p.retailPrice || (p.price * 1.35);
+            return sum + ((retail - p.price) / retail) * 100;
+        }, 0) / pools.length)
         : 0;
 
-    document.getElementById('metric-pools').textContent = totalPools;
-    document.getElementById('metric-woredas').textContent = uniqueWoredas;
-    document.getElementById('metric-savings').textContent = `${avgSavings}%`;
+    const metricPools = document.getElementById('metric-pools');
+    const metricWoredas = document.getElementById('metric-woredas');
+    const metricSavings = document.getElementById('metric-savings');
+
+    if (metricPools) metricPools.textContent = totalPools;
+    if (metricWoredas) metricWoredas.textContent = uniqueWoredas;
+    if (metricSavings) metricSavings.textContent = `${avgSavings}%`;
 }
 
 function getSortedPools(list) {
@@ -81,7 +95,7 @@ function getSortedPools(list) {
             sorted.sort((a, b) => b.price - a.price);
             break;
         case 'progress':
-            sorted.sort((a, b) => (b.currentShares / b.targetShares) - (a.currentShares / a.targetShares));
+            sorted.sort((a, b) => (b.current_shares / b.target_shares) - (a.current_shares / a.target_shares));
             break;
         default:
             break;
@@ -91,24 +105,28 @@ function getSortedPools(list) {
 
 function renderPools() {
     const grid = document.getElementById('pools-grid');
+    if (!grid) return;
     grid.innerHTML = '';
 
     let filtered = currentFilter === 'All'
         ? pools
         : pools.filter(p => p.town === currentFilter);
 
+    const searchStatus = document.getElementById('search-status');
     if (currentSearchQuery.trim()) {
         const q = currentSearchQuery.toLowerCase();
         filtered = filtered.filter(p => p.title.toLowerCase().includes(q) || p.woreda.toLowerCase().includes(q));
-        document.getElementById('search-status').textContent = `Showing ${filtered.length} result(s) for "${currentSearchQuery}"`;
-        document.getElementById('search-status').classList.remove('hidden');
-    } else {
-        document.getElementById('search-status').classList.add('hidden');
+        if (searchStatus) {
+            searchStatus.textContent = `Showing ${filtered.length} result(s) for "${currentSearchQuery}"`;
+            searchStatus.classList.remove('hidden');
+        }
+    } else if (searchStatus) {
+        searchStatus.classList.add('hidden');
     }
 
     const sorted = getSortedPools(filtered);
-
-    document.getElementById('pool-count').innerText = `Showing ${sorted.length} pool(s)`;
+    const poolCount = document.getElementById('pool-count');
+    if (poolCount) poolCount.innerText = `Showing ${sorted.length} pool(s)`;
 
     if (sorted.length === 0) {
         grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-sm">No group pools found matching your criteria.</div>`;
@@ -117,8 +135,10 @@ function renderPools() {
     }
 
     sorted.forEach(pool => {
-        const percentage = Math.min(100, Math.round((pool.currentShares / pool.targetShares) * 100));
-        const isLocked = pool.currentShares >= pool.targetShares;
+        const currentShares = pool.current_shares ?? pool.currentShares ?? 0;
+        const targetShares = pool.target_shares ?? pool.targetShares ?? 1;
+        const percentage = Math.min(100, Math.round((currentShares / targetShares) * 100));
+        const isLocked = pool.locked;
 
         const card = document.createElement('div');
         card.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between";
@@ -132,13 +152,12 @@ function renderPools() {
                     </div>
                 </div>
                 <h4 class="text-base font-bold text-slate-800 mb-1">${pool.title}</h4>
-                <p class="text-emerald-700 font-extrabold text-lg mb-4">${pool.price.toLocaleString()} ETB <span class="text-xs text-slate-400 font-normal">/ share</span></p>
-                
-                <!-- Progress Bar -->
+                <p class="text-emerald-700 font-extrabold text-lg mb-4">${Number(pool.price).toLocaleString()} ETB <span class="text-xs text-slate-400 font-normal">/ share</span></p>
+
                 <div class="mb-4">
                     <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
                         <span>Progress</span>
-                        <span>${pool.currentShares} / ${pool.targetShares} shares (${percentage}%)</span>
+                        <span>${currentShares} / ${targetShares} shares (${percentage}%)</span>
                     </div>
                     <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
@@ -146,8 +165,8 @@ function renderPools() {
                 </div>
             </div>
 
-            <button onclick="reserveShare(${pool.id})" ${isLocked ? 'disabled' : ''} class="w-full ${isLocked ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-slate-900 hover:bg-emerald-700 text-white'} text-xs font-bold py-2.5 rounded-xl transition shadow-sm">
-                ${isLocked ? 'Pool Locked' : 'Reserve My Share'}
+            <button onclick="reserveShare(${pool.id})" ${isLocked || pool.claimed ? 'disabled' : ''} class="w-full ${isLocked ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : (pool.claimed ? 'bg-teal-100 text-teal-800 cursor-default' : 'bg-slate-900 hover:bg-emerald-700 text-white')} text-xs font-bold py-2.5 rounded-xl transition shadow-sm">
+                ${isLocked ? 'Pool Locked' : (pool.claimed ? 'Reserved by You' : 'Reserve My Share')}
             </button>
         `;
         grid.appendChild(card);
@@ -162,54 +181,167 @@ function filterTown(town) {
         btn.className = "filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition";
     });
     const activeBtn = document.getElementById(`btn-${town}`);
-    if(activeBtn) {
+    if (activeBtn) {
         activeBtn.className = "filter-btn bg-white text-emerald-900 px-3 py-1.5 rounded-lg text-xs font-bold transition";
     }
     renderPools();
 }
 
-function reserveShare(id) {
-    const pool = pools.find(p => p.id === id);
-    if (pool) {
-        if (pool.currentShares < pool.targetShares) {
-            pool.currentShares++;
-            renderPools();
-            alert(`Successfully reserved a share for "${pool.title}"! Community pool is now at ${pool.currentShares}/${pool.targetShares} shares.`);
-        } else {
-            alert("This pool is already fully funded!");
-        }
+async function reserveShare(id) {
+    if (!currentUser) {
+        alert('Please sign in first to reserve a share.');
+        openAuthModal();
+        return;
+    }
+    try {
+        const data = await api(`/api/pools/${id}/reserve`, { method: 'POST' });
+        const idx = pools.findIndex(p => p.id === data.pool.id);
+        if (idx !== -1) pools[idx] = data.pool;
+        renderPools();
+        const updatedShares = data.pool.current_shares ?? data.pool.currentShares;
+        const targetShares = data.pool.target_shares ?? data.pool.targetShares;
+        alert(`Successfully reserved a share for "${data.pool.title}"! Community pool is now at ${updatedShares}/${targetShares} shares.`);
+    } catch (err) {
+        alert(err.message);
+        fetchPools();
     }
 }
 
+// ---------- Create Pool ----------
+
+function handleLaunchPool() {
+    if (!currentUser) {
+        alert('Please sign in first to launch a pool.');
+        openAuthModal();
+        return;
+    }
+    openModal();
+}
+
 function openModal() {
-    document.getElementById('pool-modal').classList.remove('hidden');
-    document.getElementById('pool-modal').classList.add('flex');
+    const modal = document.getElementById('pool-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
 }
 
 function closeModal() {
-    document.getElementById('pool-modal').classList.add('hidden');
-    document.getElementById('pool-modal').classList.remove('flex');
+    const modal = document.getElementById('pool-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
 }
 
-function handleCreatePool(e) {
+async function handleCreatePool(e) {
     e.preventDefault();
-    const newPool = {
-        id: pools.length + 1,
+    const newPoolData = {
         title: document.getElementById('item-name').value,
         town: document.getElementById('item-town').value,
         price: Number(document.getElementById('item-price').value),
-        retailPrice: Number(document.getElementById('item-price').value) * 1.3,
-        currentShares: 1, 
         targetShares: Number(document.getElementById('item-target').value),
         woreda: document.getElementById('item-woreda').value
     };
 
-    pools.unshift(newPool);
-    closeModal();
-    document.getElementById('create-form').reset();
-    renderPools();
-    alert("New group-buying pool launched successfully!");
+    try {
+        const data = await api('/api/pools', { method: 'POST', body: JSON.stringify(newPoolData) });
+        pools.unshift(data.pool);
+        closeModal();
+        const form = document.getElementById('create-form');
+        if (form) form.reset();
+        renderPools();
+        alert("New group-buying pool launched successfully!");
+    } catch (err) {
+        alert('Error creating pool: ' + err.message);
+    }
 }
+
+// ---------- Auth ----------
+
+function openAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+}
+
+function closeAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+}
+
+function toggleAuthMode(isSignup) {
+    authMode = isSignup ? 'signup' : 'signin';
+    const title = document.getElementById('auth-modal-title');
+    const submitBtn = document.getElementById('auth-submit-btn');
+    const tabSignin = document.getElementById('auth-tab-signin');
+    const tabSignup = document.getElementById('auth-tab-signup');
+    const message = document.getElementById('auth-message');
+
+    if (message) { message.classList.add('hidden'); message.textContent = ''; }
+    if (title) title.textContent = isSignup ? 'Create Account' : 'Sign In';
+    if (submitBtn) submitBtn.textContent = isSignup ? 'Create Account' : 'Sign In';
+    if (tabSignin) {
+        tabSignin.className = `flex-1 pb-2 text-center text-sm font-${isSignup ? 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800' : 'bold border-b-2 border-emerald-600 text-emerald-800'}`;
+    }
+    if (tabSignup) {
+        tabSignup.className = `flex-1 pb-2 text-center text-sm font-${isSignup ? 'bold border-b-2 border-emerald-600 text-emerald-800' : 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800'}`;
+    }
+}
+
+async function handleAuthSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const message = document.getElementById('auth-message');
+
+    try {
+        const endpoint = authMode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
+        const data = await api(endpoint, {
+            method: 'POST',
+            body: JSON.stringify({ email, password }),
+        });
+        currentUser = data.user;
+        updateAuthUI();
+        closeAuthModal();
+        e.target.reset();
+        alert(authMode === 'signup' ? 'Account created successfully!' : 'Signed in successfully!');
+    } catch (err) {
+        if (message) {
+            message.textContent = err.message;
+            message.className = 'text-sm font-medium p-3 rounded-lg text-center bg-red-50 text-red-700';
+        }
+    }
+}
+
+async function handleLogout() {
+    try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
+    currentUser = null;
+    updateAuthUI();
+    fetchPools();
+}
+
+function updateAuthUI() {
+    const authBtn = document.getElementById('open-auth-btn');
+    const userMenu = document.getElementById('user-menu');
+    const userEmail = document.getElementById('user-email');
+
+    if (currentUser) {
+        if (authBtn) authBtn.classList.add('hidden');
+        if (userMenu) userMenu.classList.remove('hidden');
+        if (userEmail) userEmail.textContent = currentUser.email;
+    } else {
+        if (authBtn) authBtn.classList.remove('hidden');
+        if (userMenu) userMenu.classList.add('hidden');
+    }
+}
+
+// ---------- Search / Sort ----------
 
 function initSearchAndSort() {
     const searchInput = document.getElementById('search-input');
@@ -230,17 +362,16 @@ function initSearchAndSort() {
     }
 }
 
+// ---------- Navigation ----------
+
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
-    if (menu) {
-        menu.classList.toggle('hidden');
-    }
+    if (menu) menu.classList.toggle('hidden');
 }
 
 function handleNavClick(navItem) {
     const value = navItem.getAttribute('data-nav');
     const mobileMenu = document.getElementById('mobile-menu');
-
     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
         mobileMenu.classList.add('hidden');
     }
@@ -250,23 +381,12 @@ function handleNavClick(navItem) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             break;
         case 'service':
-            const serviceTarget = document.getElementById('service');
-            if (serviceTarget) {
-                serviceTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-            break;
         case 'about':
-            const aboutTarget = document.getElementById('about');
-            if (aboutTarget) {
-                aboutTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+        case 'how-it-works': {
+            const target = document.getElementById(value);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             break;
-        case 'how-it-works':
-            const howTarget = document.getElementById('how-it-works');
-            if (howTarget) {
-                howTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-            break;
+        }
         default:
             break;
     }
@@ -286,6 +406,8 @@ function initNavigation() {
     });
 }
 
+// ---------- Countdown ----------
+
 function initCountdown() {
     const timerEl = document.getElementById('countdown-timer');
     if (!timerEl) return;
@@ -297,17 +419,14 @@ function initCountdown() {
     function updateCountdown() {
         const now = new Date();
         const diff = deadline - now;
-
         if (diff <= 0) {
             timerEl.textContent = '00 : 00 : 00 : 00';
             return;
         }
-
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
         timerEl.textContent = `${String(days).padStart(2, '0')} : ${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
     }
 
@@ -315,9 +434,37 @@ function initCountdown() {
     setInterval(updateCountdown, 1000);
 }
 
-// Initialize display on load
-initTheme();
-initSearchAndSort();
-initNavigation();
-initCountdown();
-renderPools();
+// ---------- Boot ----------
+
+async function init() {
+    initTheme();
+    initSearchAndSort();
+    initNavigation();
+    initCountdown();
+
+    document.getElementById('close-auth-modal').addEventListener('click', closeAuthModal);
+    document.getElementById('logout-btn').addEventListener('click', handleLogout);
+
+    try {
+        const data = await api('/api/auth/me');
+        currentUser = data.user;
+    } catch (e) {
+        currentUser = null;
+    }
+    updateAuthUI();
+    fetchPools();
+}
+
+// Expose functions globally for HTML inline event handlers
+window.toggleTheme = toggleTheme;
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.filterTown = filterTown;
+window.reserveShare = reserveShare;
+window.handleCreatePool = handleCreatePool;
+window.handleLaunchPool = handleLaunchPool;
+window.toggleAuthMode = toggleAuthMode;
+window.handleAuthSubmit = handleAuthSubmit;
+window.openAuthModal = openAuthModal;
+
+init();

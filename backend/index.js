@@ -55,6 +55,11 @@ app.post('/api/auth/signup', async (req, res) => {
   res.json({ message: 'User registered successfully', user: data.user });
 });
 
+//home route
+app.get('/', (req, res) => {
+  res.send('Welcome to the NuroTewedede backend API!');
+});
+
 // Sign In
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
