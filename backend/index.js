@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('node:path');
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -6,6 +7,10 @@ const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Serve the frontend site from the sibling 'nurotewedede' folder
+const FRONTEND_DIR = path.join(__dirname, '..', 'nurotewedede');
+app.use(express.static(FRONTEND_DIR));
 
 // Initialize Supabase Client
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -57,7 +62,7 @@ app.post('/api/auth/signup', async (req, res) => {
 
 //home route
 app.get('/', (req, res) => {
-  res.send('Welcome to the NuroTewedede backend API!');
+  res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
 });
 
 // Sign In
@@ -126,8 +131,7 @@ app.post('/api/pools', requireAuth, async (req, res) => {
       retail_price: retailPrice, 
       target_shares: targetShares, 
       current_shares: 0, 
-      woreda, 
-      locked: false 
+      woreda 
     }])
     .select()
     .single();
@@ -154,34 +158,20 @@ app.post('/api/pools/:id/reserve', requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'This pool has reached its target shares.' });
   }
 
-  // 2. Check if user already reserved a share
-  const { data: existingReservation } = await supabase
-    .from('reservations')
-    .select('*')
-    .eq('pool_id', poolId)
-    .eq('user_id', userId)
-    .single();
-
-  if (existingReservation) {
-    return res.status(400).json({ error: 'You have already reserved a share in this pool.' });
-  }
-
-  // 3. Insert reservation record
+  // 2. Insert reservation record
   const { error: reserveError } = await supabase
     .from('reservations')
     .insert([{ pool_id: poolId, user_id: userId }]);
 
   if (reserveError) return res.status(400).json({ error: 'Could not reserve share: ' + reserveError.message });
 
-  // 4. Increment share count and check if target reached
+  // 3. Increment share count
   const newShares = pool.current_shares + 1;
-  const shouldLock = newShares >= pool.target_shares;
 
   const { data: updatedPool, error: updateError } = await supabase
     .from('pools')
     .update({ 
-      current_shares: newShares, 
-      locked: shouldLock 
+      current_shares: newShares 
     })
     .eq('id', poolId)
     .select()
@@ -190,6 +180,14 @@ app.post('/api/pools/:id/reserve', requireAuth, async (req, res) => {
   if (updateError) return res.status(500).json({ error: updateError.message });
 
   res.json({ message: 'Share reserved successfully!', pool: updatedPool });
+});
+
+// Serve the frontend for any other GET route (single-page app)
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api')) {
+    return res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
+  }
+  next();
 });
 
 // Start Server

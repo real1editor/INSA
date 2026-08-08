@@ -139,6 +139,7 @@ function renderPools() {
         const targetShares = pool.target_shares ?? pool.targetShares ?? 1;
         const percentage = Math.min(100, Math.round((currentShares / targetShares) * 100));
         const isLocked = pool.locked;
+        const isFullyFunded = currentShares >= targetShares;
 
         const card = document.createElement('div');
         card.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between";
@@ -165,8 +166,8 @@ function renderPools() {
                 </div>
             </div>
 
-            <button onclick="reserveShare(${pool.id})" ${isLocked || pool.claimed ? 'disabled' : ''} class="w-full ${isLocked ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : (pool.claimed ? 'bg-teal-100 text-teal-800 cursor-default' : 'bg-slate-900 hover:bg-emerald-700 text-white')} text-xs font-bold py-2.5 rounded-xl transition shadow-sm">
-                ${isLocked ? 'Pool Locked' : (pool.claimed ? 'Reserved by You' : 'Reserve My Share')}
+            <button onclick="reserveShare(${pool.id})" ${isLocked || isFullyFunded ? 'disabled' : ''} class="w-full ${isLocked ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : (isFullyFunded ? 'bg-emerald-600 text-white cursor-default' : (pool.claimed ? 'bg-teal-100 text-teal-800 cursor-default' : 'bg-slate-900 hover:bg-emerald-700 text-white'))} text-xs font-bold py-2.5 rounded-xl transition shadow-sm">
+                ${isLocked ? 'Pool Locked' : (isFullyFunded ? 'Fully Funded' : (pool.claimed ? 'Reserved by You' : 'Reserve My Share'))}
             </button>
         `;
         grid.appendChild(card);
@@ -442,8 +443,10 @@ async function init() {
     initNavigation();
     initCountdown();
 
-    document.getElementById('close-auth-modal').addEventListener('click', closeAuthModal);
-    document.getElementById('logout-btn').addEventListener('click', handleLogout);
+    const closeBtn = document.getElementById('close-auth-modal');
+    if (closeBtn) closeBtn.addEventListener('click', closeAuthModal);
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
 
     try {
         const data = await api('/api/auth/me');
