@@ -8,9 +8,13 @@ let currentUser = null;
 let authMode = 'signin';
 
 async function api(path, options = {}) {
+    const token = localStorage.getItem('sb-access-token');
     const res = await fetch(`http://localhost:5000${path}`, {
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // Crucial for sending cookies/session tokens across ports
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        credentials: 'include', // Extra fallback for same-origin cookie sessions
         ...options,
     });
     let body = {};
@@ -307,6 +311,9 @@ async function handleAuthSubmit(e) {
             method: 'POST',
             body: JSON.stringify({ email, password }),
         });
+        if (data.session?.access_token) {
+            localStorage.setItem('sb-access-token', data.session.access_token);
+        }
         currentUser = data.user;
         updateAuthUI();
         closeAuthModal();
@@ -322,6 +329,7 @@ async function handleAuthSubmit(e) {
 
 async function handleLogout() {
     try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
+    localStorage.removeItem('sb-access-token');
     currentUser = null;
     updateAuthUI();
     fetchPools();

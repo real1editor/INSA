@@ -56,8 +56,16 @@ app.post('/api/auth/signup', async (req, res) => {
   const { data, error } = await supabase.auth.signUp({ email, password });
   
   if (error) return res.status(400).json({ error: error.message });
-  
-  res.json({ message: 'User registered successfully', user: data.user });
+
+  if (data.session) {
+    res.cookie('sb-access-token', data.session.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+  }
+
+  res.json({ message: 'User registered successfully', user: data.user, session: data.session });
 });
 
 //home route
