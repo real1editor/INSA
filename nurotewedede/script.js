@@ -129,7 +129,7 @@ function api(path, options = {}) {
         return body;
     }).catch((err) => {
         if (err instanceof TypeError) {
-            throw new Error('Cannot reach the server. Make sure the backend is running (npm start in the backend folder).');
+            throw new Error('Cannot reach the server. Make sure the backend is running (npm start in the project folder).');
         }
         throw err;
     });

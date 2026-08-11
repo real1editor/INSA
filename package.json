@@ -1,0 +1,10 @@
+{
+  "name": "nurotewedede",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NuroTewedede - neighborhood group-buying platform",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "node backend/index.js"
+  }
+}
