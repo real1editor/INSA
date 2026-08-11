@@ -6,37 +6,54 @@
     <title>NuroTewedede : Neighborhood Group Buying Platform</title>
     <!-- Tailwind CSS v4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
 
     <!-- Header Navigation -->
     <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-2">
             <div class="flex items-center gap-3">
                 <div class="bg-white/10 p-2 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.05 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <div>
+                <button onclick="showTab('pools')" class="text-left group focus:outline-none">
                     <h1 class="text-xl font-bold tracking-tight leading-tight">NuroTewedede</h1>
                     <p class="text-[10px] text-emerald-100 leading-tight">Neighborhood Group Buying Platform</p>
-                </div>
+                </button>
             </div>
-            <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
+
+            <button id="mobile-menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
-            <nav id="desktop-nav" class="hidden md:flex items-center gap-1">
-                <a href="#home" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="home">Home</a>
-                <a href="#service" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="service">Service</a>
-                <a href="#about" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="about">About Us</a>
-                <a href="#how-it-works" class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="how-it-works">How it works</a>
+
+            <!-- Desktop Navigation Tabs -->
+            <nav id="desktop-nav" class="hidden lg:flex items-center gap-1">
+                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-tab="pools">Active Pools</button>
+                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-tab="calculator">Savings Calculator</button>
+                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1" data-tab="ai">
+                    <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span> AI Supply Planner
+                </button>
+                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-tab="hubs">Hub Map</button>
             </nav>
-            <div class="flex items-center gap-3">
+
+            <div class="flex items-center gap-2">
+                <!-- Town Selector -->
+                <select id="town-select" class="hidden sm:block bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-2 py-1.5 text-xs font-bold text-white focus:outline-none cursor-pointer">
+                    <option value="All">All Towns / Hubs</option>
+                    <option value="Addis Ababa">Addis Ababa</option>
+                    <option value="Adama">Adama</option>
+                    <option value="Hawassa">Hawassa</option>
+                    <option value="Bahir Dar">Bahir Dar</option>
+                    <option value="Jimma">Jimma</option>
+                    <option value="Wolaita Sodo">Wolaita Sodo</option>
+                    <option value="Gondar">Gondar</option>
+                </select>
+
                 <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle dark mode">
                     <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
@@ -45,304 +62,460 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
                     </svg>
                 </button>
+
                 <button id="open-auth-btn" onclick="openAuthModal()" class="bg-emerald-800 border border-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg font-semibold text-sm transition shadow">
                     Sign In
                 </button>
                 <div id="user-menu" class="hidden items-center gap-3">
-                    <span id="user-email" class="text-sm font-semibold"></span>
-                    <button id="logout-btn" class="bg-white/10 hover:bg-white/20 border border-white/40 px-3 py-2 rounded-lg font-semibold text-sm transition">
-                        Sign Out
-                    </button>
+                    <div class="relative">
+                        <button id="user-menu-btn" class="bg-emerald-900/60 border border-emerald-600/60 px-3 py-1.5 rounded-lg font-semibold text-sm transition flex items-center gap-1.5">
+                            <span id="user-email" class="text-sm font-semibold max-w-[110px] truncate"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-xl py-2 z-50">
+                            <button onclick="showTab('myshares')" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 transition">My Reserved Shares</button>
+                            <button onclick="handleLogout()" class="w-full text-left px-3 py-2 text-xs text-rose-400 hover:bg-slate-800 transition">Sign Out</button>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="handleLaunchPool()" class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-50 transition shadow">
+                <button onclick="handleLaunchPool()" class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-50 transition shadow whitespace-nowrap">
                     + Launch a Pool
                 </button>
             </div>
         </div>
+
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-emerald-800 border-t border-emerald-600">
+        <div id="mobile-menu" class="hidden lg:hidden bg-emerald-800 border-t border-emerald-600">
             <div class="px-4 py-3 space-y-1">
-                <a href="#home" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="home">Home</a>
-                <a href="#service" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="service">Service</a>
-                <a href="#about" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="about">About Us</a>
-                <a href="#how-it-works" class="mobile-nav-link block px-3 py-2.5 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200" data-nav="how-it-works">How it works</a>
+                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="pools">Active Pools</button>
+                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="calculator">Savings Calculator</button>
+                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="ai">AI Supply Planner</button>
+                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="hubs">Hub Map</button>
+                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="myshares">My Reserved Shares</button>
+            </div>
+            <div class="px-4 py-3 border-t border-emerald-700/60 flex items-center justify-between gap-2">
+                <span class="text-xs text-emerald-200 font-semibold">Town Hub:</span>
+                <select id="town-select-mobile" class="bg-emerald-900 text-xs font-bold text-white px-2 py-1.5 rounded-lg border border-emerald-700 focus:outline-none">
+                    <option value="All">All Towns / Hubs</option>
+                    <option value="Addis Ababa">Addis Ababa</option>
+                    <option value="Adama">Adama</option>
+                    <option value="Hawassa">Hawassa</option>
+                    <option value="Bahir Dar">Bahir Dar</option>
+                    <option value="Jimma">Jimma</option>
+                    <option value="Wolaita Sodo">Wolaita Sodo</option>
+                    <option value="Gondar">Gondar</option>
+                </select>
             </div>
         </div>
     </header>
 
     <!-- Main Content Container -->
-    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
-        
-        <!-- Hero Section -->
-        <section id="home" class="bg-gradient-to-r from-emerald-800 to-teal-700 rounded-2xl p-6 md:p-8 text-white mb-8 shadow-lg">
-            <h2 class="text-3xl font-extrabold mb-2">Combat Food Inflation Together</h2>
-            <p class="text-emerald-100 max-w-2xl mb-6 text-sm md:text-base">
-                Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.
-            </p>
-            
-            <!-- Town Filter Bar -->
-            <div class="flex flex-wrap gap-2 items-center bg-white/10 p-3 rounded-xl backdrop-blur-md">
-                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 mr-2">Filter Town:</span>
-                <button onclick="filterTown('All')" id="btn-All" class="filter-btn bg-white text-emerald-900 px-3 py-1.5 rounded-lg text-xs font-bold transition">All Hubs</button>
-                <button onclick="filterTown('Addis Ababa')" id="btn-Addis Ababa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Addis Ababa</button>
-                <button onclick="filterTown('Adama')" id="btn-Adama" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Adama</button>
-                <button onclick="filterTown('Hawassa')" id="btn-Hawassa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Hawassa</button>
-                <button onclick="filterTown('Bahir Dar')" id="btn-Bahir Dar" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Bahir Dar</button>
-                <button onclick="filterTown('Jimma')" id="btn-Jimma" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Jimma</button>
-                <button onclick="filterTown('Wolaita Sodo')" id="btn-Wolaita Sodo" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Wolaita Sodo</button>
-            </div>
-        </section>
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
 
-        <!-- Live Impact & Inflation Fighter Metrics Bar -->
-        <section id="metrics-bar" class="bg-white border border-slate-200 rounded-2xl p-4 md:p-6 mb-6 shadow-sm">
-            <div class="flex flex-wrap justify-between items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="bg-emerald-100 text-emerald-800 p-2.5 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Avg Retail Savings</p>
-                        <p id="metric-savings" class="text-xl font-extrabold text-slate-800">--%</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="bg-teal-100 text-teal-800 p-2.5 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Connected Woredas</p>
-                        <p id="metric-woredas" class="text-xl font-extrabold text-slate-800">--</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="bg-indigo-100 text-indigo-800 p-2.5 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Active Pools</p>
-                        <p id="metric-pools" class="text-xl font-extrabold text-slate-800">--</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Pool Cards Section Grid -->
-        <section class="bg-white border border-slate-200 rounded-2xl p-4 md:p-6 shadow-sm mb-6">
-            <div class="mb-4 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-slate-800">Active Group Pools</h3>
-                <span id="pool-count" class="text-xs text-slate-500 font-medium">Showing all pools</span>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-3 md:p-4 mb-6 shadow-sm">
-                <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
-                    <div class="relative w-full md:w-96">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </span>
-                        <input type="text" id="search-input" placeholder="Search produce or woreda..." class="w-full border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
-                    </div>
-                    <div class="flex items-center gap-2 w-full md:w-auto">
-                        <label for="sort-select" class="text-xs font-bold text-slate-600 uppercase tracking-wider whitespace-nowrap">Sort By:</label>
-                        <select id="sort-select" class="border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none w-full md:w-auto">
-                            <option value="default">Default</option>
-                            <option value="price-asc">Price: Low to High</option>
-                            <option value="price-desc">Price: High to Low</option>
-                            <option value="progress">Funding Progress</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="search-status" class="hidden mt-2 text-xs text-slate-500 font-medium"></div>
-            </div>
-            
-            <div id="pools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic Cards Populated via JavaScript -->
-            </div>
-        </section>
+        <!-- ==================== VIEW: POOLS ==================== -->
+        <section id="view-pools" class="view-section space-y-8">
 
-        <!-- What We Do Section -->
-        <section id="service" class="py-12 md:py-16 bg-slate-50">
-            <div>
-                <div class="text-center mb-10">
-                    <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">What We Do</span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-3">We're passionate about bringing communities together through group buying</h2>
-                    <p class="text-slate-500 max-w-2xl mx-auto text-sm md:text-base">NuroTewedede empowers neighborhoods across Ethiopia to access affordable produce, support local farmers, and build resilient food systems through collective purchasing power.</p>
+            <!-- Hero Section -->
+            <section id="home" class="bg-gradient-to-r from-emerald-800 to-teal-700 rounded-2xl p-6 md:p-8 text-white shadow-lg">
+                <h2 class="text-3xl font-extrabold mb-2">Combat Food Inflation Together</h2>
+                <p class="text-emerald-100 max-w-2xl mb-6 text-sm md:text-base">
+                    Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.
+                </p>
+
+                <!-- Town Filter Bar -->
+                <div class="flex flex-wrap gap-2 items-center bg-white/10 p-3 rounded-xl backdrop-blur-md mb-3">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 mr-2">Filter Town:</span>
+                    <button onclick="filterTown('All')" id="btn-All" class="filter-btn bg-white text-emerald-900 px-3 py-1.5 rounded-lg text-xs font-bold transition">All Hubs</button>
+                    <button onclick="filterTown('Addis Ababa')" id="btn-Addis Ababa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Addis Ababa</button>
+                    <button onclick="filterTown('Adama')" id="btn-Adama" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Adama</button>
+                    <button onclick="filterTown('Hawassa')" id="btn-Hawassa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Hawassa</button>
+                    <button onclick="filterTown('Bahir Dar')" id="btn-Bahir Dar" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Bahir Dar</button>
+                    <button onclick="filterTown('Jimma')" id="btn-Jimma" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Jimma</button>
+                    <button onclick="filterTown('Wolaita Sodo')" id="btn-Wolaita Sodo" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Wolaita Sodo</button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
-                        <div class="bg-emerald-100 text-emerald-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+
+                <!-- Category Pills Bar (populated by JS) -->
+                <div id="category-pills" class="flex flex-wrap gap-2 items-center"></div>
+            </section>
+
+            <!-- Live Impact & Inflation Fighter Metrics Bar -->
+            <section class="bg-white border border-slate-200 rounded-2xl p-4 md:p-6 shadow-sm">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-emerald-100 text-emerald-800 p-2.5 rounded-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-800 mb-2">Combat Food Inflation</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Pool orders together to unlock wholesale pricing directly from regional farming woredas and beat retail price hikes.</p>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
-                        <div class="bg-teal-100 text-teal-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Avg Retail Savings</p>
+                            <p id="metric-savings" class="text-xl font-extrabold text-slate-800">--%</p>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-800 mb-2">Support Ethiopian Farmers</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Directly connect urban neighborhood distribution hubs to local agricultural producers for fair trade.</p>
                     </div>
-                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
-                        <div class="bg-indigo-100 text-indigo-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-teal-100 text-teal-800 p-2.5 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-800 mb-2">Seamless Group Logistics</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Easily join active community buying pools or launch your own distribution hub in seconds.</p>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Connected Woredas</p>
+                            <p id="metric-woredas" class="text-xl font-extrabold text-slate-800">--</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-indigo-100 text-indigo-800 p-2.5 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Active Pools</p>
+                            <p id="metric-pools" class="text-xl font-extrabold text-slate-800">--</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- About NuroTewedede Section -->
-        <section id="about" class="bg-white border border-slate-200 rounded-2xl p-6 md:p-10 mb-8 shadow-sm">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <!-- Left: Visual Mockup -->
-                <div class="flex justify-center">
-                    <div class="relative w-full max-w-xs">
-                        <div class="bg-slate-900 rounded-[2.5rem] pb-6 shadow-2xl transform">
-                            <div class="bg-slate-800 rounded-[2rem] mx-auto w-[90%] mt-4 h-96 flex flex-col">
-                                <!-- App Bar -->
-                                <div class="bg-slate-950 h-12 rounded-t-[1.75rem] flex items-center px-4 gap-2">
-                                    <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                                    <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                                    <div class="flex-1 h-1.5 bg-slate-700 rounded-full"></div>
-                                </div>
-                                <!-- Screen Content -->
-                                <div class="flex-1 px-4 py-3 space-y-3 overflow-y-auto">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex-shrink-0 flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-white font-semibold text-xs">Teff (White Gojjam)</p>
-                                            <p class="text-slate-400 text-[10px]">Gojjam Woreda</p>
-                                        </div>
-                                        <div class="bg-amber-500 text-[10px] font-bold px-1.5 py-0.5 rounded">50%</div>
-                                    </div>
-                                    <div class="bg-slate-800 h-14 rounded-lg flex items-center gap-3 px-3">
-                                        <div class="w-8 h-8 bg-emerald-700 rounded"></div>
-                                        <div class="flex-1">
-                                            <p class="text-white font-semibold text-xs">Red Onion - 25kg</p>
-                                            <div class="w-full bg-slate-700 h-1.5 rounded-full mt-1"><div class="bg-emerald-600 h-full w-3/4 rounded-full"></div></div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-slate-800 h-14 rounded-lg flex items-center gap-3 px-3">
-                                        <div class="w-8 h-8 bg-teal-700 rounded"></div>
-                                        <div class="flex-1">
-                                            <p class="text-white font-semibold text-xs">Sidamo Coffee - 10kg</p>
-                                            <div class="w-full bg-slate-700 h-1.5 rounded-full mt-1"><div class="bg-emerald-600 h-full w-1/2 rounded-full"></div></div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-slate-800 h-14 rounded-lg flex items-center gap-3 px-3">
-                                        <div class="w-8 h-8 bg-indigo-700 rounded"></div>
-                                        <div class="flex-1">
-                                            <p class="text-white font-semibold text-xs">Barley Bulk - 40kg</p>
-                                            <div class="w-full bg-slate-700 h-1.5 rounded-full mt-1"><div class="bg-amber-500 h-full w-full rounded-full"></div></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <!-- Pool Cards Section Grid -->
+            <section class="bg-white border border-slate-200 rounded-2xl p-4 md:p-6 shadow-sm">
+                <div class="mb-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-slate-800">Active Group Pools</h3>
+                    <span id="pool-count" class="text-xs text-slate-500 font-medium">Showing all pools</span>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-3 md:p-4 mb-6 shadow-sm">
+                    <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+                        <div class="relative w-full md:w-96">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </span>
+                            <input type="text" id="search-input" placeholder="Search produce, category or woreda..." class="w-full border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                         </div>
-                        <!-- Floating badge -->
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-3 py-1.5 rounded-full shadow-lg text-xs font-semibold">
-                            Regional Produce
+                        <div class="flex items-center gap-2 w-full md:w-auto">
+                            <label for="sort-select" class="text-xs font-bold text-slate-600 uppercase tracking-wider whitespace-nowrap">Sort By:</label>
+                            <select id="sort-select" class="border border-slate-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none w-full md:w-auto">
+                                <option value="default">Default</option>
+                                <option value="savings">Highest Savings %</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <option value="progress">Funding Progress</option>
+                            </select>
                         </div>
                     </div>
+                    <div id="search-status" class="hidden mt-2 text-xs text-slate-500 font-medium"></div>
                 </div>
-                <!-- Right: About Content -->
+
+                <div id="pools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Dynamic Cards Populated via JavaScript -->
+                </div>
+            </section>
+
+            <!-- What We Do Section -->
+            <section id="service" class="py-12 md:py-16 bg-slate-50">
                 <div>
-                    <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">About NuroTewedede</span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-4">NuroTewedede: A lifeline for farmers, a game-changer for buyers.</h2>
-                    <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
-                        Built on the power of social commerce, NuroTewedede bridges regional farming woredas and urban neighborhoods to transform access to essential goods. We cut out exploitative middlemen, channeling wholesale pricing directly from producers to communities. For farmers, this means fair compensation and expanded market reach across Ethiopia's major hubs. For buyers, it means up to 35% savings on everyday staples while supporting the livelihoods of local producers. Together, we're building a more equitable and resilient food ecosystem.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#what-we-do" onclick="event.preventDefault(); document.getElementById('what-we-do').scrollIntoView({ behavior: 'smooth', block: 'start' });" class="inline-block bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-800 transition shadow">
-                            Learn More
-                        </a>
+                    <div class="text-center mb-10">
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">What We Do</span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-3">We're passionate about bringing communities together through group buying</h2>
+                        <p class="text-slate-500 max-w-2xl mx-auto text-sm md:text-base">NuroTewedede empowers neighborhoods across Ethiopia to access affordable produce, support local farmers, and build resilient food systems through collective purchasing power.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                            <div class="bg-emerald-100 text-emerald-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">Combat Food Inflation</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">Pool orders together to unlock wholesale pricing directly from regional farming woredas and beat retail price hikes.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                            <div class="bg-teal-100 text-teal-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">Support Ethiopian Farmers</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">Directly connect urban neighborhood distribution hubs to local agricultural producers for fair trade.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                            <div class="bg-indigo-100 text-indigo-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">Seamless Group Logistics</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">Easily join active community buying pools or launch your own distribution hub in seconds.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About NuroTewedede Section -->
+            <section id="about" class="bg-white border border-slate-200 rounded-2xl p-6 md:p-10 shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="flex justify-center">
+                        <div class="relative w-full max-w-xs">
+                            <div class="bg-slate-900 rounded-[2.5rem] pb-6 shadow-2xl transform">
+                                <div class="bg-slate-800 rounded-[2rem] mx-auto w-[90%] mt-4 h-96 flex flex-col">
+                                    <div class="bg-slate-950 h-12 rounded-t-[1.75rem] flex items-center px-4 gap-2">
+                                        <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                        <div class="flex-1 h-1.5 bg-slate-700 rounded-full"></div>
+                                    </div>
+                                    <div class="flex-1 px-4 py-3 space-y-3 overflow-y-auto">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-emerald-600 rounded-lg flex-shrink-0 flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="text-white font-semibold text-xs">Teff (White Gojjam)</p>
+                                                <p class="text-slate-400 text-[10px]">Gojjam Woreda</p>
+                                            </div>
+                                            <div class="bg-amber-500 text-[10px] font-bold px-1.5 py-0.5 rounded">50%</div>
+                                        </div>
+                                        <div class="bg-slate-800 h-14 rounded-lg flex items-center gap-3 px-3">
+                                            <div class="w-8 h-8 bg-emerald-700 rounded"></div>
+                                            <div class="flex-1">
+                                                <p class="text-white font-semibold text-xs">Red Onion - 25kg</p>
+                                                <div class="w-full bg-slate-700 h-1.5 rounded-full mt-1"><div class="bg-emerald-600 h-full w-3/4 rounded-full"></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-800 h-14 rounded-lg flex items-center gap-3 px-3">
+                                            <div class="w-8 h-8 bg-teal-700 rounded"></div>
+                                            <div class="flex-1">
+                                                <p class="text-white font-semibold text-xs">Sidamo Coffee - 10kg</p>
+                                                <div class="w-full bg-slate-700 h-1.5 rounded-full mt-1"><div class="bg-emerald-600 h-full w-1/2 rounded-full"></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-800 h-14 rounded-lg flex items-center gap-3 px-3">
+                                            <div class="w-8 h-8 bg-indigo-700 rounded"></div>
+                                            <div class="flex-1">
+                                                <p class="text-white font-semibold text-xs">Barley Bulk - 40kg</p>
+                                                <div class="w-full bg-slate-700 h-1.5 rounded-full mt-1"><div class="bg-amber-500 h-full w-full rounded-full"></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-3 py-1.5 rounded-full shadow-lg text-xs font-semibold">
+                                Regional Produce
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">About NuroTewedede</span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-4">NuroTewedede: A lifeline for farmers, a game-changer for buyers.</h2>
+                        <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-4">
+                            Built on the power of social commerce, NuroTewedede bridges regional farming woredas and urban neighborhoods to transform access to essential goods. We cut out exploitative middlemen, channeling wholesale pricing directly from producers to communities. For farmers, this means fair compensation and expanded market reach across Ethiopia's major hubs. For buyers, it means up to 35% savings on everyday staples while supporting the livelihoods of local producers. Together, we're building a more equitable and resilient food ecosystem.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section id="how-it-works" class="py-12 md:py-16 bg-slate-50">
+                <div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                        <div>
+                            <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">How it works</span>
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-6">Add to your cart, leave the rest to us</h2>
+                            <div class="space-y-5">
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-sm font-bold">1</div>
+                                    <div>
+                                        <h3 class="text-base font-bold text-slate-800 mb-1">Create a group or pool</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">Create a group or pool on NuroTewedede to unlock wholesale fair pricing.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-sm font-bold">2</div>
+                                    <div>
+                                        <h3 class="text-base font-bold text-slate-800 mb-1">Invite your community</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed mb-2">Invite neighbors, friends, or family by sharing the product link.</p>
+                                        <div class="bg-slate-900 text-emerald-400 font-mono text-sm px-4 py-2 rounded-lg inline-flex items-center gap-2">
+                                            <span>Time left:</span>
+                                            <span id="countdown-timer">00 : 20 : 56 : 40</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-sm font-bold">3</div>
+                                    <div>
+                                        <h3 class="text-base font-bold text-slate-800 mb-1">Lock and save</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">Once the group reaches the required participant threshold, the bulk order from the regional woredas is locked and placed at a deep discount.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="relative w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-emerald-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-xl flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        </div>
+                                        <p class="text-xs font-bold text-slate-800">Agricultural Sourcing</p>
+                                        <p class="text-[10px] text-slate-500">Direct from regional woredas</p>
+                                    </div>
+                                    <div class="bg-teal-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 bg-teal-100 text-teal-800 rounded-xl flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                        </div>
+                                        <p class="text-xs font-bold text-slate-800">Local Logistics</p>
+                                        <p class="text-[10px] text-slate-500">Community hub delivery</p>
+                                    </div>
+                                    <div class="bg-indigo-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 bg-indigo-100 text-indigo-800 rounded-xl flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                        </div>
+                                        <p class="text-xs font-bold text-slate-800">Group Pooling</p>
+                                        <p class="text-[10px] text-slate-500">Shared wholesale savings</p>
+                                    </div>
+                                    <div class="bg-amber-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
+                                        <div class="w-10 h-10 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                                        </div>
+                                        <p class="text-xs font-bold text-slate-800">Community Delivery</p>
+                                        <p class="text-[10px] text-slate-500">Fair trade to your door</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- ==================== VIEW: SAVINGS CALCULATOR ==================== -->
+        <section id="view-calculator" class="view-section hidden bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+                <div>
+                    <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-2">Interactive Inflation Fighter</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Neighborhood Family Savings Calculator</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Compare local retail market prices with NuroTewedede direct woreda wholesale group rates.</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 p-1.5 rounded-2xl flex items-center gap-1">
+                    <span class="text-[11px] font-bold text-slate-500 px-2 uppercase">Family Size:</span>
+                    <button class="calc-family-btn px-3 py-1 rounded-xl text-xs font-bold transition" data-size="2">2 People</button>
+                    <button class="calc-family-btn px-3 py-1 rounded-xl text-xs font-bold transition" data-size="4">4 People</button>
+                    <button class="calc-family-btn px-3 py-1 rounded-xl text-xs font-bold transition" data-size="6">6 People</button>
+                    <button class="calc-family-btn px-3 py-1 rounded-xl text-xs font-bold transition" data-size="8">8 People</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-5">
+                    <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Adjust Monthly Produce Consumption</h3>
+                    <div id="calc-items" class="space-y-4"></div>
+                </div>
+                <div class="bg-gradient-to-br from-emerald-900 to-teal-950 text-white rounded-3xl p-6 shadow-lg border border-emerald-800/80 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-xs font-bold uppercase">Calculated Impact</span>
+                        <div>
+                            <p class="text-xs text-emerald-200/80 font-bold uppercase tracking-wider">Estimated Monthly Savings</p>
+                            <p class="text-3xl sm:text-4xl font-black text-white mt-1"><span id="calc-monthly-savings">0</span> <span class="text-lg font-bold text-emerald-300">ETB</span></p>
+                            <p class="text-xs text-emerald-300 font-bold mt-1">Save <span id="calc-save-percent">0</span>% compared to market retail!</p>
+                        </div>
+                        <div class="pt-4 border-t border-emerald-800/80 space-y-2 text-xs">
+                            <div class="flex justify-between"><span class="text-emerald-200/70">Local Retail Expense:</span><span class="font-bold text-slate-300 line-through"><span id="calc-retail">0</span> ETB</span></div>
+                            <div class="flex justify-between"><span class="text-emerald-200/70">NuroTewedede Group Cost:</span><span class="font-bold text-emerald-300"><span id="calc-wholesale">0</span> ETB</span></div>
+                            <div class="flex justify-between pt-2 border-t border-emerald-800/60 text-sm font-extrabold text-amber-300"><span>Annual Household Savings:</span><span><span id="calc-annual">0</span> ETB / year</span></div>
+                        </div>
+                        <div class="bg-white/10 p-3 rounded-2xl border border-white/10 text-[11px] text-emerald-100/90 leading-relaxed">
+                            By locking bulk orders with 10–20 neighborhood families, transport costs from farming woredas are divided equally, cutting out speculator markups.
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="py-12 md:py-16 bg-slate-50">
-            <div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                    <!-- Left: Steps -->
-                    <div>
-                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3">How it works</span>
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-6">Add to your cart, leave the rest to us</h2>
-                        <div class="space-y-5">
-                            <div class="flex gap-4">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-sm font-bold">1</div>
-                                <div>
-                                    <h3 class="text-base font-bold text-slate-800 mb-1">Create a group or pool</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed">Create a group or pool on NuroTewedede to unlock wholesale fair pricing.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-sm font-bold">2</div>
-                                <div>
-                                    <h3 class="text-base font-bold text-slate-800 mb-1">Invite your community</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed mb-2">Invite neighbors, friends, or family by sharing the product link.</p>
-                                    <div class="bg-slate-900 text-emerald-400 font-mono text-sm px-4 py-2 rounded-lg inline-flex items-center gap-2">
-                                        <span>Time left:</span>
-                                        <span id="countdown-timer">00 : 20 : 56 : 40</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex gap-4">
-                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center text-sm font-bold">3</div>
-                                <div>
-                                    <h3 class="text-base font-bold text-slate-800 mb-1">Lock and save</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed">Once the group reaches the required participant threshold, the bulk order from the regional woredas is locked and placed at a deep discount.</p>
-                                </div>
+        <!-- ==================== VIEW: AI SUPPLY PLANNER ==================== -->
+        <section id="view-ai" class="view-section hidden bg-white border border-slate-200 rounded-2xl p-4 md:p-6 shadow-sm flex flex-col h-[650px]">
+            <div class="flex items-center gap-3 border-b border-slate-200 pb-4 mb-4">
+                <div class="bg-emerald-800 text-white p-2.5 rounded-2xl shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        NuroTewedede AI Supply Assistant
+                        <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Gemini 2.5 Flash</span>
+                    </h2>
+                    <p class="text-xs text-slate-500">Direct Woreda Sourcing, Storage Guidelines, &amp; Group Buying Calculations</p>
+                </div>
+            </div>
+
+            <div id="ai-chips" class="flex items-center gap-2 overflow-x-auto pb-2 mb-3"></div>
+
+            <div id="ai-messages" class="flex-1 overflow-y-auto space-y-4 pr-1"></div>
+
+            <form id="ai-form" class="mt-4 pt-3 border-t border-slate-200 flex gap-2">
+                <input type="text" id="ai-input" placeholder="Ask AI about bulk produce quantities, Gojjam Teff prices, or storage tips..." class="flex-1 bg-slate-50 border border-slate-300 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <button type="submit" id="ai-send-btn" class="bg-emerald-800 hover:bg-emerald-700 disabled:bg-slate-300 text-white p-3 rounded-2xl transition shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                </button>
+            </form>
+        </section>
+
+        <!-- ==================== VIEW: HUB MAP ==================== -->
+        <section id="view-hubs" class="view-section hidden bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+                <div>
+                    <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-2">Woreda-to-Hub Supply Network</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Ethiopian Direct Sourcing Map &amp; Hub Locator</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Track produce movement directly from farm cooperatives to neighborhood distribution points.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="space-y-3">
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Select Neighborhood Distribution Hub</h3>
+                    <div id="hub-list" class="space-y-2"></div>
+                </div>
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="relative bg-slate-950 rounded-3xl h-80 sm:h-96 border border-slate-800 p-4 overflow-hidden shadow-inner flex flex-col justify-between">
+                        <svg class="absolute inset-0 w-full h-full opacity-15 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                                    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#10b981" strokeWidth="0.5" />
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#grid)" />
+                        </svg>
+                        <div class="relative z-10 flex justify-between items-center text-xs font-bold text-slate-300 bg-slate-900/80 backdrop-blur-md p-3 rounded-2xl border border-slate-800">
+                            <span class="flex items-center gap-1.5 text-emerald-400">Live Corridor Tracking: Ethiopia</span>
+                            <span>Hub: <span id="hub-town">Addis Ababa</span></span>
+                        </div>
+                        <div id="hub-map-nodes" class="relative z-10 w-full h-full"></div>
+                        <div class="relative z-10 bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl border border-slate-800 flex items-center justify-between text-xs text-slate-300">
+                            <div class="flex items-center gap-2">
+                                <span class="animate-bounce">🚚</span>
+                                <span>Primary Sourcing Unions: <strong id="hub-woredas" class="text-white"></strong></span>
                             </div>
                         </div>
                     </div>
-                    <!-- Right: Visual Graphic -->
-                    <div class="flex justify-center">
-                        <div class="relative w-full bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-emerald-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                                    <div class="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-xl flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    </div>
-                                    <p class="text-xs font-bold text-slate-800">Agricultural Sourcing</p>
-                                    <p class="text-[10px] text-slate-500">Direct from regional woredas</p>
-                                </div>
-                                <div class="bg-teal-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                                    <div class="w-10 h-10 bg-teal-100 text-teal-800 rounded-xl flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                    </div>
-                                    <p class="text-xs font-bold text-slate-800">Local Logistics</p>
-                                    <p class="text-[10px] text-slate-500">Community hub delivery</p>
-                                </div>
-                                <div class="bg-indigo-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                                    <div class="w-10 h-10 bg-indigo-100 text-indigo-800 rounded-xl flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                                    </div>
-                                    <p class="text-xs font-bold text-slate-800">Group Pooling</p>
-                                    <p class="text-[10px] text-slate-500">Shared wholesale savings</p>
-                                </div>
-                                <div class="bg-amber-50 rounded-2xl p-4 flex flex-col items-center text-center gap-2">
-                                    <div class="w-10 h-10 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                                    </div>
-                                    <p class="text-xs font-bold text-slate-800">Community Delivery</p>
-                                    <p class="text-[10px] text-slate-500">Fair trade to your door</p>
-                                </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                        <h4 id="hub-name" class="text-sm font-extrabold text-slate-900"></h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
+                            <div>
+                                <span class="text-slate-400 font-bold block">Hub Address:</span>
+                                <p id="hub-address" class="font-semibold text-slate-800"></p>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 font-bold block">Direct Woreda Links:</span>
+                                <p id="hub-origins" class="font-semibold text-emerald-700"></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- ==================== VIEW: MY SHARES ==================== -->
+        <section id="view-myshares" class="view-section hidden bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-extrabold text-slate-900">My Reserved Shares &amp; Pickup Vouchers</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Show these QR ticket vouchers to your neighborhood hub coordinator when picking up produce.</p>
+            </div>
+            <div id="my-shares-empty" class="hidden text-center py-12 text-slate-400 space-y-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-slate-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 17m2 0a2 2 0 110-4 2 2 0 010 4zm12 0a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                <p class="text-sm font-semibold">You haven't reserved any pool shares yet.</p>
+                <button onclick="showTab('pools')" class="bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-emerald-700 transition">Browse Active Group Pools</button>
+            </div>
+            <div id="my-shares-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </section>
     </main>
 
     <!-- Create Pool Modal Form -->
     <div id="pool-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
             <h3 class="text-xl font-bold text-slate-800 mb-4">Launch a New Buying Pool</h3>
             <form id="create-form" onsubmit="handleCreatePool(event)" class="space-y-4">
                 <div>
@@ -350,6 +523,16 @@
                     <input type="text" id="item-name" required placeholder="e.g. Teff (White Gojjam) - 50kg" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Category</label>
+                        <select id="item-category" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            <option value="Grains & Teff">Grains &amp; Teff</option>
+                            <option value="Vegetables">Vegetables</option>
+                            <option value="Coffee & Spices">Coffee &amp; Spices</option>
+                            <option value="Oil & Pulses">Oil &amp; Pulses</option>
+                            <option value="Fruits">Fruits</option>
+                        </select>
+                    </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Town / Hub</label>
                         <select id="item-town" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
@@ -359,22 +542,41 @@
                             <option value="Bahir Dar">Bahir Dar</option>
                             <option value="Jimma">Jimma</option>
                             <option value="Wolaita Sodo">Wolaita Sodo</option>
+                            <option value="Gondar">Gondar</option>
                         </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Price per Share (ETB)</label>
-                        <input type="number" id="item-price" required placeholder="1250" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Shares</label>
-                        <input type="number" id="item-target" required placeholder="20" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
-                    </div>
-                    <div>
                         <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Woreda Origin</label>
                         <input type="text" id="item-woreda" required placeholder="e.g. Debre Markos" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                     </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Packaging Unit</label>
+                        <input type="text" id="item-unit" placeholder="e.g. 50 kg Bag" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Wholesale ETB</label>
+                        <input type="number" id="item-price" required placeholder="1250" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Retail ETB</label>
+                        <input type="number" id="item-retail" placeholder="auto (45% markup)" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Target Shares</label>
+                        <input type="number" id="item-target" required placeholder="20" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Pickup Hub Location</label>
+                    <input type="text" id="item-hub" placeholder="e.g. Bole Megenagna Hub #2" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Organizer Name / Group Leader</label>
+                    <input type="text" id="item-organizer" placeholder="e.g. Abebe Tadesse (Kebele Coordinator)" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 text-slate-600 text-sm font-semibold hover:bg-slate-100 rounded-lg transition">Cancel</button>
@@ -382,6 +584,16 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <!-- Reserve Modal -->
+    <div id="reserve-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div id="reserve-modal-card" class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative"></div>
+    </div>
+
+    <!-- Pool Details Modal -->
+    <div id="details-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div id="details-modal-card" class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative"></div>
     </div>
 
     <!-- Auth Modal Container -->
@@ -395,8 +607,7 @@
                     </svg>
                 </button>
             </div>
-            
-            <!-- Tab Switcher -->
+
             <div class="flex border-b border-slate-200 mb-4">
                 <button id="auth-tab-signin" type="button" class="flex-1 pb-2 text-center text-sm font-bold border-b-2 border-emerald-600 text-emerald-800" onclick="toggleAuthMode(false)">Sign In</button>
                 <button id="auth-tab-signup" type="button" class="flex-1 pb-2 text-center text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800" onclick="toggleAuthMode(true)">Create Account</button>
@@ -417,13 +628,23 @@
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-emerald-900 text-white border border-emerald-700 px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
+
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-12">
-        <p>NuroTewedede Prototype • Designed for Community Group Buying</p>
+    <footer class="bg-slate-900 text-slate-400 py-8 px-4 text-center text-xs mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-white font-bold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                NuroTewedede Ethiopia
+            </div>
+            <p>© 2026 NuroTewedede Direct Sourcing Platform • Neighborhood Group Buying Network</p>
+            <div class="flex items-center gap-3 text-slate-400">
+                <span>Addis Ababa</span> • <span>Adama</span> • <span>Hawassa</span> • <span>Bahir Dar</span> • <span>Jimma</span>
+            </div>
+        </div>
     </footer>
 
-    <!-- Supabase SDK CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- JavaScript Link -->
     <script src="script.js"></script>
 </body>
