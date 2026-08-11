@@ -398,7 +398,7 @@ Give practical, warm, well-structured, and helpful advice on:
 Keep formatting clean with bullet points and bold highlights. Always be encouraging, practical, and culturally authentic.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.6-flash',
       contents: prompt,
       config: {
         systemInstruction: systemInstruction,
