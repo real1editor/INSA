@@ -108,7 +108,10 @@ function normalizePool(p) {
 
 function api(path, options = {}) {
     const token = localStorage.getItem('sb-access-token');
-    return fetch('http://localhost:5000' + path, {
+    const base = (window.location.origin && window.location.origin !== 'null')
+        ? window.location.origin
+        : 'http://localhost:5000';
+    return fetch(base + path, {
         headers: {
             'Content-Type': 'application/json',
             ...(token ? { Authorization: 'Bearer ' + token } : {}),
@@ -124,6 +127,11 @@ function api(path, options = {}) {
             throw err;
         }
         return body;
+    }).catch((err) => {
+        if (err instanceof TypeError) {
+            throw new Error('Cannot reach the server. Make sure the backend is running (npm start in the backend folder).');
+        }
+        throw err;
     });
 }
 
@@ -252,6 +260,9 @@ async function fetchPools() {
     } catch (err) {
         console.error('Error fetching pools:', err.message);
         pools = [];
+        if (/Cannot reach the server/.test(err.message)) {
+            showToast(err.message, true);
+        }
     }
     try {
         renderCategoryPills();
@@ -891,7 +902,7 @@ function renderAiChips() {
     const chips = document.getElementById('ai-chips');
     if (!chips) return;
     chips.innerHTML = AI_QUICK_PROMPTS.map(function (qp) {
-        return '<button onclick="sendQuickPrompt(this)" disabled="' + aiLoading + '" data-prompt="' + esc(qp) + '" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 text-xs font-semibold whitespace-nowrap transition border border-slate-200 disabled:opacity-50">💡 ' + esc(qp) + '</button>';
+        return '<button onclick="sendQuickPrompt(this)"' + (aiLoading ? ' disabled' : '') + ' data-prompt="' + esc(qp) + '" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 text-xs font-semibold whitespace-nowrap transition border border-slate-200 disabled:opacity-50">💡 ' + esc(qp) + '</button>';
     }).join('');
 }
 
@@ -1095,13 +1106,23 @@ async function handleAuthSubmit(e) {
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
     const message = document.getElementById('auth-message');
+    const isSignup = authMode === 'signup';
 
     try {
-        const endpoint = authMode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
+        const endpoint = isSignup ? '/api/auth/signup' : '/api/auth/login';
         const data = await api(endpoint, {
             method: 'POST',
             body: JSON.stringify({ email: email, password: password }),
         });
+        if (isSignup && !data.session) {
+            e.target.reset();
+            if (message) {
+                message.textContent = 'Account created! Check your email to confirm your account, then sign in.';
+                message.className = 'text-sm font-medium p-3 rounded-lg text-center bg-emerald-50 text-emerald-700';
+                message.classList.remove('hidden');
+            }
+            return;
+        }
         if (data.session && data.session.access_token) {
             localStorage.setItem('sb-access-token', data.session.access_token);
         }
@@ -1109,7 +1130,7 @@ async function handleAuthSubmit(e) {
         updateAuthUI();
         closeAuthModal();
         e.target.reset();
-        showToast(authMode === 'signup' ? 'Account created successfully!' : 'Signed in successfully!');
+        showToast(isSignup ? 'Account created successfully!' : 'Signed in successfully!');
     } catch (err) {
         if (message) {
             message.textContent = err.message;

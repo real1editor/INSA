@@ -422,6 +422,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Central error handler: return JSON for any unhandled error (Express 5 forwards async rejections here)
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`NuroTewedede backend running on http://localhost:${PORT}`);
