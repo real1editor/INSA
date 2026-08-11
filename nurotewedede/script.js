@@ -108,31 +108,51 @@ function normalizePool(p) {
 
 function api(path, options = {}) {
     const token = localStorage.getItem('sb-access-token');
-    const base = (window.location.origin && window.location.origin !== 'null')
+    const origin = (window.location.origin && window.location.origin !== 'null')
         ? window.location.origin
         : 'http://localhost:5000';
-    return fetch(base + path, {
-        headers: {
-            'Content-Type': 'application/json',
-            ...(token ? { Authorization: 'Bearer ' + token } : {}),
-        },
-        credentials: 'include',
-        ...options,
-    }).then(async (r) => {
-        let body = {};
-        try { body = await r.json(); } catch (e) { /* non-JSON */ }
-        if (!r.ok) {
-            const err = new Error(body.error || 'Request failed');
-            err.status = r.status;
+    // Try the page's own origin first (normal setup: Express serves the site),
+    // then fall back to the default backend port for Live Server / file:// setups.
+    const bases = ['http://localhost:5000'];
+    if (origin !== 'http://localhost:5000') bases.unshift(origin);
+
+    function request(base) {
+        return fetch(base + path, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: 'Bearer ' + token } : {}),
+            },
+            credentials: 'include',
+            ...options,
+        }).then(async (r) => {
+            let body = {};
+            let jsonOk = true;
+            try { body = await r.json(); } catch (e) { jsonOk = false; }
+            // The backend always answers /api routes with JSON. If the page is being
+            // served from another origin (Live Server, another port) that answered
+            // with HTML, treat it as a failed request and fall back to the real backend.
+            if (!r.ok || !jsonOk) {
+                const err = new Error(jsonOk ? (body.error || 'Request failed') : 'Server answered with HTML instead of JSON');
+                err.status = r.status;
+                err.serverReached = jsonOk;
+                throw err;
+            }
+            return body;
+        });
+    }
+
+    function attempt(index) {
+        return request(bases[index]).catch(function (err) {
+            const shouldRetry = (err instanceof TypeError || !err.serverReached) && index < bases.length - 1;
+            if (shouldRetry) return attempt(index + 1);
+            if (err instanceof TypeError || !err.serverReached) {
+                throw new Error('Cannot reach the server. Make sure the backend is running (npm start in the project folder).');
+            }
             throw err;
-        }
-        return body;
-    }).catch((err) => {
-        if (err instanceof TypeError) {
-            throw new Error('Cannot reach the server. Make sure the backend is running (npm start in the project folder).');
-        }
-        throw err;
-    });
+        });
+    }
+
+    return attempt(0);
 }
 
 // ---------- Toast ----------
