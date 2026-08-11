@@ -109,9 +109,10 @@ const CATEGORY_L10N = {
 
 const I18N = {
     en: {
-        'nav.pools': 'Active Pools', 'nav.calculator': 'Savings Calculator', 'nav.ai': 'NuroAI Assistant',
+        'nav.pools': 'Active Pools', 'nav.calculator': 'Savings Calculator',
         'nav.hubs': 'Hub Map', 'nav.myshares': 'My Reserved Shares', 'nav.bulk': 'Bulk & Institutional',
         'nav.signin': 'Sign In', 'nav.signout': 'Sign Out', 'nav.launch': '+ Launch a Pool', 'nav.townHub': 'Town Hub:',
+        'nav.menu': 'Menu', 'nav.home': 'Home', 'nav.service': 'Service', 'nav.about': 'About Us', 'nav.how': 'How it works',
         'ticker.label': 'Live Prices',
         'hero.title': 'Combat Food Inflation Together',
         'hero.subtitle': 'Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.',
@@ -264,9 +265,10 @@ const I18N = {
         'toast.bulkSubmitted': 'Bulk inquiry {0} submitted! Our woreda sourcing team will contact you within 24 hours.'
     },
     am: {
-        'nav.pools': 'ንቁ ግዢዎች', 'nav.calculator': 'የቁጠባ ካልኩሌተር', 'nav.ai': 'የNuroAI ረዳት',
+        'nav.pools': 'ንቁ ግዢዎች', 'nav.calculator': 'የቁጠባ ካልኩሌተር',
         'nav.hubs': 'የማዕከላት ካርታ', 'nav.myshares': 'የእኔ የተያዙ አክሲዮኖች', 'nav.bulk': 'የጅምላ እና ተቋማዊ',
         'nav.signin': 'ግባ', 'nav.signout': 'ውጣ', 'nav.launch': '+ ግዢ ጀምር', 'nav.townHub': 'የከተማ ማዕከል:',
+        'nav.menu': 'ምናሌ', 'nav.home': 'መነሻ', 'nav.service': 'አገልግሎቶች', 'nav.about': 'ስለ እኛ', 'nav.how': 'እንዴት እንደሚሰራ',
         'ticker.label': 'የቀጥታ ዋጋዎች',
         'hero.title': 'የምግብ ዋጋ ንረትን አብረን እንዋጋ',
         'hero.subtitle': 'የክልል እርሻ ምርቶችን በቀጥታ ለአካባቢው የስርጭት ማዕከላት በማገናኘት ለማህበረሰቡ የጅምላ ዋጋ ማስጠበቅ',
@@ -419,9 +421,10 @@ const I18N = {
         'toast.bulkSubmitted': 'የጅምላ ጥያቄ {0} ገብቷል! የወረዳ አቅርቦት ቡድናችን በ24 ሰዓት ውስጥ ያነጋግርዎታል።'
     },
     om: {
-        'nav.pools': 'Bituuwwan Ijoo', 'nav.calculator': 'Herrega Qusannaa', 'nav.ai': 'Gargaaraa NuroAI',
+        'nav.pools': 'Bituuwwan Ijoo', 'nav.calculator': 'Herrega Qusannaa',
         'nav.hubs': 'Maapa Buufataa', 'nav.myshares': 'Qooda Koo Bakka Buufame', 'nav.bulk': 'Waldaa fi Dhaabbataa',
         'nav.signin': 'Seeni', 'nav.signout': 'Ba\'i', 'nav.launch': '+ Bituu Jalqabi', 'nav.townHub': 'Buufata Magaalaa:',
+        'nav.menu': 'Menu', 'nav.home': 'Mana', 'nav.service': 'Tajaajila', 'nav.about': 'Waa\'ee Nu', 'nav.how': 'Akkamitti hojjata',
         'ticker.label': 'Gatii Diinqaa',
         'hero.title': 'Gubbattii Nyaataa Waliin Haalollu',
         'hero.subtitle': 'Oomisha qonnaa naannootti kallattiin buufataa raabsaatti wal qunnamsiisuun gatii daldala gurguddaa hawaasni argatu',
@@ -630,6 +633,38 @@ function closeLangDropdown() {
     const btn = document.getElementById('lang-dropdown-btn');
     if (menu) menu.classList.add('hidden');
     if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function toggleMenuDropdown(e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('menu-dropdown-menu');
+    const btn = document.getElementById('menu-dropdown-btn');
+    if (!menu) return;
+    const open = menu.classList.toggle('hidden');
+    if (btn) btn.setAttribute('aria-expanded', String(!open));
+}
+
+function closeMenuDropdown() {
+    const menu = document.getElementById('menu-dropdown-menu');
+    const btn = document.getElementById('menu-dropdown-btn');
+    if (menu) menu.classList.add('hidden');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function handleMenuAction(menu) {
+    closeMenuDropdown();
+    const scrollTargets = { home: 'home', service: 'service', about: 'about', how: 'how-it-works' };
+    if (menu === 'home') {
+        showTab('pools');
+    } else if (menu === 'service' || menu === 'about' || menu === 'how') {
+        showTab('pools');
+        setTimeout(function () {
+            const el = document.getElementById(scrollTargets[menu]);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+    } else {
+        showTab(menu);
+    }
 }
 
 function applyI18n() {
@@ -1995,8 +2030,8 @@ function populateTownSelects() {
     const mSelect = document.getElementById('town-select-mobile');
     const formSelect = document.getElementById('item-town');
     const bulkSelect = document.getElementById('bulk-town');
-    const prevD = dSelect ? dSelect.value : 'All';
-    const prevM = mSelect ? mSelect.value : 'All';
+    const prevD = dSelect ? (dSelect.value || 'All') : 'All';
+    const prevM = mSelect ? (mSelect.value || 'All') : 'All';
     const prevF = formSelect ? formSelect.value : '';
     const prevB = bulkSelect ? bulkSelect.value : '';
 
@@ -2025,6 +2060,12 @@ function init() {
     document.querySelectorAll('.tab-btn, .mobile-tab-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
             if (btn.dataset.tab) showTab(btn.dataset.tab);
+        });
+    });
+
+    document.querySelectorAll('.menu-item').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            if (btn.dataset.menu) handleMenuAction(btn.dataset.menu);
         });
     });
 
@@ -2080,11 +2121,17 @@ function init() {
         if (langDD && langMenu && !langMenu.classList.contains('hidden') && !langDD.contains(e.target)) {
             closeLangDropdown();
         }
+        const menuDD = document.getElementById('menu-dropdown');
+        const menuMenu = document.getElementById('menu-dropdown-menu');
+        if (menuDD && menuMenu && !menuMenu.classList.contains('hidden') && !menuDD.contains(e.target)) {
+            closeMenuDropdown();
+        }
     });
 
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             closeLangDropdown();
+            closeMenuDropdown();
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
         }
