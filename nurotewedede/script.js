@@ -13,6 +13,21 @@ let activeTab = 'pools';
 let myReservations = [];
 let toastTimer = null;
 
+// Ethiopian towns (canonical names) for the town filter dropdowns,
+// compiled from the expanded regional list of major cities & prominent towns.
+const ETHIOPIAN_TOWNS = [
+    'Addis Ababa', 'Adama', 'Adigrat', 'Adwa', 'Alamata', 'Ambo',
+    'Arba Minch', 'Asaita', 'Asella', 'Assosa', 'Awash', 'Axum',
+    'Bahir Dar', 'Bale Robe', 'Bedele', 'Bishoftu', 'Bonga', 'Burayu',
+    'Debre Birhan', 'Debre Markos', 'Debre Sina', 'Debre Tabor', 'Degehabur',
+    'Dessie', 'Dilla', 'Dire Dawa', 'Finote Selam', 'Gambela', 'Goba',
+    'Gode', 'Gondar', 'Hawassa', 'Hossana', 'Jijiga', 'Jimma', 'Jinka',
+    'Kebri Dahar', 'Kombolcha', 'Lalibela', 'Logiya', 'Mekelle', 'Metekel',
+    'Metu', 'Mizan Teferi', 'Nekemte', 'Sawla', 'Semera', 'Shashemene',
+    'Shire', 'Sululta', 'Waliso', 'Warder', 'Wolaita Sodo', 'Woldiya',
+    'Worabe', 'Yirgalem'
+];
+
 let reserveState = { pool: null, shares: 1, payment: 'telebirr' };
 let detailsState = { pool: null, comments: [] };
 
@@ -246,13 +261,6 @@ function setTown(town) {
     const mSelect = document.getElementById('town-select-mobile');
     if (dSelect) dSelect.value = town;
     if (mSelect) mSelect.value = town;
-    document.querySelectorAll('.filter-btn').forEach(function (btn) {
-        btn.className = "filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition";
-    });
-    const activeBtn = document.getElementById('btn-' + town);
-    if (activeBtn) {
-        activeBtn.className = "filter-btn bg-white text-emerald-900 px-3 py-1.5 rounded-lg text-xs font-bold transition";
-    }
     renderPools();
 }
 
@@ -885,6 +893,7 @@ function selectHub(id) {
 
 function renderMarkdown(text) {
     return esc(text)
+        .replace(/^#{1,4}\s*(.+)$/gm, '<strong>$1</strong>')
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 }
 
@@ -1214,9 +1223,33 @@ function initCountdown() {
 
 // ---------- Boot ----------
 
+function populateTownSelects() {
+    const dSelect = document.getElementById('town-select');
+    const mSelect = document.getElementById('town-select-mobile');
+    const formSelect = document.getElementById('item-town');
+    const prevD = dSelect ? dSelect.value : 'All';
+    const prevM = mSelect ? mSelect.value : 'All';
+    const prevF = formSelect ? formSelect.value : '';
+
+    const optionHtml = ETHIOPIAN_TOWNS.map(function (t) {
+        return '<option value="' + esc(t) + '">' + esc(t) + '</option>';
+    }).join('');
+
+    [dSelect, mSelect].forEach(function (sel) {
+        if (!sel) return;
+        sel.innerHTML = '<option value="All">All Towns / Hubs</option>' + optionHtml;
+    });
+    if (formSelect) formSelect.innerHTML = optionHtml;
+
+    if (dSelect) dSelect.value = prevD;
+    if (mSelect) mSelect.value = prevM;
+    if (formSelect) formSelect.value = prevF;
+}
+
 function init() {
     initTheme();
     initCountdown();
+    populateTownSelects();
 
     document.querySelectorAll('.tab-btn, .mobile-tab-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {

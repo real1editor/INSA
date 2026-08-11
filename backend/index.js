@@ -241,7 +241,13 @@ app.post('/api/pools/:id/reserve', requireAuth, async (req, res) => {
       voucher_code: voucherCode
     }]);
 
-  if (reserveError) return res.status(400).json({ error: 'Could not reserve share: ' + reserveError.message });
+  if (reserveError) {
+    // Migration not run yet: fall back to the minimal columns that exist in the base schema.
+    const retry = await supabase
+      .from('reservations')
+      .insert([{ pool_id: poolId, user_id: userId }]);
+    if (retry.error) return res.status(400).json({ error: 'Could not reserve share: ' + retry.error.message });
+  }
 
   // 3. Increment share count (and lock the pool when it fills up)
   const newShares = current + addedShares;
@@ -316,7 +322,13 @@ app.post('/api/pools/:id/comments', requireAuth, async (req, res) => {
     .select()
     .single();
 
-  if (commentError) return res.status(400).json({ error: commentError.message });
+  if (commentError) {
+    // The comments table does not exist yet if the migration has not been run
+    if (/does not exist|could not find the table|schema cache/i.test(commentError.message)) {
+      return res.status(501).json({ error: 'The community board is not available yet. Run backend/migrations.sql in your Supabase SQL editor to enable comments.' });
+    }
+    return res.status(400).json({ error: commentError.message });
+  }
 
   // Bump the pool comment counter (only when the column exists)
   if (pool && pool.comments_count !== undefined) {
@@ -341,12 +353,19 @@ app.get('/api/reservations/mine', requireAuth, async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  const poolIds = [...new Set((reservations || []).map(r => r.pool_id))];
-  const { data: pools, error: poolError } = await supabase
+  // Prefer the rich column set (available after migrations.sql has been run).
+  let { data: pools, error: poolError } = await supabase
     .from('pools')
     .select('id, title, price, retail_price, unit, town, woreda, hub_location, pickup_date, image_url, category, status');
 
-  if (poolError) return res.status(500).json({ error: poolError.message });
+  // Migration not run yet: fall back to the columns that exist in the base schema.
+  if (poolError) {
+    const { data: basePools, error: baseError } = await supabase
+      .from('pools')
+      .select('id, title, price, retail_price, town, woreda');
+    if (baseError) return res.status(500).json({ error: baseError.message });
+    pools = basePools;
+  }
 
   const poolMap = new Map((pools || []).map(p => [String(p.id), p]));
 

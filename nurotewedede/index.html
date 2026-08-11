@@ -42,17 +42,8 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <!-- Town Selector -->
-                <select id="town-select" class="hidden sm:block bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-2 py-1.5 text-xs font-bold text-white focus:outline-none cursor-pointer">
-                    <option value="All">All Towns / Hubs</option>
-                    <option value="Addis Ababa">Addis Ababa</option>
-                    <option value="Adama">Adama</option>
-                    <option value="Hawassa">Hawassa</option>
-                    <option value="Bahir Dar">Bahir Dar</option>
-                    <option value="Jimma">Jimma</option>
-                    <option value="Wolaita Sodo">Wolaita Sodo</option>
-                    <option value="Gondar">Gondar</option>
-                </select>
+                <!-- Town Selector (options populated by JS) -->
+                <select id="town-select" class="hidden sm:block bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-2 py-1.5 text-xs font-bold text-white focus:outline-none cursor-pointer"></select>
 
                 <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle dark mode">
                     <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -95,16 +86,7 @@
             </div>
             <div class="px-4 py-3 border-t border-emerald-700/60 flex items-center justify-between gap-2">
                 <span class="text-xs text-emerald-200 font-semibold">Town Hub:</span>
-                <select id="town-select-mobile" class="bg-emerald-900 text-xs font-bold text-white px-2 py-1.5 rounded-lg border border-emerald-700 focus:outline-none">
-                    <option value="All">All Towns / Hubs</option>
-                    <option value="Addis Ababa">Addis Ababa</option>
-                    <option value="Adama">Adama</option>
-                    <option value="Hawassa">Hawassa</option>
-                    <option value="Bahir Dar">Bahir Dar</option>
-                    <option value="Jimma">Jimma</option>
-                    <option value="Wolaita Sodo">Wolaita Sodo</option>
-                    <option value="Gondar">Gondar</option>
-                </select>
+                <select id="town-select-mobile" class="bg-emerald-900 text-xs font-bold text-white px-2 py-1.5 rounded-lg border border-emerald-700 focus:outline-none"></select>
             </div>
         </div>
     </header>
@@ -121,18 +103,6 @@
                 <p class="text-emerald-100 max-w-2xl mb-6 text-sm md:text-base">
                     Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.
                 </p>
-
-                <!-- Town Filter Bar -->
-                <div class="flex flex-wrap gap-2 items-center bg-white/10 p-3 rounded-xl backdrop-blur-md mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 mr-2">Filter Town:</span>
-                    <button onclick="filterTown('All')" id="btn-All" class="filter-btn bg-white text-emerald-900 px-3 py-1.5 rounded-lg text-xs font-bold transition">All Hubs</button>
-                    <button onclick="filterTown('Addis Ababa')" id="btn-Addis Ababa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Addis Ababa</button>
-                    <button onclick="filterTown('Adama')" id="btn-Adama" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Adama</button>
-                    <button onclick="filterTown('Hawassa')" id="btn-Hawassa" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Hawassa</button>
-                    <button onclick="filterTown('Bahir Dar')" id="btn-Bahir Dar" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Bahir Dar</button>
-                    <button onclick="filterTown('Jimma')" id="btn-Jimma" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Jimma</button>
-                    <button onclick="filterTown('Wolaita Sodo')" id="btn-Wolaita Sodo" class="filter-btn bg-emerald-900/40 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition">Wolaita Sodo</button>
-                </div>
 
                 <!-- Category Pills Bar (populated by JS) -->
                 <div id="category-pills" class="flex flex-wrap gap-2 items-center"></div>
@@ -535,15 +505,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Town / Hub</label>
-                        <select id="item-town" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
-                            <option value="Addis Ababa">Addis Ababa</option>
-                            <option value="Adama">Adama</option>
-                            <option value="Hawassa">Hawassa</option>
-                            <option value="Bahir Dar">Bahir Dar</option>
-                            <option value="Jimma">Jimma</option>
-                            <option value="Wolaita Sodo">Wolaita Sodo</option>
-                            <option value="Gondar">Gondar</option>
-                        </select>
+                        <select id="item-town" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none"></select>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
@@ -639,9 +601,6 @@
                 NuroTewedede Ethiopia
             </div>
             <p>© 2026 NuroTewedede Direct Sourcing Platform • Neighborhood Group Buying Network</p>
-            <div class="flex items-center gap-3 text-slate-400">
-                <span>Addis Ababa</span> • <span>Adama</span> • <span>Hawassa</span> • <span>Bahir Dar</span> • <span>Jimma</span>
-            </div>
         </div>
     </footer>
 

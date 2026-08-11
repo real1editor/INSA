@@ -22,9 +22,10 @@ ALTER TABLE public.reservations
   ADD COLUMN IF NOT EXISTS voucher_code   TEXT DEFAULT '';
 
 -- 3) COMMUNITY COMMENTS table
+-- NOTE: pools.id is BIGINT in this project (not UUID), so pool_id must be BIGINT.
 CREATE TABLE IF NOT EXISTS public.comments (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  pool_id       UUID REFERENCES public.pools(id) ON DELETE CASCADE,
+  pool_id       BIGINT REFERENCES public.pools(id) ON DELETE CASCADE,
   user_id       UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   user_name     TEXT NOT NULL,
   user_town     TEXT NOT NULL,
