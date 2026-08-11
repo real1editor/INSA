@@ -657,11 +657,9 @@ function handleMenuAction(menu) {
     if (menu === 'home') {
         showTab('pools');
     } else if (menu === 'service' || menu === 'about' || menu === 'how') {
-        showTab('pools');
-        setTimeout(function () {
-            const el = document.getElementById(scrollTargets[menu]);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 80);
+        showTab('pools', true);
+        const el = document.getElementById(scrollTargets[menu]);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
         showTab(menu);
     }
@@ -879,7 +877,7 @@ function initTheme() {
 
 // ---------- Navigation / Tabs ----------
 
-function showTab(tab) {
+function showTab(tab, noScroll) {
     activeTab = tab;
     document.querySelectorAll('.view-section').forEach(function (sec) {
         sec.classList.add('hidden');
@@ -900,7 +898,7 @@ function showTab(tab) {
     if (tab === 'calculator') renderCalculator();
     if (tab === 'hubs') renderHubs();
     if (tab === 'myshares') loadMyShares();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function toggleMobileMenu() {

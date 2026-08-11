@@ -31,27 +31,26 @@
                 </svg>
             </button>
 
-            <!-- Desktop Navigation Tabs -->
+            <!-- Desktop Navigation Menu -->
             <nav id="desktop-nav" class="hidden lg:flex items-center gap-1">
                 <div id="menu-dropdown" class="relative">
-                    <button id="menu-dropdown-btn" onclick="toggleMenuDropdown(event)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition hover:bg-white/10" aria-haspopup="menu" aria-expanded="false" data-i18n="nav.menu">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                        <span>Menu</span>
+                    <button id="menu-dropdown-btn" onclick="toggleMenuDropdown(event)" class="menu-toggle flex flex-col items-center justify-center gap-[5px] w-10 h-10 rounded-xl bg-emerald-900/60 border border-emerald-600/60 text-white hover:bg-emerald-800 hover:border-emerald-500 transition" aria-haspopup="menu" aria-expanded="false" aria-label="Menu">
+                        <span class="menu-line"></span>
+                        <span class="menu-line"></span>
+                        <span class="menu-line"></span>
+                        <span class="sr-only" data-i18n="nav.menu">Menu</span>
                     </button>
-                    <div id="menu-dropdown-menu" class="hidden absolute left-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50" role="menu">
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="home" role="menuitem" data-i18n="nav.home">Home</button>
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="service" role="menuitem" data-i18n="nav.service">Service</button>
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="about" role="menuitem" data-i18n="nav.about">About Us</button>
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="how" role="menuitem" data-i18n="nav.how">How it works</button>
-                        <div class="my-1 border-t border-slate-200"></div>
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="pools" role="menuitem" data-i18n="nav.pools">Active Pools</button>
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="calculator" role="menuitem" data-i18n="nav.calculator">Savings Calculator</button>
-                        <button class="menu-item w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-menu="hubs" role="menuitem" data-i18n="nav.hubs">Hub Map</button>
+                    <div id="menu-dropdown-menu" class="hidden absolute left-0 mt-3 w-60 bg-white border border-slate-200 rounded-2xl shadow-2xl py-2 z-50" role="menu">
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="home" role="menuitem" data-i18n="nav.home">Home</button>
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="service" role="menuitem" data-i18n="nav.service">Service</button>
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="about" role="menuitem" data-i18n="nav.about">About Us</button>
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="how" role="menuitem" data-i18n="nav.how">How it works</button>
+                        <div class="my-1.5 mx-3 border-t border-slate-200"></div>
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="pools" role="menuitem" data-i18n="nav.pools">Active Pools</button>
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="calculator" role="menuitem" data-i18n="nav.calculator">Savings Calculator</button>
+                        <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="hubs" role="menuitem" data-i18n="nav.hubs">Hub Map</button>
                     </div>
                 </div>
-                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-tab="pools" data-i18n="nav.pools">Active Pools</button>
-                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-tab="calculator" data-i18n="nav.calculator">Savings Calculator</button>
-                <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-tab="hubs" data-i18n="nav.hubs">Hub Map</button>
             </nav>
 
             <div class="flex items-center gap-2">

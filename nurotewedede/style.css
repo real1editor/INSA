@@ -187,6 +187,25 @@ header nav a {
     color: #ffffff;
 }
 
+/* ===== Modern hamburger menu toggle ===== */
+.menu-toggle .menu-line {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.menu-toggle[aria-expanded="true"] .menu-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle[aria-expanded="true"] .menu-line:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle[aria-expanded="true"] .menu-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
 /* ===== Language selector dropdown ===== */
 .lang-option-active {
     background-color: #ecfdf5;
