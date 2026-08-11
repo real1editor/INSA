@@ -279,7 +279,9 @@ app.get('/api/pools/:id/comments', async (req, res) => {
 
   if (error) {
     // The comments table does not exist yet if the migration has not been run
-    if (/does not exist/.test(error.message)) return res.json({ comments: [] });
+    if (/does not exist|could not find the table|schema cache/i.test(error.message)) {
+      return res.json({ comments: [] });
+    }
     return res.status(500).json({ error: error.message });
   }
 
