@@ -116,10 +116,46 @@ const I18N = {
         'hero.title': 'Combat Food Inflation Together',
         'hero.subtitle': 'Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.',
         'hero.bulkHint': 'Cafés, schools, hotels & co-ops — 100+ kg monthly',
+        'service.badge': 'What We Do',
+        'service.title': "We're passionate about bringing communities together through group buying",
+        'service.subtitle': 'NuroTewedede empowers neighborhoods across Ethiopia to access affordable produce, support local farmers, and build resilient food systems through collective purchasing power.',
+        'service.card1Title': 'Combat Food Inflation',
+        'service.card1Text': 'Pool orders together to unlock wholesale pricing directly from regional farming woredas and beat retail price hikes.',
+        'service.card2Title': 'Support Ethiopian Farmers',
+        'service.card2Text': 'Directly connect urban neighborhood distribution hubs to local agricultural producers for fair trade.',
+        'service.card3Title': 'Seamless Group Logistics',
+        'service.card3Text': 'Easily join active community buying pools or launch your own distribution hub in seconds.',
+        'about.badge': 'About NuroTewedede',
+        'about.title': 'NuroTewedede: A lifeline for farmers, a game-changer for buyers.',
+        'about.text': "Built on the power of social commerce, NuroTewedede bridges regional farming woredas and urban neighborhoods to transform access to essential goods. We cut out exploitative middlemen, channeling wholesale pricing directly from producers to communities. For farmers, this means fair compensation and expanded market reach across Ethiopia's major hubs. For buyers, it means up to 35% savings on everyday staples while supporting the livelihoods of local producers. Together, we're building a more equitable and resilient food ecosystem.",
+        'about.mockTeff': 'Teff (White Gojjam)',
+        'about.mockGojjam': 'Gojjam Woreda',
+        'about.mockOnion': 'Red Onion - 25kg',
+        'about.mockCoffee': 'Sidamo Coffee - 10kg',
+        'about.mockBarley': 'Barley Bulk - 40kg',
+        'about.mockBadge': 'Regional Produce',
+        'how.badge': 'How it works',
+        'how.title': 'Add to your cart, leave the rest to us',
+        'how.step1Title': 'Create a group or pool',
+        'how.step1Text': 'Create a group or pool on NuroTewedede to unlock wholesale fair pricing.',
+        'how.step2Title': 'Invite your community',
+        'how.step2Text': 'Invite neighbors, friends, or family by sharing the product link.',
+        'how.timeLeft': 'Time left:',
+        'how.step3Title': 'Lock and save',
+        'how.step3Text': 'Once the group reaches the required participant threshold, the bulk order from the regional woredas is locked and placed at a deep discount.',
+        'how.statSourcing': 'Agricultural Sourcing',
+        'how.statSourcingSub': 'Direct from regional woredas',
+        'how.statLogistics': 'Local Logistics',
+        'how.statLogisticsSub': 'Community hub delivery',
+        'how.statGroupPooling': 'Group Pooling',
+        'how.statGroupPoolingSub': 'Shared wholesale savings',
+        'how.statDelivery': 'Community Delivery',
+        'how.statDeliverySub': 'Fair trade to your door',
         'bulk.cta': '🏭 Bulk & Institutional Orders',
         'metric.savings': 'Avg Retail Savings', 'metric.woredas': 'Connected Woredas', 'metric.pools': 'Active Pools',
         'pools.title': 'Active Group Pools', 'pools.showing': 'Showing all pools',
         'pools.search': 'Search produce, category or woreda...', 'pools.sortBy': 'Sort By:',
+        'pools.allTowns': 'All Towns / Hubs',
         'pools.sortDefault': 'Default', 'pools.sortSavings': 'Highest Savings %',
         'pools.sortPriceAsc': 'Price: Low to High', 'pools.sortPriceDesc': 'Price: High to Low',
         'pools.sortProgress': 'Funding Progress',
@@ -235,10 +271,46 @@ const I18N = {
         'hero.title': 'የምግብ ዋጋ ንረትን አብረን እንዋጋ',
         'hero.subtitle': 'የክልል እርሻ ምርቶችን በቀጥታ ለአካባቢው የስርጭት ማዕከላት በማገናኘት ለማህበረሰቡ የጅምላ ዋጋ ማስጠበቅ',
         'hero.bulkHint': 'ካፌዎች፣ ትምህርት ቤቶች፣ ሆቴሎች እና ትብብሮች — በወር 100+ ኪግ',
+        'service.badge': 'ምን እናደርጋለን',
+        'service.title': 'ማህበረሰቦችን በቡድን ግዢ አብረን ማሰባሰብ በጣም እንወዳለን',
+        'service.subtitle': 'NuroTewedede በመላ ኢትዮጵያ ማህበረሰቦች ተመጣጣኝ ምርት እንዲያገኙ፣ የአካባቢ ገበሬዎችን እንዲደግፉ እና ጠንካራ የምግብ ስርዓት እንዲገነቡ በጋራ የግዢ አቅም ያበረታታል።',
+        'service.card1Title': 'የምግብ ዋጋ ንረትን መዋጋት',
+        'service.card1Text': 'ትዕዛዞችን በአንድነት በመሰብሰብ በቀጥታ ከግብርና ወረዳዎች የጅምላ ዋጋ በማግኘት የችርቻሮ ዋጋ ጭማሪዎችን ያሸንፉ።',
+        'service.card2Title': 'የኢትዮጵያ ገበሬዎችን መደገፍ',
+        'service.card2Text': 'የከተማ የስርጭት ማዕከላትን ከአካባቢው የእርሻ አምራቾች ጋር በቀጥታ በማገናኘት ፍትሃዊ ንግድ ለማድረግ።',
+        'service.card3Title': 'ቀልጣፋ የቡድን ሎጂስቲክስ',
+        'service.card3Text': 'በቀላሉ ንቁ የማህበረሰብ ግዢ ቡድኖችን ይቀላቀሉ ወይም በሰከንዶች ውስጥ የራስዎን ማዕከል ይክፈቱ።',
+        'about.badge': 'ስለ NuroTewedede',
+        'about.title': 'NuroTewedede: ለገበሬዎች የህይወት መስመር፣ ለገዢዎች ለውጥ አምጪ',
+        'about.text': 'በማህበራዊ ንግድ ኃይል ላይ የተገነባው NuroTewedede፣ የክልል የእርሻ ወረዳዎችን እና የከተማ ሰፈሮችን በማገናኘት የመሠረታዊ እቃዎች ተደራሽነትን ይለውጣል። ገዢዎችን የሚበዘብዙ አስታራቂዎችን በማስወገድ የጅምላ ዋጋን በቀጥታ ከአምራቾች ወደ ማህበረሰብ ያመጣል። ለገበሬዎች ፍትሃዊ ክፍያ እና በኢትዮጵያ ዋና ዋና ማዕከላት ሰፊ የገበያ ተደራሽነት ማለት ነው። ለገዢዎች ደግሞ የአካባቢ አምራቾችን ኑሮ እየደገፉ እስከ 35% ቁጠባ ማለት ነው። አብረን የበለጠ ፍትሃዊ እና ጠንካራ የምግብ ስርዓት እንገነባለን።',
+        'about.mockTeff': 'ጤፍ (ነጭ ጎጃም)',
+        'about.mockGojjam': 'የጎጃም ወረዳ',
+        'about.mockOnion': 'ቀይ ሽንኩርት - 25ኪግ',
+        'about.mockCoffee': 'የሲዳሞ ቡና - 10ኪግ',
+        'about.mockBarley': 'የገብስ ጅምላ - 40ኪግ',
+        'about.mockBadge': 'የክልል ምርት',
+        'how.badge': 'እንዴት እንደሚሰራ',
+        'how.title': 'ወደ ጋሪዎ ይጨምሩ፣ ቀሪውን ለእኛ ይተዉ',
+        'how.step1Title': 'ቡድን ወይም ግዢ ይፍጠሩ',
+        'how.step1Text': 'ፍትሃዊ የጅምላ ዋጋ ለማግኘት በNuroTewedede ላይ ቡድን ወይም ግዢ ይፍጠሩ።',
+        'how.step2Title': 'ማህበረሰብዎን ይጋብዙ',
+        'how.step2Text': 'የምርት አገናኝን በማጋራት ጎረቤቶችን፣ ጓደኞችን ወይም ቤተሰብን ይጋብዙ።',
+        'how.timeLeft': 'የቀረ ጊዜ:',
+        'how.step3Title': 'ቆልፈው ይቆጥቡ',
+        'how.step3Text': 'ቡድኑ የሚፈለገውን የተሳታፊ ቁጥር ሲደርስ፣ ከክልል ወረዳዎች የተጠየቀው ጅምላ ትዕዛዝ ተቆልፎ በከፍተኛ ቅናሽ ይቀመጣል።',
+        'how.statSourcing': 'የግብርና አቅርቦት',
+        'how.statSourcingSub': 'በቀጥታ ከክልል ወረዳዎች',
+        'how.statLogistics': 'የአካባቢ ሎጂስቲክስ',
+        'how.statLogisticsSub': 'የማህበረሰብ ማዕከል መላኪያ',
+        'how.statGroupPooling': 'የቡድን ግዢ',
+        'how.statGroupPoolingSub': 'የጋራ የጅምላ ቁጠባ',
+        'how.statDelivery': 'የማህበረሰብ መላኪያ',
+        'how.statDeliverySub': 'ፍትሃዊ ንግድ እስከ ቤትዎ',
         'bulk.cta': '🏭 የጅምላ እና ተቋማዊ ትዕዛዞች',
         'metric.savings': 'አማካይ የችርቻሮ ቁጠባ', 'metric.woredas': 'የተገናኙ ወረዳዎች', 'metric.pools': 'ንቁ ግዢዎች',
         'pools.title': 'ንቁ የቡድን ግዢዎች', 'pools.showing': 'ሁሉንም ግዢዎች በማሳየት ላይ',
         'pools.search': 'ምርት፣ ምድብ ወይም ወረዳ ይፈልጉ...', 'pools.sortBy': 'ቅደም ተከተል:',
+        'pools.allTowns': 'ሁሉም ከተሞች / ማዕከሎች',
         'pools.sortDefault': 'ነባሪ', 'pools.sortSavings': 'ከፍተኛ ቁጠባ %',
         'pools.sortPriceAsc': 'ዋጋ: ዝቅተኛ ወደ ከፍተኛ', 'pools.sortPriceDesc': 'ዋጋ: ከፍተኛ ወደ ዝቅተኛ',
         'pools.sortProgress': 'የገንዘብ እድገት',
@@ -354,10 +426,46 @@ const I18N = {
         'hero.title': 'Gubbattii Nyaataa Waliin Haalollu',
         'hero.subtitle': 'Oomisha qonnaa naannootti kallattiin buufataa raabsaatti wal qunnamsiisuun gatii daldala gurguddaa hawaasni argatu',
         'hero.bulkHint': 'Kaafiiwwan, mana barumsaa, hotelota fi koo-piive — ji\'atti 100+ kg',
+        'service.badge': 'Waan Hojjennu',
+        'service.title': 'Hawaasota bituu waldaatiin walitti fiduu cimnee jaallanna',
+        'service.subtitle': 'NuroTewedede hawaasota Itiyoophiyaa oomisha gatii gidduu keessa argachuu, qonnaan bultoota naannoo deeggaruu fi sirna nyaataa cimaa ijaaruuf carraa kennuuf gumaacha.',
+        'service.card1Title': 'Lola Gubbattii Nyaataa',
+        'service.card1Text': 'Ajaja waliin walitti qabuun gatii daldalaa aanaalee qonnaa irraa kallattiin argachuun guddina gatii daldalaa moo\'uu.',
+        'service.card2Title': 'Qonnaan Bultoota Itiyoophiyaa Deeggara',
+        'service.card2Text': 'Buufata raabsaa magaalaa fi oomishitoota qonnaa naannoo daldala haqaa fiixeen wal qunnamsiisa.',
+        'service.card3Title': 'Logistiksii Waldaa Olaa',
+        'service.card3Text': 'Bittaa waldaa hawaasaa jiraatu keessa salphaatti seeni yookiin buufata kee sekondii keessatti bani.',
+        'about.badge': 'Waa\'ee NuroTewedede',
+        'about.title': 'NuroTewedede: Qonnaan bultootaaf jireenya, bituuftootaaf jijjiirraa.',
+        'about.text': 'Humna daldala hawaasaatiin ijaaramuun, NuroTewedede aanaalee qonnaa fi naannoo magaalaa wal qunnamsiisee argama wantoota bu\'uuraa jijjiirra. Daldaltoota faayidaa qofaaf hojjetan balleessuun, gatii daldalaa kallattiin oomishitoota irraa hawaasaatti geessa. Qonnaan bultootaaf kaffaltii haqaa fi magaala gurguddoo Itiyoophiyaa keessatti dandeettii gabaati. Bituuftootaaf immoo jireenya oomishitoota naannoo deeggaruun hanga 35% qusachuu jechuudha. Waliin sirna nyaataa haqaa fi cimaa ijaarra.',
+        'about.mockTeff': 'Xaafii (Adii Gojjam)',
+        'about.mockGojjam': 'Aanaa Gojjam',
+        'about.mockOnion': 'Shunkurtii Diimaa - 25kg',
+        'about.mockCoffee': 'Buna Sidaama - 10kg',
+        'about.mockBarley': 'Garbuu Waldaa - 40kg',
+        'about.mockBadge': 'Oomisha Naannoo',
+        'how.badge': 'Akkamitti hojjata',
+        'how.title': 'Galgara kee itti dabali, hafeef nu dhiiisi',
+        'how.step1Title': 'Garee yookiin bituu uumi',
+        'how.step1Text': 'Gatii daldalaa haqaa argachuuf NuroTewedede irratti garee yookiin bituu uumi.',
+        'how.step2Title': 'Hawaasa kee affeeri',
+        'how.step2Text': 'Linkii oomishaa qooduun gaaressa, hiriyyaa yookiin maatii affeeri.',
+        'how.timeLeft': 'Yeroo hafe:',
+        'how.step3Title': 'Cufiitii qusadhu',
+        'how.step3Text': 'Gareen lakkoofsa hirmaattotaa gaafa ga\'u, ajajni daldalaa aanaalee naannoo irraa cufamee hir\'ina guddaan kaa\'ama.',
+        'how.statSourcing': 'Dhiyeessaa Qonnaa',
+        'how.statSourcingSub': 'Kallattiin aanaalee naannoo irraa',
+        'how.statLogistics': 'Logistiksii Naannoo',
+        'how.statLogisticsSub': 'Geessaa buufata hawaasaa',
+        'how.statGroupPooling': 'Bittaa Waldaa',
+        'how.statGroupPoolingSub': 'Qusannaa daldalaa waliigalaa',
+        'how.statDelivery': 'Geessaa Hawaasaa',
+        'how.statDeliverySub': 'Daldala haqaa balbala keetti',
         'bulk.cta': '🏭 Ajaja Waldaa fi Dhaabbataa',
         'metric.savings': 'Qusannaa Giddu Galeessaa', 'metric.woredas': 'Aanaalee Qunnamtee', 'metric.pools': 'Buufata Ijoo',
         'pools.title': 'Bituuwwan Waldaa Ijoo', 'pools.showing': 'Bituuwwan hunda mul\'isaa',
         'pools.search': 'Oomisha, ramaddii yookiin aanaa barbaadi...', 'pools.sortBy': 'Haarami:',
+        'pools.allTowns': 'Magaalota / Buufata Hunda',
         'pools.sortDefault': 'Durtii', 'pools.sortSavings': 'Qusannaa Olii %',
         'pools.sortPriceAsc': 'Gatii: Xiqqaa hanga Guddaa', 'pools.sortPriceDesc': 'Gatii: Guddaa hanga Xiqqaa',
         'pools.sortProgress': 'Sadarkaa Ka\'aabii',
@@ -1886,23 +1994,27 @@ function populateTownSelects() {
     const dSelect = document.getElementById('town-select');
     const mSelect = document.getElementById('town-select-mobile');
     const formSelect = document.getElementById('item-town');
+    const bulkSelect = document.getElementById('bulk-town');
     const prevD = dSelect ? dSelect.value : 'All';
     const prevM = mSelect ? mSelect.value : 'All';
     const prevF = formSelect ? formSelect.value : '';
+    const prevB = bulkSelect ? bulkSelect.value : '';
 
     const optionHtml = ETHIOPIAN_TOWNS.map(function (t) {
-        return '<option value="' + esc(t) + '">' + esc(t) + '</option>';
+        return '<option value="' + esc(t) + '">' + esc(localizeTown(t)) + '</option>';
     }).join('');
 
     [dSelect, mSelect].forEach(function (sel) {
         if (!sel) return;
-        sel.innerHTML = '<option value="All">All Towns / Hubs</option>' + optionHtml;
+        sel.innerHTML = '<option value="All">' + esc(t('pools.allTowns')) + '</option>' + optionHtml;
     });
     if (formSelect) formSelect.innerHTML = optionHtml;
+    if (bulkSelect) bulkSelect.innerHTML = optionHtml;
 
     if (dSelect) dSelect.value = prevD;
     if (mSelect) mSelect.value = prevM;
     if (formSelect) formSelect.value = prevF;
+    if (bulkSelect) bulkSelect.value = prevB;
 }
 
 function init() {
@@ -2019,18 +2131,15 @@ function openBulkModal() {
     if (!modal) return;
     const summary = document.getElementById('bulk-summary');
     const success = document.getElementById('bulk-success');
+    const form = document.getElementById('bulk-form');
     const grid = document.getElementById('bulk-catalog');
     if (summary) summary.classList.add('hidden');
     if (success) success.classList.add('hidden');
+    if (form) form.classList.remove('hidden');
     if (grid) renderBulkCatalog(grid);
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
-    const produce = document.getElementById('bulk-produce');
-    if (produce) {
-        const opt = produce.querySelector('option[value="' + t('bulk.produceDefault') + '"]');
-        if (opt) opt.selected = true;
-    }
     updateBulkSummary();
 }
 
@@ -2063,23 +2172,23 @@ function updateBulkSummary() {
     const card = document.getElementById('bulk-summary');
     if (!card) return;
     const qty = Number(document.getElementById('bulk-qty') ? document.getElementById('bulk-qty').value : 0) || 0;
-    const produce = document.getElementById('bulk-produce') ? document.getElementById('bulk-produce').value : '';
+    const produceEl = document.getElementById('bulk-produce');
+    const produce = produceEl ? produceEl.value : '';
     const wholesaleMap = {
         'Teff': 96, 'Onions': 54, 'Coffee': 290, 'Oil': 155, 'Lentils': 168
     };
     const retailMap = {
         'Teff': 144, 'Onions': 88, 'Coffee': 450, 'Oil': 210, 'Lentils': 236
     };
-    const key = Object.keys(wholesaleMap).find(function (k) {
-        return t('bulk.prod' + k) === produce;
-    });
-    const wholesale = key ? wholesaleMap[key] : 0;
-    const retail = key ? retailMap[key] : 0;
+    const wholesale = wholesaleMap[produce] || 0;
+    const retail = retailMap[produce] || 0;
     const totalWholesale = wholesale * qty;
     const totalRetail = retail * qty;
     const saved = totalRetail - totalWholesale;
+    if (qty > 0) card.classList.remove('hidden');
+    else card.classList.add('hidden');
     card.innerHTML = '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">' +
-        '<div class="flex justify-between font-bold text-slate-700"><span>' + esc(t('bulk.estQty')) + '</span><span>' + qty + ' ' + (produce.indexOf('Oil') !== -1 ? t('calc.unitsLitres') : t('calc.unitsKg')) + '</span></div>' +
+        '<div class="flex justify-between font-bold text-slate-700"><span>' + esc(t('bulk.estQty')) + '</span><span>' + qty + ' ' + (produce === 'Oil' ? t('calc.unitsLitres') : t('calc.unitsKg')) + '</span></div>' +
         '<div class="flex justify-between font-bold text-slate-700"><span>' + esc(t('bulk.estWholesale')) + '</span><span>' + fmt(totalWholesale) + ' ETB</span></div>' +
         '<div class="flex justify-between font-bold text-slate-400"><span>' + esc(t('bulk.estRetail')) + '</span><span class="line-through">' + fmt(totalRetail) + ' ETB</span></div>' +
         '<div class="flex justify-between font-black text-emerald-700 border-t border-slate-200 pt-2"><span>' + esc(t('bulk.estSave')) + '</span><span>' + fmt(saved) + ' ETB</span></div>' +
@@ -2112,6 +2221,12 @@ function handleBulkSubmit(e) {
     showToast(tt('toast.bulkSubmitted', code));
     if (qty) qty.value = '';
     if (phone) phone.value = '';
+    if (business) business.value = '';
+    if (contact) contact.value = '';
+    const note = document.getElementById('bulk-note');
+    if (note) note.value = '';
+    const produce = document.getElementById('bulk-produce');
+    if (produce) produce.value = 'Teff';
 }
 
 // Expose functions globally for HTML inline event handlers
