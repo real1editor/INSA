@@ -187,6 +187,27 @@ header nav a {
     color: #ffffff;
 }
 
+.ai-nav-btn {
+    color: #d1fae5;
+}
+.ai-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== Language selector dropdown ===== */
+.lang-option-active {
+    background-color: #ecfdf5;
+    color: #065f46;
+    box-shadow: inset 3px 0 0 #059669;
+}
+[data-theme="dark"] .lang-option-active {
+    background-color: #064e3b;
+    color: #6ee7b7;
+}
+[data-theme="dark"] .lang-option:hover {
+    background-color: #334155;
+}
+
 .mobile-tab-btn {
     color: #d1fae5;
 }
@@ -268,4 +289,108 @@ input[type="range"]::-webkit-slider-thumb {
 }
 [data-theme="dark"] input[type="range"] {
     background: #334155;
+}
+
+/* ===== Language toggle pills (mobile menu) ===== */
+.lang-btn {
+    color: #d1fae5;
+}
+.lang-btn-active {
+    background-color: #ffffff;
+    color: #065f46;
+}
+[data-theme="dark"] .lang-btn-active {
+    background-color: #059669;
+    color: #ffffff;
+}
+
+/* ===== Live price ticker marquee ===== */
+@keyframes ticker-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+.ticker-track {
+    animation: ticker-scroll 45s linear infinite;
+    will-change: transform;
+}
+.ticker-track:hover {
+    animation-play-state: paused;
+}
+
+/* ===== NuroAI floating assistant ===== */
+.ai-fab {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 9999px;
+    background-color: #065f46;
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(4, 120, 87, 0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.ai-fab:hover {
+    transform: scale(1.06);
+    box-shadow: 0 12px 36px rgba(4, 120, 87, 0.55);
+}
+.ai-fab-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    letter-spacing: 0.02em;
+}
+.ai-fab-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid rgba(16, 185, 129, 0.7);
+    animation: ai-fab-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ai-fab-ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    75%, 100% {
+        transform: scale(1.55);
+        opacity: 0;
+    }
+}
+[data-theme="dark"] .ai-fab {
+    background-color: #059669;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
+}
+
+/* ===== Voucher printing ===== */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .voucher-print,
+    .voucher-print * {
+        visibility: visible;
+    }
+    .voucher-print {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 1rem;
+    }
+    .not-printable {
+        display: none !important;
+    }
 }
