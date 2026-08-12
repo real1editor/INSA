@@ -940,10 +940,7 @@ function toggleUserMenu() {
 
 function setTown(town) {
     currentFilter = town;
-    const dSelect = document.getElementById('town-select');
-    const mSelect = document.getElementById('town-select-mobile');
-    if (dSelect) dSelect.value = town;
-    if (mSelect) mSelect.value = town;
+    syncTownDropdowns();
     renderPools();
 }
 
@@ -1687,8 +1684,15 @@ function selectHub(id) {
 
 function renderMarkdown(text) {
     return esc(text)
-        .replace(/^#{1,4}\s*(.+)$/gm, '<strong>$1</strong>')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        .replace(/^#{1,4}\s*(.+)$/gm, '<strong class="ai-heading">$1</strong>')
+        .replace(/`([^`\n]+)`/g, '<code class="ai-code">$1</code>')
+        .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/__([^_\n]+)__/g, '<strong>$1</strong>')
+        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="ai-link">$1</a>')
+        .replace(/^[-*+]\s+(.+)$/gm, '<span class="ai-bullet">•</span> $1')
+        .replace(/^(\d+)[.)]\s+(.+)$/gm, '<span class="ai-bullet">$1.</span> $2')
+        .replace(/^---+$/gm, '<hr class="ai-hr">')
+        .replace(/\*([a-zA-Z0-9][^*\n]*)\*/g, '<em>$1</em>');
 }
 
 function renderAiMessages() {
@@ -2085,12 +2089,8 @@ function initCountdown() {
 // ---------- Boot ----------
 
 function populateTownSelects() {
-    const dSelect = document.getElementById('town-select');
-    const mSelect = document.getElementById('town-select-mobile');
     const formSelect = document.getElementById('item-town');
     const bulkSelect = document.getElementById('bulk-town');
-    const prevD = dSelect ? (dSelect.value || 'All') : 'All';
-    const prevM = mSelect ? (mSelect.value || 'All') : 'All';
     const prevF = formSelect ? formSelect.value : '';
     const prevB = bulkSelect ? bulkSelect.value : '';
 
@@ -2098,17 +2098,64 @@ function populateTownSelects() {
         return '<option value="' + esc(t) + '">' + esc(localizeTown(t)) + '</option>';
     }).join('');
 
-    [dSelect, mSelect].forEach(function (sel) {
-        if (!sel) return;
-        sel.innerHTML = '<option value="All">' + esc(t('pools.allTowns')) + '</option>' + optionHtml;
-    });
     if (formSelect) formSelect.innerHTML = optionHtml;
     if (bulkSelect) bulkSelect.innerHTML = optionHtml;
-
-    if (dSelect) dSelect.value = prevD;
-    if (mSelect) mSelect.value = prevM;
     if (formSelect) formSelect.value = prevF;
     if (bulkSelect) bulkSelect.value = prevB;
+
+    ['town-dropdown-menu', 'town-dropdown-mobile-menu'].forEach(function (menuId) {
+        const menu = document.getElementById(menuId);
+        if (!menu) return;
+        menu.innerHTML =
+            '<button type="button" class="town-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-value="All" onclick="selectTownFromDropdown(this.dataset.value, event)" role="option">' + esc(t('pools.allTowns')) + '</button>' +
+            ETHIOPIAN_TOWNS.map(function (tn) {
+                return '<button type="button" class="town-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-value="' + esc(tn) + '" onclick="selectTownFromDropdown(this.dataset.value, event)" role="option">' + esc(localizeTown(tn)) + '</button>';
+            }).join('');
+    });
+    syncTownDropdowns();
+}
+
+function syncTownDropdowns() {
+    const labels = ['town-current-label', 'town-current-label-mobile'];
+    labels.forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = currentFilter === 'All' ? t('pools.allTowns') : localizeTown(currentFilter);
+    });
+    document.querySelectorAll('.town-option').forEach(function (opt) {
+        opt.classList.toggle('town-option-active', opt.dataset.value === currentFilter);
+    });
+}
+
+function toggleTownDropdown(ddId, e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById(ddId + '-menu');
+    const btn = document.getElementById(ddId + '-btn');
+    if (!menu) return;
+    const open = menu.classList.toggle('hidden');
+    if (btn) btn.setAttribute('aria-expanded', String(!open));
+    if (!open) {
+        ['town-dropdown-menu', 'town-dropdown-mobile-menu'].forEach(function (id) {
+            if (id !== ddId + '-menu') {
+                const other = document.getElementById(id);
+                if (other) other.classList.add('hidden');
+            }
+        });
+    }
+}
+
+function closeTownDropdowns() {
+    ['town-dropdown', 'town-dropdown-mobile'].forEach(function (ddId) {
+        const menu = document.getElementById(ddId + '-menu');
+        const btn = document.getElementById(ddId + '-btn');
+        if (menu) menu.classList.add('hidden');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+}
+
+function selectTownFromDropdown(value, e) {
+    if (e) e.stopPropagation();
+    setTown(value);
+    closeTownDropdowns();
 }
 
 function init() {
@@ -2128,15 +2175,10 @@ function init() {
         });
     });
 
+    showTab('pools', true);
+
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);
-
-    const townSelects = document.querySelectorAll('#town-select, #town-select-mobile');
-    townSelects.forEach(function (sel) {
-        sel.addEventListener('change', function () {
-            setTown(sel.value);
-        });
-    });
 
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
@@ -2185,12 +2227,23 @@ function init() {
         if (menuDD && menuMenu && !menuMenu.classList.contains('hidden') && !menuDD.contains(e.target)) {
             closeMenuDropdown();
         }
+        const townDD = document.getElementById('town-dropdown');
+        const townMenu = document.getElementById('town-dropdown-menu');
+        if (townDD && townMenu && !townMenu.classList.contains('hidden') && !townDD.contains(e.target)) {
+            closeTownDropdowns();
+        }
+        const townDDm = document.getElementById('town-dropdown-mobile');
+        const townMenum = document.getElementById('town-dropdown-mobile-menu');
+        if (townDDm && townMenum && !townMenum.classList.contains('hidden') && !townDDm.contains(e.target)) {
+            closeTownDropdowns();
+        }
     });
 
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             closeLangDropdown();
             closeMenuDropdown();
+            closeTownDropdowns();
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
         }
@@ -2372,5 +2425,7 @@ window.handleBulkSubmit = handleBulkSubmit;
 window.updateBulkSummary = updateBulkSummary;
 window.toggleAiFab = toggleAiFab;
 window.toggleLangDropdown = toggleLangDropdown;
+window.toggleTownDropdown = toggleTownDropdown;
+window.selectTownFromDropdown = selectTownFromDropdown;
 
 init();

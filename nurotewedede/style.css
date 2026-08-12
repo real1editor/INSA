@@ -63,6 +63,17 @@ button {
     background-color: #334155 !important;
 }
 
+[data-theme="dark"] #ai-chips button {
+    background-color: #334155 !important;
+    color: #e2e8f0 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] #ai-chips button:hover {
+    background-color: #475569 !important;
+    color: #ffffff !important;
+}
+
 [data-theme="dark"] .bg-emerald-100 {
     background-color: #064e3b !important;
     color: #6ee7b7 !important;
@@ -187,6 +198,50 @@ header nav a {
     color: #ffffff;
 }
 
+/* ===== Desktop header inline nav links ===== */
+.nav-link {
+    color: #d1fae5;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* ===== AI assistant message formatting ===== */
+#ai-messages .ai-heading {
+    display: block;
+    font-size: 1.02em;
+    color: #065f46;
+    margin-bottom: 2px;
+}
+#ai-messages .ai-bullet {
+    color: #059669;
+}
+#ai-messages .ai-code {
+    background-color: rgba(100, 116, 139, 0.14);
+    padding: 1px 5px;
+    border-radius: 5px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92em;
+}
+#ai-messages .ai-link {
+    color: #047857;
+    text-decoration: underline;
+}
+#ai-messages .ai-hr {
+    border: none;
+    border-top: 1px solid rgba(148, 163, 184, 0.45);
+    margin: 8px 0;
+}
+[data-theme="dark"] #ai-messages .ai-heading {
+    color: #6ee7b7;
+}
+[data-theme="dark"] #ai-messages .ai-link {
+    color: #34d399;
+}
+
 /* ===== Modern hamburger menu toggle ===== */
 .menu-toggle .menu-line {
     display: block;
@@ -208,22 +263,30 @@ header nav a {
 
 /* ===== Theme-aware dropdown surfaces ===== */
 #menu-dropdown-menu,
-#lang-dropdown-menu {
+#lang-dropdown-menu,
+#town-dropdown-menu,
+#town-dropdown-mobile-menu {
     background-color: #ffffff;
     border-color: #e2e8f0;
     box-shadow: 0 20px 45px -15px rgba(2, 44, 34, 0.22), 0 6px 16px rgba(2, 44, 34, 0.08);
 }
 
 #menu-dropdown-menu .menu-item,
-#lang-dropdown-menu .lang-option {
+#lang-dropdown-menu .lang-option,
+#town-dropdown-menu .town-option,
+#town-dropdown-mobile-menu .town-option {
     color: #1e293b;
 }
 #menu-dropdown-menu .menu-item:hover,
-#lang-dropdown-menu .lang-option:hover {
+#lang-dropdown-menu .lang-option:hover,
+#town-dropdown-menu .town-option:hover,
+#town-dropdown-mobile-menu .town-option:hover {
     background-color: #ecfdf5;
     color: #065f46;
 }
-#lang-dropdown-menu .lang-option-active {
+#lang-dropdown-menu .lang-option-active,
+#town-dropdown-menu .town-option-active,
+#town-dropdown-mobile-menu .town-option-active {
     background-color: #ecfdf5;
     color: #065f46;
     box-shadow: inset 3px 0 0 #059669;
@@ -233,21 +296,29 @@ header nav a {
 }
 
 [data-theme="dark"] #menu-dropdown-menu,
-[data-theme="dark"] #lang-dropdown-menu {
+[data-theme="dark"] #lang-dropdown-menu,
+[data-theme="dark"] #town-dropdown-menu,
+[data-theme="dark"] #town-dropdown-mobile-menu {
     background-color: #1e293b;
     border-color: #334155;
     box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 [data-theme="dark"] #menu-dropdown-menu .menu-item,
-[data-theme="dark"] #lang-dropdown-menu .lang-option {
+[data-theme="dark"] #lang-dropdown-menu .lang-option,
+[data-theme="dark"] #town-dropdown-menu .town-option,
+[data-theme="dark"] #town-dropdown-mobile-menu .town-option {
     color: #e2e8f0 !important;
 }
 [data-theme="dark"] #menu-dropdown-menu .menu-item:hover,
-[data-theme="dark"] #lang-dropdown-menu .lang-option:hover {
+[data-theme="dark"] #lang-dropdown-menu .lang-option:hover,
+[data-theme="dark"] #town-dropdown-menu .town-option:hover,
+[data-theme="dark"] #town-dropdown-mobile-menu .town-option:hover {
     background-color: #334155 !important;
     color: #ffffff !important;
 }
-[data-theme="dark"] #lang-dropdown-menu .lang-option-active {
+[data-theme="dark"] #lang-dropdown-menu .lang-option-active,
+[data-theme="dark"] #town-dropdown-menu .town-option-active,
+[data-theme="dark"] #town-dropdown-mobile-menu .town-option-active {
     background-color: #064e3b !important;
     color: #6ee7b7 !important;
     box-shadow: inset 3px 0 0 #10b981;
@@ -290,7 +361,9 @@ header nav a {
 
 #menu-dropdown-menu,
 #lang-dropdown-menu,
-#user-dropdown {
+#user-dropdown,
+#town-dropdown-menu,
+#town-dropdown-mobile-menu {
     animation: dropdown-in 0.18s ease-out;
 }
 @keyframes dropdown-in {
