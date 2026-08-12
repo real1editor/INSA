@@ -230,6 +230,14 @@ const I18N = {
         'create.organizerPh': 'e.g. Abebe Tadesse (Kebele Coordinator)', 'create.submit': 'Create Pool',
         'auth.signin': 'Sign In', 'auth.signup': 'Create Account', 'auth.email': 'Email Address',
         'auth.emailPh': 'name@example.com', 'auth.password': 'Password', 'auth.passwordPh': '••••••••',
+        'auth.name': 'Full Name', 'auth.namePh': 'Abebe Kebede',
+        'auth.username': 'Username', 'auth.usernamePh': 'abebe123',
+        'auth.emailOrUser': 'Email or Username', 'auth.emailOrUserPh': 'name@example.com or your username',
+        'auth.nameRequired': 'Please enter your full name.',
+        'auth.usernameRequired': 'Please choose a username.',
+        'auth.checkEmail': 'Account created! Check your email to confirm your account, then sign in.',
+        'auth.created': 'Account created successfully!',
+        'auth.signedIn': 'Signed in successfully!',
         'bulk.title': 'Bulk & Institutional Purchase',
         'bulk.prodTeff': 'White Teff (Gojjam)', 'bulk.prodOnions': 'Red Onions (Ziway)', 'bulk.prodCoffee': 'Raw Coffee Beans (Sidama)', 'bulk.prodOil': 'Sunflower Cooking Oil', 'bulk.prodLentils': 'Red Lentils (Misir)',
         'bulk.retailTag': 'retail',
@@ -386,6 +394,14 @@ const I18N = {
         'create.organizerPh': 'ለምሳሌ አበበ ታደሰ (የቀበሌ አስተባባሪ)', 'create.submit': 'ግዢ ይፍጠሩ',
         'auth.signin': 'ግባ', 'auth.signup': 'መለያ ይፍጠሩ', 'auth.email': 'ኢሜይል አድራሻ',
         'auth.emailPh': 'name@example.com', 'auth.password': 'የይለፍ ቃል', 'auth.passwordPh': '••••••••',
+        'auth.name': 'ሙሉ ስም', 'auth.namePh': 'አበበ ከበደ',
+        'auth.username': 'የተጠቃሚ ስም', 'auth.usernamePh': 'abebe123',
+        'auth.emailOrUser': 'ኢሜይል ወይም የተጠቃሚ ስም', 'auth.emailOrUserPh': 'name@example.com ወይም የተጠቃሚ ስምዎ',
+        'auth.nameRequired': 'እባክዎ ሙሉ ስምዎን ያስገቡ።',
+        'auth.usernameRequired': 'እባክዎ የተጠቃሚ ስም ይምረጡ።',
+        'auth.checkEmail': 'መለያ ተፈጥሯል! መለያዎን ለማረጋገጥ ኢሜይልዎን ይመልከቱ፣ ከዚያ ይግቡ።',
+        'auth.created': 'መለያ በተሳካ ሁኔታ ተፈጥሯል!',
+        'auth.signedIn': 'በተሳካ ሁኔታ ገብተዋል!',
         'bulk.title': 'የጅምላ እና ተቋማዊ ግዢ',
         'bulk.prodTeff': 'ነጭ ጤፍ (ጎጃም)', 'bulk.prodOnions': 'ቀይ ሽንኩርት (ዝዌይ)', 'bulk.prodCoffee': 'ድፍድፍ የቡና ፍሬ (ሲዳማ)', 'bulk.prodOil': 'የሱፍ አበባ የምግብ ዘይት', 'bulk.prodLentils': 'ቀይ ምስር',
         'bulk.retailTag': 'ችርቻሮ',
@@ -542,6 +558,14 @@ const I18N = {
         'create.organizerPh': 'fkn. Abebe Tadesse (Koordinaatorii Kebele)', 'create.submit': 'Bituu Uumi',
         'auth.signin': 'Seeni', 'auth.signup': 'Hertamaa Uumi', 'auth.email': 'Teessoo Imeelii',
         'auth.emailPh': 'name@example.com', 'auth.password': 'Jecha Iccitii', 'auth.passwordPh': '••••••••',
+        'auth.name': 'Maqaa Guutuu', 'auth.namePh': 'Abebe Kebede',
+        'auth.username': 'Maqaa Fayyadamaa', 'auth.usernamePh': 'abebe123',
+        'auth.emailOrUser': 'Imeelii ykn Maqaa Fayyadamaa', 'auth.emailOrUserPh': 'name@example.com ykn maqaa fayyadamaa kee',
+        'auth.nameRequired': 'Maaloo maqaa guutuu kee galchi.',
+        'auth.usernameRequired': 'Maaloo maqaa fayyadamaa filadhu.',
+        'auth.checkEmail': 'Hertamaan uumame! Hertama kee mirkaneessuuf imeelii kee ilaali, sana booda seeni.',
+        'auth.created': 'Hertamaan milkaa\'inaan uumame!',
+        'auth.signedIn': 'Milkaa\'inaan seentee jirta!',
         'bulk.title': 'Bituu Waldaa fi Dhaabbataa',
         'bulk.prodTeff': 'Xaafii Adii (Gojjam)', 'bulk.prodOnions': 'Shunkurtii Diimaa (Ziway)', 'bulk.prodCoffee': 'Buna Diimaa (Sidaama)', 'bulk.prodOil': 'Zayitaa Suufii', 'bulk.prodLentils': 'Misira Diimaa',
         'bulk.retailTag': 'daldala',
@@ -674,6 +698,7 @@ function applyI18n() {
     });
     if (document.documentElement) document.documentElement.lang = appLang;
     updateLangButtons();
+    syncAuthFields();
 }
 
 function setLang(lang) {
@@ -1918,10 +1943,15 @@ function toggleAuthMode(isSignup) {
     const tabSignin = document.getElementById('auth-tab-signin');
     const tabSignup = document.getElementById('auth-tab-signup');
     const message = document.getElementById('auth-message');
+    const nameField = document.getElementById('auth-name-field');
+    const usernameField = document.getElementById('auth-username-field');
 
     if (message) { message.classList.add('hidden'); message.textContent = ''; }
-    if (title) title.textContent = isSignup ? 'Create Account' : 'Sign In';
-    if (submitBtn) submitBtn.textContent = isSignup ? 'Create Account' : 'Sign In';
+    if (title) title.textContent = t(isSignup ? 'auth.signup' : 'auth.signin');
+    if (submitBtn) submitBtn.textContent = t(isSignup ? 'auth.signup' : 'auth.signin');
+    if (nameField) nameField.classList.toggle('hidden', !isSignup);
+    if (usernameField) usernameField.classList.toggle('hidden', !isSignup);
+    syncAuthFields();
     if (tabSignin) {
         tabSignin.className = 'flex-1 pb-2 text-center text-sm font-' + (isSignup ? 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800' : 'bold border-b-2 border-emerald-600 text-emerald-800');
     }
@@ -1930,23 +1960,58 @@ function toggleAuthMode(isSignup) {
     }
 }
 
+function syncAuthFields() {
+    const label = document.getElementById('auth-email-label');
+    const input = document.getElementById('auth-email');
+    const isSignup = authMode === 'signup';
+    if (label) label.textContent = t(isSignup ? 'auth.email' : 'auth.emailOrUser');
+    if (input) {
+        input.placeholder = t(isSignup ? 'auth.emailPh' : 'auth.emailOrUserPh');
+        input.type = isSignup ? 'email' : 'text';
+        input.required = true;
+    }
+}
+
+function showAuthError(message, text) {
+    if (!message) return;
+    message.textContent = text;
+    message.className = 'text-sm font-medium p-3 rounded-lg text-center bg-red-50 text-red-700';
+    message.classList.remove('hidden');
+}
+
 async function handleAuthSubmit(e) {
     e.preventDefault();
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
+    const nameEl = document.getElementById('auth-name');
+    const usernameEl = document.getElementById('auth-username');
+    const name = nameEl ? nameEl.value : '';
+    const username = usernameEl ? usernameEl.value : '';
     const message = document.getElementById('auth-message');
     const isSignup = authMode === 'signup';
 
+    if (isSignup && !name.trim()) {
+        showAuthError(message, t('auth.nameRequired'));
+        return;
+    }
+    if (isSignup && !username.trim()) {
+        showAuthError(message, t('auth.usernameRequired'));
+        return;
+    }
+
     try {
         const endpoint = isSignup ? '/api/auth/signup' : '/api/auth/login';
+        const payload = isSignup
+            ? { email: email, password: password, name: name.trim(), username: username.trim() }
+            : { email: email, password: password };
         const data = await api(endpoint, {
             method: 'POST',
-            body: JSON.stringify({ email: email, password: password }),
+            body: JSON.stringify(payload),
         });
         if (isSignup && !data.session) {
             e.target.reset();
             if (message) {
-                message.textContent = 'Account created! Check your email to confirm your account, then sign in.';
+                message.textContent = t('auth.checkEmail');
                 message.className = 'text-sm font-medium p-3 rounded-lg text-center bg-emerald-50 text-emerald-700';
                 message.classList.remove('hidden');
             }
@@ -1959,13 +2024,9 @@ async function handleAuthSubmit(e) {
         updateAuthUI();
         closeAuthModal();
         e.target.reset();
-        showToast(isSignup ? 'Account created successfully!' : 'Signed in successfully!');
+        showToast(t(isSignup ? 'auth.created' : 'auth.signedIn'));
     } catch (err) {
-        if (message) {
-            message.textContent = err.message;
-            message.className = 'text-sm font-medium p-3 rounded-lg text-center bg-red-50 text-red-700';
-            message.classList.remove('hidden');
-        }
+        showAuthError(message, err.message);
     }
 }
 
@@ -1986,7 +2047,7 @@ function updateAuthUI() {
     if (currentUser) {
         if (authBtn) authBtn.classList.add('hidden');
         if (userMenu) userMenu.classList.remove('hidden');
-        if (userEmail) userEmail.textContent = currentUser.email || currentUser.user_metadata?.email || '';
+        if (userEmail) userEmail.textContent = currentUser.name || currentUser.username || currentUser.email || currentUser.user_metadata?.email || '';
     } else {
         if (authBtn) authBtn.classList.remove('hidden');
         if (userMenu) userMenu.classList.add('hidden');

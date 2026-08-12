@@ -55,3 +55,48 @@ UPDATE public.pools
 
 -- 5) Index for fast comment lookups
 CREATE INDEX IF NOT EXISTS comments_pool_id_idx ON public.comments (pool_id);
+
+-- 6) USER PROFILES (name + username for the signup/sign-in feature)
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id          UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email       TEXT UNIQUE NOT NULL,
+  name        TEXT NOT NULL DEFAULT '',
+  username    TEXT UNIQUE NOT NULL,
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+
+-- Auto-create a profile row whenever a new auth user is created.
+-- SECURITY DEFINER lets the trigger bypass RLS and write into profiles.
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, name, username)
+  VALUES (
+    new.id,
+    new.email,
+    COALESCE(new.raw_user_meta_data ->> 'name', ''),
+    COALESCE(new.raw_user_meta_data ->> 'username', '')
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "profiles_select_public" ON public.profiles;
+CREATE POLICY "profiles_select_public" ON public.profiles
+  FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "profiles_insert_own" ON public.profiles;
+CREATE POLICY "profiles_insert_own" ON public.profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
+
+DROP POLICY IF EXISTS "profiles_update_own" ON public.profiles;
+CREATE POLICY "profiles_update_own" ON public.profiles
+  FOR UPDATE USING (auth.uid() = id) WITH CHECK (auth.uid() = id);

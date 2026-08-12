@@ -42,6 +42,18 @@ async function requireAuth(req, res, next) {
     }
 
     req.user = user;
+    // Attach the public profile (name/username) if one exists.
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('name, username')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (profile) {
+        req.user.name = profile.name;
+        req.user.username = profile.username;
+      }
+    } catch (_) { /* profiles table may not exist yet */ }
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Authentication failed: ' + err.message });
@@ -52,10 +64,60 @@ async function requireAuth(req, res, next) {
 
 // Sign Up
 app.post('/api/auth/signup', async (req, res) => {
-  const { email, password } = req.body;
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  
+  const { email, password, name, username } = req.body;
+
+  const normalizedEmail = String(email || '').trim().toLowerCase();
+  const normalizedUsername = String(username || '').trim().toLowerCase().replace(/^@/, '');
+  const displayName = String(name || '').trim();
+
+  if (!normalizedEmail || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
+  }
+  if (!normalizedUsername || !/^[a-z0-9_.]+$/.test(normalizedUsername)) {
+    return res.status(400).json({ error: 'Username can only contain letters, numbers, underscores and dots.' });
+  }
+
+  // Usernames must be unique — check before creating the auth user.
+  const { data: existingProfile, error: lookupError } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('username', normalizedUsername)
+    .maybeSingle();
+  if (lookupError && !/does not exist|could not find|schema cache/i.test(lookupError.message)) {
+    return res.status(500).json({ error: lookupError.message });
+  }
+  if (existingProfile) {
+    return res.status(400).json({ error: 'That username is already taken.' });
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email: normalizedEmail,
+    password,
+    options: {
+      data: { name: displayName, username: normalizedUsername }
+    }
+  });
+
   if (error) return res.status(400).json({ error: error.message });
+
+  // Profile row is created automatically by the handle_new_user() trigger.
+  // If the trigger isn't installed yet, create it here as a fallback.
+  if (data.user) {
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .upsert([{
+        id: data.user.id,
+        email: normalizedEmail,
+        name: displayName,
+        username: normalizedUsername
+      }]);
+    if (profileError && !/does not exist|could not find|schema cache/i.test(profileError.message)) {
+      if (/duplicate|unique|already/i.test(profileError.message)) {
+        return res.status(400).json({ error: 'That username is already taken.' });
+      }
+      console.error('Profile insert error:', profileError.message);
+    }
+  }
 
   if (data.session) {
     res.cookie('sb-access-token', data.session.access_token, {
@@ -65,7 +127,11 @@ app.post('/api/auth/signup', async (req, res) => {
     });
   }
 
-  res.json({ message: 'User registered successfully', user: data.user, session: data.session });
+  res.json({
+    message: 'User registered successfully',
+    user: { ...data.user, name: displayName, username: normalizedUsername },
+    session: data.session
+  });
 });
 
 // Home route
@@ -84,12 +150,45 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Sign In
+// Sign In (with email OR username)
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const identifier = String(email || '').trim();
+  if (!identifier || !password) {
+    return res.status(400).json({ error: 'Email/username and password are required.' });
+  }
+
+  let loginEmail = identifier.toLowerCase();
+  if (!identifier.includes('@')) {
+    // Treat the identifier as a username and resolve it to the account's email.
+    const { data: profile, error: lookupError } = await supabase
+      .from('profiles')
+      .select('email')
+      .eq('username', identifier.toLowerCase().replace(/^@/, ''))
+      .maybeSingle();
+    if (lookupError && !/does not exist|could not find|schema cache/i.test(lookupError.message)) {
+      return res.status(500).json({ error: lookupError.message });
+    }
+    if (!profile) {
+      return res.status(400).json({ error: 'No account found with that username.' });
+    }
+    loginEmail = profile.email;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email: loginEmail, password });
 
   if (error) return res.status(400).json({ error: error.message });
+
+  // Attach the public profile (name/username) to the returned user.
+  let profile = null;
+  if (data.user) {
+    const { data: prof } = await supabase
+      .from('profiles')
+      .select('name, username')
+      .eq('id', data.user.id)
+      .maybeSingle();
+    if (prof) profile = prof;
+  }
 
   // Set secure cookie for session
   res.cookie('sb-access-token', data.session.access_token, {
@@ -98,7 +197,7 @@ app.post('/api/auth/login', async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 
-  res.json({ message: 'Signed in successfully', user: data.user, session: data.session });
+  res.json({ message: 'Signed in successfully', user: { ...data.user, ...(profile || {}) }, session: data.session });
 });
 
 // Get Current User Session
@@ -109,7 +208,15 @@ app.get('/api/auth/me', async (req, res) => {
   const { data: { user }, error } = await supabase.auth.getUser(token);
   if (error || !user) return res.status(401).json({ user: null });
 
-  res.json({ user });
+  let profile = null;
+  const { data: prof } = await supabase
+    .from('profiles')
+    .select('name, username')
+    .eq('id', user.id)
+    .maybeSingle();
+  if (prof) profile = prof;
+
+  res.json({ user: { ...user, ...(profile || {}) } });
 });
 
 // Sign Out
@@ -302,7 +409,7 @@ app.post('/api/pools/:id/comments', requireAuth, async (req, res) => {
   }
 
   const poolId = req.params.id;
-  const userName = (req.user.email || 'Neighbor Buyer').split('@')[0];
+  const userName = req.user.username || req.user.name || (req.user.email || 'Neighbor Buyer').split('@')[0];
 
   const { data: pool } = await supabase
     .from('pools')

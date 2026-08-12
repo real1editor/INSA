@@ -45,7 +45,7 @@
                         <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="service" role="menuitem" data-i18n="nav.service">Service</button>
                         <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="about" role="menuitem" data-i18n="nav.about">About Us</button>
                         <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="how" role="menuitem" data-i18n="nav.how">How it works</button>
-                        <div class="my-1.5 mx-3 border-t border-slate-200"></div>
+                        <div class="menu-divider my-1.5 mx-3 border-t border-slate-200"></div>
                         <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="pools" role="menuitem" data-i18n="nav.pools">Active Pools</button>
                         <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="calculator" role="menuitem" data-i18n="nav.calculator">Savings Calculator</button>
                         <button class="menu-item w-full flex items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 rounded-lg transition" data-menu="hubs" role="menuitem" data-i18n="nav.hubs">Hub Map</button>
@@ -726,13 +726,21 @@
             </div>
 
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="auth-name-field" class="hidden">
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="auth.name">Full Name</label>
+                    <input type="text" id="auth-name" autocomplete="name" placeholder="Abebe Kebede" data-i18n-placeholder="auth.namePh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                </div>
+                <div id="auth-username-field" class="hidden">
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="auth.username">Username</label>
+                    <input type="text" id="auth-username" autocomplete="username" placeholder="abebe123" data-i18n-placeholder="auth.usernamePh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="auth.email">Email Address</label>
-                    <input type="email" id="auth-email" required placeholder="name@example.com" data-i18n-placeholder="auth.emailPh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    <label id="auth-email-label" class="block text-xs font-bold uppercase text-slate-600 mb-1">Email or Username</label>
+                    <input type="text" id="auth-email" required autocomplete="username" placeholder="name@example.com" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="auth.password">Password</label>
-                    <input type="password" id="auth-password" required placeholder="••••••••" data-i18n-placeholder="auth.passwordPh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    <input type="password" id="auth-password" required autocomplete="current-password" placeholder="••••••••" data-i18n-placeholder="auth.passwordPh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
                 <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-800 transition shadow" data-i18n="auth.signin">Sign In</button>
                 <div id="auth-message" class="text-sm font-medium hidden p-3 rounded-lg text-center"></div>
