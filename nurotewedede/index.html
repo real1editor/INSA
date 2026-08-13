@@ -180,11 +180,11 @@
                 <div class="hero-float hero-float-3 -z-10" aria-hidden="true"></div>
             </section>
 
-            <!-- Live Impact & Inflation Fighter Metrics Bar -->
+            <!-- Live Impact & Inflation Fighter Metrics Bar (bento grid) -->
             <section class="bg-white border border-slate-200 rounded-2xl p-4 md:p-6 shadow-sm" data-reveal="up">
-                <div class="flex flex-wrap justify-between items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-emerald-100 text-emerald-800 p-2.5 rounded-xl">
+                <div class="bento bento-metrics">
+                    <div class="bento-tile">
+                        <div class="bento-icon bento-icon-emerald">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                         </div>
                         <div>
@@ -192,8 +192,8 @@
                             <p id="metric-savings" class="text-xl font-extrabold text-slate-800">--%</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="bg-teal-100 text-teal-800 p-2.5 rounded-xl">
+                    <div class="bento-tile">
+                        <div class="bento-icon bento-icon-teal">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </div>
                         <div>
@@ -201,8 +201,8 @@
                             <p id="metric-woredas" class="text-xl font-extrabold text-slate-800">--</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="bg-indigo-100 text-indigo-800 p-2.5 rounded-xl">
+                    <div class="bento-tile">
+                        <div class="bento-icon bento-icon-indigo">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                         </div>
                         <div>
@@ -256,21 +256,21 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="service-card bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition" data-reveal="up">
-                            <div class="bg-emerald-100 text-emerald-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                            <div class="icon-chip bg-emerald-100 text-emerald-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                             </div>
                             <h3 class="text-lg font-bold text-slate-800 mb-2" data-i18n="service.card1Title">Combat Food Inflation</h3>
                             <p class="text-sm text-slate-600 leading-relaxed" data-i18n="service.card1Text">Pool orders together to unlock wholesale pricing directly from regional farming woredas and beat retail price hikes.</p>
                         </div>
                         <div class="service-card bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition" data-reveal="up">
-                            <div class="bg-teal-100 text-teal-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                            <div class="icon-chip bg-teal-100 text-teal-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <h3 class="text-lg font-bold text-slate-800 mb-2" data-i18n="service.card2Title">Support Ethiopian Farmers</h3>
                             <p class="text-sm text-slate-600 leading-relaxed" data-i18n="service.card2Text">Directly connect urban neighborhood distribution hubs to local agricultural producers for fair trade.</p>
                         </div>
                         <div class="service-card bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition" data-reveal="up">
-                            <div class="bg-indigo-100 text-indigo-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                            <div class="icon-chip bg-indigo-100 text-indigo-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                             </div>
                             <h3 class="text-lg font-bold text-slate-800 mb-2" data-i18n="service.card3Title">Seamless Group Logistics</h3>
@@ -438,7 +438,7 @@
                     <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider" data-i18n="calc.adjust">Adjust Monthly Produce Consumption</h3>
                     <div id="calc-items" class="space-y-4"></div>
                 </div>
-                <div class="bg-gradient-to-br from-emerald-900 to-teal-950 text-white rounded-3xl p-6 shadow-lg border border-emerald-800/80 flex flex-col justify-between space-y-6" data-reveal="right">
+                <div id="calc-impact-card" class="bg-gradient-to-br from-emerald-900 to-teal-950 text-white rounded-3xl p-6 shadow-lg border border-emerald-800/80 flex flex-col justify-between space-y-6" data-reveal="right">
                     <div class="space-y-4">
                         <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-xs font-bold uppercase" data-i18n="calc.impact">Calculated Impact</span>
                         <div>
@@ -472,7 +472,7 @@
         </section>
 
         <!-- ==================== NUROAI ASSISTANT FLOATING WIDGET ==================== -->
-        <section id="ai-fab-panel" class="hidden fixed bottom-24 right-4 sm:right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[70vh] max-h-[560px] bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <section id="ai-fab-panel" class="hidden fixed bottom-24 right-4 sm:right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[70vh] max-h-[560px] bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden glass">
             <div class="flex items-center gap-3 p-4 bg-emerald-800">
                 <div class="bg-white/10 p-2 rounded-xl shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -571,7 +571,7 @@
 
     <!-- Create Pool Modal Form -->
     <div id="pool-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh] glass">
             <h3 class="text-xl font-bold text-slate-800 mb-4" data-i18n="create.title">Launch a New Buying Pool</h3>
             <form id="create-form" onsubmit="handleCreatePool(event)" class="space-y-4">
                 <div>
@@ -636,17 +636,17 @@
 
     <!-- Reserve Modal -->
     <div id="reserve-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
-        <div id="reserve-modal-card" class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative"></div>
+        <div id="reserve-modal-card" class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative glass"></div>
     </div>
 
     <!-- Pickup Voucher Modal (My Reservations) -->
     <div id="voucher-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
-        <div id="voucher-modal-card" class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative"></div>
+        <div id="voucher-modal-card" class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative glass"></div>
     </div>
 
     <!-- Bulk & Institutional Purchase Modal -->
     <div id="bulk-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh] glass">
             <div class="flex justify-between items-center mb-1">
                 <h3 class="text-xl font-bold text-slate-800" data-i18n="bulk.title">Bulk &amp; Institutional Purchase</h3>
                 <button onclick="closeBulkModal()" class="text-slate-400 hover:text-slate-600 transition" aria-label="Close modal">
@@ -721,12 +721,12 @@
 
     <!-- Pool Details Modal -->
     <div id="details-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
-        <div id="details-modal-card" class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative"></div>
+        <div id="details-modal-card" class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative glass"></div>
     </div>
 
     <!-- Share Pool Modal -->
     <div id="share-menu" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative glass">
             <button type="button" onclick="closeShareMenu()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Close">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -755,7 +755,7 @@
 
     <!-- Auth Modal Container -->
     <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative glass">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="auth-modal-title" class="text-xl font-bold text-slate-800" data-i18n="auth.signin">Sign In</h3>
                 <button id="close-auth-modal" class="text-slate-400 hover:text-slate-600 transition" aria-label="Close modal">

@@ -1677,13 +1677,14 @@ function renderCalculator() {
         const itemRetail = qty * item.unitPriceRetail;
         const itemWholesale = qty * item.unitPriceWholesale;
         const itemSaved = itemRetail - itemWholesale;
+        const fillPct = item.max > item.min ? Math.round(((qty - item.min) / (item.max - item.min)) * 100) : 50;
         const unitLabel = item.name.indexOf('Litre') !== -1 ? t('calc.unitsLitres') : t('calc.unitsKg');
         return '<div class="card-enter bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2" style="animation-delay: ' + (idx * 70) + 'ms">' +
             '<div class="flex justify-between items-center text-xs font-bold">' +
                 '<span class="text-slate-800">' + esc(item.name) + '</span>' +
                 '<span class="text-emerald-700 font-extrabold">' + esc(tt('calc.month', qty, unitLabel)) + '</span>' +
             '</div>' +
-            '<input type="range" min="' + item.min + '" max="' + item.max + '" step="1" value="' + qty + '" oninput="calcQuantityChange(this)" data-item="' + esc(item.name) + '" class="w-full accent-emerald-600 h-2 cursor-pointer">' +
+            '<input type="range" min="' + item.min + '" max="' + item.max + '" step="1" value="' + qty + '" oninput="calcQuantityChange(this)" data-item="' + esc(item.name) + '" style="--fill: ' + fillPct + '%" class="w-full h-2 cursor-pointer">' +
             '<div class="flex justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-200">' +
                 '<span>' + esc(tt('calc.groupRate', item.unitPriceWholesale)) + '</span>' +
                 '<span>' + esc(tt('calc.retailMarket', item.unitPriceRetail)) + '</span>' +
@@ -1697,6 +1698,9 @@ function renderCalculator() {
 
 function calcQuantityChange(input) {
     calcQuantities[input.dataset.item] = Number(input.value);
+    const min = Number(input.min);
+    const max = Number(input.max);
+    if (max > min) input.style.setProperty('--fill', Math.round(((input.value - min) / (max - min)) * 100) + '%');
     const valueLabel = input.parentElement.querySelector('span.text-emerald-700');
     if (valueLabel) {
         const item = PRESET_SAVINGS_ITEMS.find(function (it) { return it.name === input.dataset.item; });
@@ -1734,6 +1738,20 @@ function updateCalculatorSummary() {
     if (elRetail) elRetail.textContent = fmt(totalRetail);
     if (elWholesale) elWholesale.textContent = fmt(totalWholesale);
     if (elAnnual) elAnnual.textContent = fmt(annual);
+
+    [elMonthly, elAnnual].forEach(function (el) {
+        if (el) {
+            el.classList.remove('num-pop');
+            void el.offsetWidth;
+            el.classList.add('num-pop');
+        }
+    });
+    const impactCard = document.getElementById('calc-impact-card');
+    if (impactCard) {
+        impactCard.classList.remove('impact-flash');
+        void impactCard.offsetWidth;
+        impactCard.classList.add('impact-flash');
+    }
 
     const chart = document.getElementById('calc-chart');
     if (!chart) return;

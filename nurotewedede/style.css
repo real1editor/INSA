@@ -894,6 +894,372 @@ button:disabled {
     to { opacity: 0; transform: translateY(10px) scale(0.96); }
 }
 
+/* ============================================================
+   PREMIUM UI: GLASSMORPHISM, BENTO GRIDS & MICRO-FEEDBACK
+   ============================================================ */
+
+/* ===== Glass surface utility ===== */
+.glass {
+    background-color: rgba(255, 255, 255, 0.72) !important;
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 24px 60px -20px rgba(2, 44, 34, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+[data-theme="dark"] .glass {
+    background-color: rgba(15, 23, 42, 0.72) !important;
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(148, 163, 184, 0.12);
+}
+
+/* Modal cards: shared entrance motion */
+#pool-modal > div,
+#bulk-modal > div,
+#share-menu > div,
+#auth-modal > div {
+    animation: modal-rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes modal-rise {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ===== Sticky header glass (frosted always, deeper when scrolled) ===== */
+#site-header {
+    background-color: rgba(4, 120, 87, 0.8) !important;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.14), 0 4px 20px -12px rgba(2, 44, 34, 0.3);
+}
+#site-header.header-scrolled {
+    background-color: rgba(4, 120, 87, 0.92) !important;
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1), 0 10px 32px -10px rgba(2, 44, 34, 0.5);
+}
+[data-theme="dark"] #site-header {
+    background-color: rgba(6, 78, 59, 0.8) !important;
+    box-shadow: inset 0 -1px 0 rgba(148, 163, 184, 0.12), 0 4px 20px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Floating widgets (NuroAI FAB + back-to-top) glass ===== */
+.ai-fab {
+    background-color: rgba(6, 95, 70, 0.85) !important;
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.back-to-top {
+    background-color: rgba(6, 78, 59, 0.85) !important;
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+[data-theme="dark"] .back-to-top {
+    background-color: rgba(16, 185, 129, 0.85) !important;
+}
+
+/* ===== Dynamic nav indicator (desktop: underline-only sweep, no pill/knob) ===== */
+.nav-link.tab-btn.active {
+    font-weight: 700;
+    color: #ffffff !important;
+}
+.nav-link.tab-btn.active::after {
+    transform: scaleX(1);
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #34d399, #2dd4bf);
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.75);
+}
+.nav-link:hover::after {
+    height: 2.5px;
+    background: linear-gradient(90deg, rgba(52, 211, 153, 0.9), rgba(45, 212, 191, 0.8));
+}
+
+/* Mobile tab buttons: smooth active accent bar */
+.mobile-tab-btn {
+    transition: background-color 0.25s ease, color 0.25s ease, padding-left 0.25s ease, transform 0.2s ease;
+    position: relative;
+}
+.mobile-tab-btn:active {
+    transform: scale(0.98);
+}
+.mobile-tab-btn.active {
+    padding-left: 1.1rem;
+}
+.mobile-tab-btn.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 28%;
+    bottom: 28%;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(180deg, #34d399, #2dd4bf);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
+/* ===== Bento grids & tiles ===== */
+.bento {
+    display: grid;
+    gap: 1rem;
+}
+.bento-metrics {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.bento-tile {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    border-radius: 1.25rem;
+    padding: 1rem 1.1rem;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(241, 245, 249, 0.8));
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 1px 2px rgba(2, 44, 34, 0.04), 0 10px 26px -14px rgba(2, 44, 34, 0.14);
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease, border-color 0.32s ease;
+}
+.bento-tile::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #34d399, #2dd4bf, transparent 80%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.bento-tile:hover {
+    transform: translateY(-4px);
+    border-color: rgba(52, 211, 153, 0.6);
+    box-shadow: 0 20px 42px -18px rgba(2, 44, 34, 0.28), 0 4px 10px rgba(2, 44, 34, 0.05);
+}
+.bento-tile:hover::after {
+    opacity: 1;
+}
+.bento-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    flex-shrink: 0;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease;
+}
+.bento-tile:hover .bento-icon {
+    transform: translateY(-2px) scale(1.06) rotate(-3deg);
+}
+.bento-icon-emerald { background: linear-gradient(135deg, #a7f3d0, #34d399); color: #064e3b; box-shadow: 0 6px 14px -4px rgba(16, 185, 129, 0.45); }
+.bento-icon-teal { background: linear-gradient(135deg, #99f6e4, #2dd4bf); color: #134e4a; box-shadow: 0 6px 14px -4px rgba(45, 212, 191, 0.45); }
+.bento-icon-indigo { background: linear-gradient(135deg, #c7d2fe, #818cf8); color: #312e81; box-shadow: 0 6px 14px -4px rgba(99, 102, 241, 0.45); }
+[data-theme="dark"] .bento-tile {
+    background: linear-gradient(160deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.92));
+    border-color: rgba(51, 65, 85, 0.75);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 26px -14px rgba(0, 0, 0, 0.5);
+}
+[data-theme="dark"] .bento-tile:hover {
+    border-color: rgba(16, 185, 129, 0.55);
+    box-shadow: 0 20px 42px -18px rgba(0, 0, 0, 0.65);
+}
+[data-theme="dark"] .bento-icon-emerald { background: linear-gradient(135deg, #065f46, #047857); color: #a7f3d0; box-shadow: 0 6px 14px -4px rgba(16, 185, 129, 0.3); }
+[data-theme="dark"] .bento-icon-teal { background: linear-gradient(135deg, #134e4a, #0f766e); color: #99f6e4; box-shadow: 0 6px 14px -4px rgba(45, 212, 191, 0.3); }
+[data-theme="dark"] .bento-icon-indigo { background: linear-gradient(135deg, #3730a3, #4f46e5); color: #c7d2fe; box-shadow: 0 6px 14px -4px rgba(99, 102, 241, 0.3); }
+
+/* Metric tiles cascade in on load */
+.bento-metrics .bento-tile:nth-child(1) { animation: card-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.bento-metrics .bento-tile:nth-child(2) { animation: card-enter 0.55s 0.1s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.bento-metrics .bento-tile:nth-child(3) { animation: card-enter 0.55s 0.2s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+
+/* ===== Service feature cards: depth + glow hairline ===== */
+.service-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(170deg, #ffffff, rgba(248, 250, 252, 0.85)) !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.service-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #34d399, #2dd4bf, #fbbf24);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.service-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(52, 211, 153, 0.55) !important;
+    box-shadow: 0 24px 48px -18px rgba(2, 44, 34, 0.28), 0 6px 14px rgba(2, 44, 34, 0.06);
+}
+.service-card:hover::before {
+    transform: scaleX(1);
+}
+[data-theme="dark"] .service-card {
+    background: linear-gradient(170deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.95)) !important;
+}
+[data-theme="dark"] .service-card:hover {
+    border-color: rgba(16, 185, 129, 0.55) !important;
+    box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.65);
+}
+.icon-chip {
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease;
+}
+.service-card:hover .icon-chip {
+    transform: translateY(-2px) scale(1.1) rotate(-4deg);
+    box-shadow: 0 10px 22px -6px rgba(4, 120, 87, 0.4);
+}
+
+/* ===== How-it-works stat tiles ===== */
+.how-stat {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.how-stat:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 14px 30px -14px rgba(2, 44, 34, 0.25);
+}
+
+/* ===== Pool cards: top glow hairline + deeper depth ===== */
+#pools-grid > div {
+    position: relative;
+}
+#pools-grid > div::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #34d399, #2dd4bf, transparent 85%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+#pools-grid > div:hover::after {
+    opacity: 1;
+}
+
+/* ===== Live ticker polish: edge fade + LIVE glow ===== */
+.ticker-viewport {
+    mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+}
+#ticker > div > span.shrink-0 {
+    position: relative;
+    animation: live-pulse 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes live-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.ticker-track {
+    animation-duration: 40s;
+}
+
+/* ===== Calculator: custom sliders + live feedback ===== */
+#calc-items input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #10b981, #2dd4bf var(--fill, 40%), #e2e8f0 var(--fill, 40%), #e2e8f0 100%);
+    outline: none;
+    cursor: pointer;
+    transition: box-shadow 0.25s ease;
+}
+#calc-items input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 3px solid #10b981;
+    box-shadow: 0 2px 10px rgba(4, 120, 87, 0.45);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+#calc-items input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0.16), 0 2px 10px rgba(4, 120, 87, 0.5);
+}
+#calc-items input[type="range"]:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0.22), 0 2px 10px rgba(4, 120, 87, 0.5);
+}
+#calc-items input[type="range"]::-moz-range-track {
+    height: 8px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #10b981, #2dd4bf var(--fill, 40%), #e2e8f0 var(--fill, 40%), #e2e8f0 100%);
+}
+#calc-items input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 3px solid #10b981;
+    box-shadow: 0 2px 10px rgba(4, 120, 87, 0.45);
+    cursor: pointer;
+}
+[data-theme="dark"] #calc-items input[type="range"] {
+    background: linear-gradient(90deg, #10b981, #2dd4bf var(--fill, 40%), #334155 var(--fill, 40%), #334155 100%);
+}
+
+@keyframes num-pop {
+    0% { transform: scale(1); text-shadow: 0 0 0 transparent; }
+    45% { transform: scale(1.14); text-shadow: 0 0 18px rgba(52, 211, 153, 0.9); }
+    100% { transform: scale(1); text-shadow: 0 0 0 transparent; }
+}
+.num-pop {
+    display: inline-block;
+    animation: num-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes impact-flash {
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    30% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0.32), 0 24px 55px -14px rgba(4, 120, 87, 0.55); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+.impact-flash {
+    animation: impact-flash 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Family-size buttons: lift + glow on active */
+.calc-family-btn {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.calc-family-btn:not(.active):hover {
+    transform: translateY(-2px);
+}
+.calc-family-btn.active {
+    box-shadow: 0 6px 14px -6px rgba(4, 120, 87, 0.4);
+}
+
+/* Share menu option cards: lift + colored glow on hover */
+[data-share-telegram],
+[data-share-whatsapp],
+[data-share-copy] {
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+}
+[data-share-telegram]:hover,
+[data-share-whatsapp]:hover,
+[data-share-copy]:hover {
+    transform: translateY(-3px);
+    border-color: rgba(52, 211, 153, 0.5) !important;
+    box-shadow: 0 12px 24px -10px rgba(2, 44, 34, 0.25);
+}
+[data-share-telegram]:hover svg,
+[data-share-whatsapp]:hover svg,
+[data-share-copy]:hover svg {
+    transform: scale(1.15);
+}
+
 /* ===== Respect reduced-motion preferences ===== */
 @media (prefers-reduced-motion: reduce) {
     html {
