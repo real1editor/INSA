@@ -577,3 +577,330 @@ input[type="range"]::-webkit-slider-thumb {
         display: none !important;
     }
 }
+
+/* ============================================================
+   SCROLL FX & MODERN MOTION
+   ============================================================ */
+
+/* ===== Scroll progress bar ===== */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    z-index: 100;
+    background: linear-gradient(90deg, #34d399, #2dd4bf, #fbbf24);
+    border-radius: 0 999px 999px 0;
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.65);
+    pointer-events: none;
+}
+
+/* ===== Sticky header glass-on-scroll ===== */
+#site-header {
+    transition: background-color 0.35s ease, box-shadow 0.35s ease, backdrop-filter 0.35s ease;
+}
+#site-header.header-scrolled {
+    background-color: rgba(4, 120, 87, 0.9) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 6px 28px -8px rgba(2, 44, 34, 0.45);
+}
+[data-theme="dark"] #site-header.header-scrolled {
+    background-color: rgba(6, 78, 59, 0.9) !important;
+    box-shadow: 0 6px 28px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== Scroll reveal animations ===== */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--rd, 0ms);
+    will-change: opacity, transform;
+}
+[data-reveal="left"] {
+    transform: translateX(-40px);
+}
+[data-reveal="right"] {
+    transform: translateX(40px);
+}
+[data-reveal="zoom"] {
+    transform: scale(0.93);
+}
+[data-reveal].revealed {
+    opacity: 1;
+    transform: none;
+}
+
+/* Staggered children (static grids) */
+.service-card:nth-child(1),
+.how-stat:nth-child(1) { --rd: 60ms; }
+.service-card:nth-child(2),
+.how-stat:nth-child(2) { --rd: 170ms; }
+.service-card:nth-child(3),
+.how-stat:nth-child(3) { --rd: 280ms; }
+.how-stat:nth-child(4) { --rd: 390ms; }
+
+/* ===== Card / item entrance for JS-rendered grids ===== */
+@keyframes card-enter {
+    from { opacity: 0; transform: translateY(22px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-enter {
+    animation: card-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* ===== Tab view entrance ===== */
+@keyframes view-enter {
+    from { opacity: 0; transform: translateY(18px) scale(0.995); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.view-enter {
+    animation: view-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* ===== Pool card modern hover ===== */
+#pools-grid > div {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+#pools-grid > div:hover {
+    transform: translateY(-6px);
+    border-color: #34d399;
+    box-shadow: 0 20px 45px -14px rgba(2, 44, 34, 0.28), 0 4px 12px rgba(2, 44, 34, 0.08);
+}
+[data-theme="dark"] #pools-grid > div:hover {
+    border-color: #10b981;
+    box-shadow: 0 20px 45px -14px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Hero modernization ===== */
+.hero-glow {
+    background-size: 160% 160%;
+    animation: hero-gradient-shift 16s ease infinite;
+}
+[data-theme="dark"] .hero-glow {
+    background-size: 160% 160% !important;
+}
+@keyframes hero-gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+.hero-float {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(56px);
+    opacity: 0.45;
+    pointer-events: none;
+    animation: hero-float-drift 13s ease-in-out infinite;
+}
+.hero-float-1 {
+    width: 230px;
+    height: 230px;
+    background: rgba(52, 211, 153, 0.55);
+    top: -70px;
+    right: 8%;
+}
+.hero-float-2 {
+    width: 170px;
+    height: 170px;
+    background: rgba(45, 212, 191, 0.5);
+    bottom: -50px;
+    left: 5%;
+    animation-delay: -4.5s;
+}
+.hero-float-3 {
+    width: 130px;
+    height: 130px;
+    background: rgba(251, 191, 36, 0.32);
+    top: 28%;
+    left: 52%;
+    animation-delay: -8.5s;
+}
+@keyframes hero-float-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(26px, -20px) scale(1.08); }
+    66% { transform: translate(-18px, 16px) scale(0.94); }
+}
+
+/* ===== Nav link underline sweep ===== */
+.nav-link {
+    position: relative;
+}
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 7px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+/* ===== Micro-interaction: button press & icon pop ===== */
+button {
+    transition-property: transform, background-color, color, box-shadow, border-color, opacity;
+    transition-duration: 0.2s;
+}
+button:not(:disabled):active {
+    transform: scale(0.96);
+}
+button:disabled {
+    cursor: not-allowed;
+}
+.tab-btn:hover svg,
+.mobile-tab-btn:hover svg {
+    transform: scale(1.15);
+}
+
+/* ===== Mobile hamburger icon cross-fade ===== */
+#mobile-menu-toggle {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+#mobile-menu-toggle svg {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+#icon-close {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+}
+#mobile-menu-toggle[aria-expanded="true"] #icon-hamburger {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+}
+#mobile-menu-toggle[aria-expanded="true"] #icon-close {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+/* ===== Back to top button ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    z-index: 40;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    background-color: rgba(6, 78, 59, 0.92);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(2, 44, 34, 0.35);
+    opacity: 0;
+    transform: translateY(14px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+.back-to-top.visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+.back-to-top:hover {
+    background-color: #047857;
+}
+[data-theme="dark"] .back-to-top {
+    background-color: rgba(16, 185, 129, 0.9);
+}
+[data-theme="dark"] .back-to-top:hover {
+    background-color: #059669;
+}
+
+/* ===== Loading skeleton shimmer ===== */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #e2e8f0;
+}
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+    animation: skeleton-shimmer 1.4s ease infinite;
+}
+@keyframes skeleton-shimmer {
+    100% { transform: translateX(100%); }
+}
+[data-theme="dark"] .skeleton {
+    background-color: #334155;
+}
+[data-theme="dark"] .skeleton::after {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+}
+
+/* ===== Pool image fade-in ===== */
+.pool-img {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(1);
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.3s ease;
+}
+.pool-img.loaded {
+    opacity: 1;
+    filter: blur(0);
+}
+
+/* ===== Hero heading word stagger ===== */
+.hero-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: hero-word-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes hero-word-in {
+    to { opacity: 1; transform: none; }
+}
+
+/* ===== Toast slide/fade ===== */
+.toast-enter {
+    animation: toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes toast-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.95); }
+    to { opacity: 1; transform: none; }
+}
+.toast-out {
+    animation: toast-out 0.3s ease forwards;
+}
+@keyframes toast-out {
+    to { opacity: 0; transform: translateY(10px) scale(0.96); }
+}
+
+/* ===== Respect reduced-motion preferences ===== */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001s !important;
+        scroll-behavior: auto !important;
+    }
+    [data-reveal] {
+        opacity: 1;
+        transform: none;
+    }
+    #scroll-progress,
+    .hero-float {
+        display: none;
+    }
+}

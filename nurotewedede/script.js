@@ -699,6 +699,7 @@ function applyI18n() {
     if (document.documentElement) document.documentElement.lang = appLang;
     updateLangButtons();
     syncAuthFields();
+    staggerHeroTitle();
 }
 
 function setLang(lang) {
@@ -717,6 +718,16 @@ function setLang(lang) {
     if (aiMessages[0] && aiMessages[0].id === 'welcome') aiMessages[0].text = t('ai.welcome');
     renderAiMessages();
     if (currentUser) loadMyShares();
+}
+
+function staggerHeroTitle() {
+    const title = document.getElementById('hero-title');
+    if (!title) return;
+    const text = title.textContent.trim();
+    if (!text) return;
+    title.innerHTML = text.split(/\s+/).map(function (word, i) {
+        return '<span class="hero-word" style="animation-delay:' + (150 + i * 90) + 'ms">' + esc(word) + '</span>';
+    }).join(' ');
 }
 
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80';
@@ -861,13 +872,18 @@ function showToast(msg, isError) {
     if (!toast) return;
     clearTimeout(toastTimer);
     toast.textContent = msg;
-    toast.className = 'fixed bottom-6 right-6 z-50 hidden bg-' + (isError ? 'rose' : 'emerald') + '-900 text-white border border-' + (isError ? 'rose' : 'emerald') + '-700 px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold';
+    toast.className = 'fixed bottom-6 right-6 z-50 hidden bg-' + (isError ? 'rose' : 'emerald') + '-900 text-white border border-' + (isError ? 'rose' : 'emerald') + '-700 px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold toast-enter';
     toast.classList.remove('hidden');
     toast.classList.add('flex');
     toastTimer = setTimeout(function () {
-        toast.classList.add('hidden');
-        toast.classList.remove('flex');
-    }, 4000);
+        toast.classList.remove('toast-enter');
+        toast.classList.add('toast-out');
+        setTimeout(function () {
+            toast.classList.add('hidden');
+            toast.classList.remove('flex');
+            toast.classList.remove('toast-out');
+        }, 300);
+    }, 3600);
 }
 
 // ---------- Theme ----------
@@ -908,7 +924,12 @@ function showTab(tab, noScroll) {
         sec.classList.add('hidden');
     });
     const target = document.getElementById('view-' + tab);
-    if (target) target.classList.remove('hidden');
+    if (target) {
+        target.classList.remove('hidden');
+        target.classList.remove('view-enter');
+        void target.offsetWidth;
+        target.classList.add('view-enter');
+    }
 
     document.querySelectorAll('.tab-btn').forEach(function (btn) {
         btn.classList.toggle('active', btn.dataset.tab === tab);
@@ -928,7 +949,10 @@ function showTab(tab, noScroll) {
 
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
-    if (menu) menu.classList.toggle('hidden');
+    if (!menu) return;
+    const hidden = menu.classList.toggle('hidden');
+    const btn = document.getElementById('mobile-menu-toggle');
+    if (btn) btn.setAttribute('aria-expanded', String(!hidden));
 }
 
 function toggleUserMenu() {
@@ -961,7 +985,29 @@ function renderCategoryPills() {
 
 // ---------- Pools ----------
 
+function renderSkeleton() {
+    const grid = document.getElementById('pools-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    for (let i = 0; i < 8; i++) {
+        const div = document.createElement('div');
+        div.className = 'bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm';
+        div.innerHTML =
+            '<div class="skeleton h-44"></div>' +
+            '<div class="p-5 space-y-3">' +
+                '<div class="skeleton h-3 w-24 rounded-full"></div>' +
+                '<div class="skeleton h-5 w-3/4 rounded-lg"></div>' +
+                '<div class="skeleton h-3 w-1/2 rounded-full"></div>' +
+                '<div class="skeleton h-12 rounded-2xl"></div>' +
+                '<div class="skeleton h-2.5 rounded-full"></div>' +
+                '<div class="flex gap-2"><div class="skeleton h-9 w-9 rounded-2xl"></div><div class="skeleton h-9 flex-1 rounded-2xl"></div></div>' +
+            '</div>';
+        grid.appendChild(div);
+    }
+}
+
 async function fetchPools() {
+    renderSkeleton();
     try {
         const data = await api('/api/pools');
         pools = (data.pools || []).map(normalizePool);
@@ -979,6 +1025,27 @@ async function fetchPools() {
     renderTicker();
 }
 
+function countUp(el, target, suffix, duration) {
+    if (!el || typeof target !== 'number') return;
+    suffix = suffix || '';
+    duration = duration || 900;
+    const current = parseInt(el.dataset.counted, 10) || 0;
+    if (current === target) return;
+    const start = performance.now();
+    function step(now) {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(current + (target - current) * eased);
+        el.textContent = val + suffix;
+        if (p < 1) {
+            requestAnimationFrame(step);
+        } else {
+            el.dataset.counted = String(target);
+        }
+    }
+    requestAnimationFrame(step);
+}
+
 function updateMetrics() {
     const totalPools = pools.length;
     const uniqueWoredas = new Set(pools.map(function (p) { return p.woreda; })).size;
@@ -992,9 +1059,9 @@ function updateMetrics() {
     const metricPools = document.getElementById('metric-pools');
     const metricWoredas = document.getElementById('metric-woredas');
     const metricSavings = document.getElementById('metric-savings');
-    if (metricPools) metricPools.textContent = totalPools;
-    if (metricWoredas) metricWoredas.textContent = uniqueWoredas;
-    if (metricSavings) metricSavings.textContent = avgSavings + '%';
+    countUp(metricPools, totalPools, '');
+    countUp(metricWoredas, uniqueWoredas, '');
+    countUp(metricSavings, avgSavings, '%');
 }
 
 function getSortedPools(list) {
@@ -1077,18 +1144,19 @@ function renderPools() {
         return;
     }
 
-    sorted.forEach(function (pool) {
+    sorted.forEach(function (pool, idx) {
         const percentage = Math.min(100, Math.round((pool.currentShares / pool.targetShares) * 100));
         const savingsAmount = pool.retailPrice - pool.price;
         const savingsPercent = pool.retailPrice > 0 ? Math.round((savingsAmount / pool.retailPrice) * 100) : 0;
         const isReservable = !pool.locked && pool.currentShares < pool.targetShares;
 
         const card = document.createElement('div');
-        card.className = "bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group";
+        card.className = "card-enter bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group";
+        card.style.animationDelay = (idx % 12) * 55 + 'ms';
         card.innerHTML =
             '<div>' +
                 '<div class="relative h-44 overflow-hidden bg-slate-100">' +
-                    '<img src="' + esc(pool.imageUrl) + '" alt="' + esc(pool.title) + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">' +
+                    '<img src="' + esc(pool.imageUrl) + '" alt="' + esc(pool.title) + '" class="pool-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onload="this.classList.add(\'loaded\')" onerror="this.classList.add(\'loaded\')">' +
                     '<div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/20"></div>' +
                     '<div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">' +
                         getStatusBadge(pool) +
@@ -1128,7 +1196,7 @@ function renderPools() {
             '<div class="p-5 pt-0 flex gap-2">' +
                 '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="Community Discussion & Details">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
-                    '<span class="text-xs font-bold">' + pool.commentsCount + '</span>' +
+                    '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
                 '</button>' +
                 '<button onclick="openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
                     (isReservable ? esc(t('card.reserve')) : esc(t('card.fullyReserved'))) +
@@ -1499,6 +1567,9 @@ async function postComment(e) {
         });
         if (data.comment) {
             detailsState.comments = [data.comment].concat(detailsState.comments);
+            detailsState.pool.commentsCount = (detailsState.pool.commentsCount || 0) + 1;
+            const badge = document.querySelector('[data-cc="' + detailsState.pool.id + '"]');
+            if (badge) badge.textContent = detailsState.pool.commentsCount;
         }
         renderDetails();
         showToast('Comment posted to the community board.');
@@ -1524,13 +1595,13 @@ function renderCalculator() {
         calcQuantities = calcInitQuantities();
     }
 
-    container.innerHTML = PRESET_SAVINGS_ITEMS.map(function (item) {
+    container.innerHTML = PRESET_SAVINGS_ITEMS.map(function (item, idx) {
         const qty = calcQuantities[item.name] || 0;
         const itemRetail = qty * item.unitPriceRetail;
         const itemWholesale = qty * item.unitPriceWholesale;
         const itemSaved = itemRetail - itemWholesale;
         const unitLabel = item.name.indexOf('Litre') !== -1 ? t('calc.unitsLitres') : t('calc.unitsKg');
-        return '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">' +
+        return '<div class="card-enter bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2" style="animation-delay: ' + (idx * 70) + 'ms">' +
             '<div class="flex justify-between items-center text-xs font-bold">' +
                 '<span class="text-slate-800">' + esc(item.name) + '</span>' +
                 '<span class="text-emerald-700 font-extrabold">' + esc(tt('calc.month', qty, unitLabel)) + '</span>' +
@@ -1637,9 +1708,9 @@ function renderHubs() {
 
     const list = document.getElementById('hub-list');
     if (list) {
-        list.innerHTML = SUPPLY_HUBS.map(function (hub) {
+        list.innerHTML = SUPPLY_HUBS.map(function (hub, idx) {
             const active = hub.id === selected.id;
-            return '<button onclick="selectHub(\'' + hub.id + '\')" class="w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between ' + (active ? 'bg-emerald-800 text-white border-emerald-700 shadow-md' : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100') + '">' +
+            return '<button onclick="selectHub(\'' + hub.id + '\')" style="animation-delay: ' + (idx * 60) + 'ms" class="card-enter w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between ' + (active ? 'bg-emerald-800 text-white border-emerald-700 shadow-md' : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100') + '">' +
                 '<div>' +
                     '<h4 class="text-sm font-bold flex items-center gap-1.5">' + esc(hub.name) + '</h4>' +
                     '<p class="text-xs mt-0.5 ' + (active ? 'text-emerald-100' : 'text-slate-500') + '">' + esc(hub.address) + '</p>' +
@@ -2158,10 +2229,60 @@ function selectTownFromDropdown(value, e) {
     closeTownDropdowns();
 }
 
+// ---------- Scroll FX: progress bar, header state, back-to-top ----------
+
+function initScrollFX() {
+    const progress = document.getElementById('scroll-progress');
+    const header = document.getElementById('site-header');
+    const toTop = document.getElementById('back-to-top');
+
+    function onScroll() {
+        const doc = document.documentElement;
+        const max = Math.max(doc.scrollHeight - doc.clientHeight, 1);
+        const pct = Math.min(100, (window.scrollY / max) * 100);
+        if (progress) progress.style.width = pct + '%';
+        if (header) header.classList.toggle('header-scrolled', window.scrollY > 8);
+        if (toTop) toTop.classList.toggle('visible', window.scrollY > 600);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (toTop) {
+        toTop.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+}
+
+// ---------- Scroll reveal animations ----------
+
+function initReveals() {
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            el.classList.add('revealed');
+        });
+        return;
+    }
+    const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(function (el) {
+        if (!el.classList.contains('revealed')) io.observe(el);
+    });
+}
+
 function init() {
     initTheme();
+    applyI18n();
     initCountdown();
     populateTownSelects();
+    initScrollFX();
+    initReveals();
 
     document.querySelectorAll('.tab-btn, .mobile-tab-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
