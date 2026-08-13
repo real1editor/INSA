@@ -1260,6 +1260,32 @@ button:disabled {
     transform: scale(1.15);
 }
 
+/* ===== Sort-by select matches header dropdown pills ===== */
+#sort-select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a7f3d0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 0.8rem;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+#sort-select:hover {
+    background-color: rgba(6, 95, 70, 0.75);
+}
+#sort-select:active {
+    transform: scale(0.97);
+}
+#sort-select option {
+    background-color: #ffffff;
+    color: #1e293b;
+    font-weight: 600;
+}
+[data-theme="dark"] #sort-select option {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
 /* ===== Respect reduced-motion preferences ===== */
 @media (prefers-reduced-motion: reduce) {
     html {

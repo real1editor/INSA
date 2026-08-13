@@ -71,6 +71,11 @@ DROP POLICY IF EXISTS "comments_insert_auth" ON public.comments;
 CREATE POLICY "comments_insert_auth" ON public.comments
   FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 
+-- Allow the server to bump the likes counter on comments
+DROP POLICY IF EXISTS "comments_update_likes" ON public.comments;
+CREATE POLICY "comments_update_likes" ON public.comments
+  FOR UPDATE USING (true) WITH CHECK (true);
+
 -- 4) Backfill: give existing pools a sensible category if it is blank
 UPDATE public.pools
    SET category = 'Grains & Teff'

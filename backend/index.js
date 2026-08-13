@@ -60,6 +60,21 @@ async function requireAuth(req, res, next) {
   }
 }
 
+// Create a Supabase client bound to the request's user session, so RLS
+// policies see auth.uid() = the signed-in user (the shared anon client
+// cannot pass RLS checks that depend on the user's identity).
+function authedSupabase(req) {
+  const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
+  if (!token) return null;
+  return createClient(supabaseUrl, supabaseKey, {
+    global: { headers: { Authorization: 'Bearer ' + token } }
+  });
+}
+
+function likesNotEnabled(res) {
+  return res.status(501).json({ error: 'Comment likes are not enabled yet. Run backend/migrations.sql in your Supabase SQL editor to enable them.' });
+}
+
 // ==================== AUTH ROUTES ====================
 
 // Sign Up
@@ -423,50 +438,73 @@ app.get('/api/pools/:id/comments', async (req, res) => {
 app.post('/api/comments/:id/like', requireAuth, async (req, res) => {
   const commentId = req.params.id;
   const userId = req.user.id;
+  const db = authedSupabase(req);
 
-  const { data: comment } = await supabase
+  const { data: comment, error: findError } = await supabase
     .from('comments')
     .select('id, likes_count')
     .eq('id', commentId)
     .maybeSingle();
 
+  if (findError) {
+    if (/does not exist|could not find the table|column|schema cache/i.test(findError.message)) {
+      return likesNotEnabled(res);
+    }
+    return res.status(500).json({ error: findError.message });
+  }
   if (!comment) return res.status(404).json({ error: 'Comment not found.' });
 
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await db
     .from('comment_likes')
     .select('comment_id')
     .eq('comment_id', commentId)
     .eq('user_id', userId)
     .maybeSingle();
 
+  if (existingError && !/does not exist|could not find the table|schema cache/i.test(existingError.message)) {
+    return res.status(500).json({ error: existingError.message });
+  }
+
   let liked = true;
   const currentLikes = Number(comment.likes_count) || 0;
 
   if (existing) {
     liked = false;
-    await supabase
+    const { error: delError } = await db
       .from('comment_likes')
       .delete()
       .eq('comment_id', commentId)
       .eq('user_id', userId);
-    await supabase
+    if (delError) {
+      if (/does not exist|could not find the table|schema cache/i.test(delError.message)) {
+        return likesNotEnabled(res);
+      }
+      return res.status(400).json({ error: delError.message });
+    }
+    const { error: bumpError } = await db
       .from('comments')
       .update({ likes_count: Math.max(0, currentLikes - 1) })
       .eq('id', commentId);
+    if (bumpError && /does not exist|could not find the table|column|schema cache/i.test(bumpError.message)) {
+      return likesNotEnabled(res);
+    }
   } else {
-    const { error: likeError } = await supabase
+    const { error: likeError } = await db
       .from('comment_likes')
       .insert([{ comment_id: commentId, user_id: userId }]);
     if (likeError) {
       if (/does not exist|could not find the table|schema cache/i.test(likeError.message)) {
-        return res.status(501).json({ error: 'Comment likes are not enabled yet. Run backend/migrations.sql in your Supabase SQL editor to enable them.' });
+        return likesNotEnabled(res);
       }
       return res.status(400).json({ error: likeError.message });
     }
-    await supabase
+    const { error: bumpError } = await db
       .from('comments')
       .update({ likes_count: currentLikes + 1 })
       .eq('id', commentId);
+    if (bumpError && /does not exist|could not find the table|column|schema cache/i.test(bumpError.message)) {
+      return likesNotEnabled(res);
+    }
   }
 
   const newCount = Math.max(0, currentLikes + (liked ? 1 : -1));
