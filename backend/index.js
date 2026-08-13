@@ -390,6 +390,24 @@ app.get('/api/pools/:id/comments', async (req, res) => {
     .eq('pool_id', req.params.id)
     .order('created_at', { ascending: false });
 
+  // Attach a "liked" flag for the current user, if a session token is present.
+  let likedByMe = {};
+  const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
+  if (token && data && data.length) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser(token);
+      if (user && data.length) {
+        const ids = data.map(c => c.id);
+        const { data: likes } = await supabase
+          .from('comment_likes')
+          .select('comment_id')
+          .eq('user_id', user.id)
+          .in('comment_id', ids);
+        if (likes) likes.forEach(l => { likedByMe[l.comment_id] = true; });
+      }
+    } catch (_) { /* optional enhancement */ }
+  }
+
   if (error) {
     // The comments table does not exist yet if the migration has not been run
     if (/does not exist|could not find the table|schema cache/i.test(error.message)) {
@@ -398,7 +416,61 @@ app.get('/api/pools/:id/comments', async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 
-  res.json({ comments: data });
+  res.json({ comments: (data || []).map(c => ({ ...c, liked: !!likedByMe[c.id] })) });
+});
+
+// Toggle a like on a comment (Protected Route)
+app.post('/api/comments/:id/like', requireAuth, async (req, res) => {
+  const commentId = req.params.id;
+  const userId = req.user.id;
+
+  const { data: comment } = await supabase
+    .from('comments')
+    .select('id, likes_count')
+    .eq('id', commentId)
+    .maybeSingle();
+
+  if (!comment) return res.status(404).json({ error: 'Comment not found.' });
+
+  const { data: existing } = await supabase
+    .from('comment_likes')
+    .select('comment_id')
+    .eq('comment_id', commentId)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  let liked = true;
+  const currentLikes = Number(comment.likes_count) || 0;
+
+  if (existing) {
+    liked = false;
+    await supabase
+      .from('comment_likes')
+      .delete()
+      .eq('comment_id', commentId)
+      .eq('user_id', userId);
+    await supabase
+      .from('comments')
+      .update({ likes_count: Math.max(0, currentLikes - 1) })
+      .eq('id', commentId);
+  } else {
+    const { error: likeError } = await supabase
+      .from('comment_likes')
+      .insert([{ comment_id: commentId, user_id: userId }]);
+    if (likeError) {
+      if (/does not exist|could not find the table|schema cache/i.test(likeError.message)) {
+        return res.status(501).json({ error: 'Comment likes are not enabled yet. Run backend/migrations.sql in your Supabase SQL editor to enable them.' });
+      }
+      return res.status(400).json({ error: likeError.message });
+    }
+    await supabase
+      .from('comments')
+      .update({ likes_count: currentLikes + 1 })
+      .eq('id', commentId);
+  }
+
+  const newCount = Math.max(0, currentLikes + (liked ? 1 : -1));
+  res.json({ liked, likes: newCount });
 });
 
 // Post Comment for a Pool (Protected Route)

@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NuroTewedede : Neighborhood Group Buying Platform</title>
+    <meta name="description" content="Ethiopian neighborhood group buying platform: lock wholesale prices with your neighbors, reserve shares and track pickup vouchers.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="theme-color" content="#047857">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="icon.svg">
     <!-- Tailwind CSS v4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="style.css">
@@ -715,6 +722,35 @@
     <!-- Pool Details Modal -->
     <div id="details-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50 overflow-y-auto">
         <div id="details-modal-card" class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative"></div>
+    </div>
+
+    <!-- Share Pool Modal -->
+    <div id="share-menu" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button type="button" onclick="closeShareMenu()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-black text-slate-900" data-i18n="share.title">Share Pool</h3>
+                    <p class="text-xs text-slate-500 mt-1 break-words" data-share-title></p>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <a data-share-telegram href="#" target="_blank" rel="noopener" class="p-3 rounded-2xl border border-slate-200 text-center text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-1 text-sky-500" fill="currentColor" viewBox="0 0 24 24"><path d="M21.94 4.35l-3.1 14.63a1 1 0 01-1.53.61l-4.33-3.16-2.1 2.03a1 1 0 01-1.7-.7v-4.6L2.6 8.16a1 1 0 01.23-1.67L21.1 2.8a.8.8 0 01.84 1.55z"/></svg>
+                        <span data-i18n="card.shareTelegram">Telegram</span>
+                    </a>
+                    <a data-share-whatsapp href="#" target="_blank" rel="noopener" class="p-3 rounded-2xl border border-slate-200 text-center text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-1 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.06L2 22l5.1-1.33A10 10 0 1012 2zm0 2a8 8 0 110 16 7.95 7.95 0 01-4.08-1.11l-.3-.18-3 .79.8-2.93-.2-.3A8 8 0 0112 4zm-3.2 4.3c-.16-.36-.34-.37-.5-.38h-.42c-.15 0-.4.06-.6.29-.21.22-.79.77-.79 1.88 0 1.1.8 2.17.92 2.32.11.15 1.57 2.4 3.8 3.37 1.9.82 2.28.66 2.7.62.41-.04 1.33-.54 1.52-1.07.19-.52.19-.97.13-1.06-.06-.1-.21-.15-.44-.26-.22-.12-1.33-.66-1.54-.73-.2-.07-.35-.1-.5.1-.15.22-.58.73-.71.88-.13.15-.26.16-.48.06-.22-.11-.94-.35-1.8-1.1-.66-.6-1.1-1.33-1.23-1.55-.13-.22-.01-.35.1-.46.1-.1.22-.27.34-.4.11-.14.15-.23.22-.39.07-.15.04-.29-.02-.4-.06-.12-.5-1.2-.69-1.65z"/></svg>
+                        <span data-i18n="card.shareWhatsapp">WhatsApp</span>
+                    </a>
+                    <button data-share-copy onclick="copyShareLink(this)" class="p-3 rounded-2xl border border-slate-200 text-center text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-1 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span data-i18n="card.copyLink">Copy Link</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Auth Modal Container -->

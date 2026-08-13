@@ -744,6 +744,18 @@ input[type="range"]::-webkit-slider-thumb {
     transform: scaleX(1);
 }
 
+/* Desktop inline nav links: remove the sliding pill/knob active indicator,
+   keep the smooth underline sweep effect. */
+.nav-link.tab-btn.active,
+[data-theme="dark"] .nav-link.tab-btn.active {
+    background-color: transparent;
+    color: #d1fae5;
+    box-shadow: none;
+}
+.nav-link.tab-btn.active::after {
+    transform: scaleX(1);
+}
+
 /* ===== Micro-interaction: button press & icon pop ===== */
 button {
     transition-property: transform, background-color, color, box-shadow, border-color, opacity;

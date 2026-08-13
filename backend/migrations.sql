@@ -34,6 +34,29 @@ CREATE TABLE IF NOT EXISTS public.comments (
   created_at    TIMESTAMPTZ DEFAULT now()
 );
 
+ALTER TABLE public.comments ADD COLUMN IF NOT EXISTS likes_count INTEGER DEFAULT 0;
+
+CREATE TABLE IF NOT EXISTS public.comment_likes (
+  comment_id UUID REFERENCES public.comments(id) ON DELETE CASCADE,
+  user_id   UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  PRIMARY KEY (comment_id, user_id)
+);
+
+ALTER TABLE public.comment_likes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "comment_likes_select_all" ON public.comment_likes;
+CREATE POLICY "comment_likes_select_all" ON public.comment_likes
+  FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "comment_likes_insert_own" ON public.comment_likes;
+CREATE POLICY "comment_likes_insert_own" ON public.comment_likes
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "comment_likes_delete_own" ON public.comment_likes;
+CREATE POLICY "comment_likes_delete_own" ON public.comment_likes
+  FOR DELETE USING (auth.uid() = user_id);
+
 ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "comments_select_all" ON public.comments;

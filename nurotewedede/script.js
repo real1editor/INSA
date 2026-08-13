@@ -167,6 +167,11 @@ const I18N = {
         'card.reservation': 'Pool Reservation', 'card.shares': '{0} / {1} shares ({2}%)',
         'card.daysLeft': '{0} days left', 'card.lockingToday': 'Locking today', 'card.organizer': 'Organizer: {0}',
         'card.reserve': 'Reserve Share', 'card.fullyReserved': 'Pool Fully Reserved',
+        'card.share': 'Share Pool', 'card.shareTitle': 'Share via', 'card.shareTelegram': 'Telegram',
+        'card.shareWhatsapp': 'WhatsApp', 'card.copyLink': 'Copy Link', 'card.shareToast': 'Pool link copied to clipboard!',
+        'card.countdownEnds': 'Ends in {0}', 'card.endsToday': 'Ends today',
+        'card.calendar': 'Add Pickup Reminder to Calendar',
+        'share.title': 'Share Pool', 'share.linkCopied': 'Pool link copied to clipboard!',
         'card.noPools': 'No group pools found matching your criteria.',
         'badge.ready': 'Ready for Pickup', 'badge.transit': 'In-Transit Highway',
         'badge.locked': 'Pool Locked', 'badge.active': 'Active Pool',
@@ -221,6 +226,7 @@ const I18N = {
         'details.organizer': 'Organizer: {0}', 'details.reserve': 'Reserve Share',
         'details.board': 'Neighborhood Community Board ({0})', 'details.commentPh': 'Ask a question or post a note for the pool coordinator...',
         'details.post': 'Post', 'details.coordinator': 'Coordinator',
+        'details.like': 'Like', 'details.liked': 'Liked', 'details.likeToast': 'Liked comment!', 'details.unlikeToast': 'Like removed.',
         'create.title': 'Launch a New Buying Pool', 'create.item': 'Item / Produce Name',
         'create.itemPh': 'e.g. Teff (White Gojjam) - 50kg', 'create.category': 'Category', 'create.town': 'Town / Hub',
         'create.woreda': 'Woreda Origin', 'create.woredaPh': 'e.g. Debre Markos', 'create.unit': 'Packaging Unit',
@@ -331,6 +337,11 @@ const I18N = {
         'card.reservation': 'የግዢ ቅድመ ትዕዛዝ', 'card.shares': '{0} / {1} አክሲዮኖች ({2}%)',
         'card.daysLeft': '{0} ቀናት ቀርተዋል', 'card.lockingToday': 'ዛሬ ይቆለፋል', 'card.organizer': 'አዘጋጅ: {0}',
         'card.reserve': 'ቦታ ያዙ', 'card.fullyReserved': 'ግዢው ሙሉ በሙሉ ተይዟል',
+        'card.share': 'ግዢ ያጋሩ', 'card.shareTitle': 'በዚህ ያጋሩ', 'card.shareTelegram': 'ቴሌግራም',
+        'card.shareWhatsapp': 'ዋትስአፕ', 'card.copyLink': 'ሊንክ ይቅዱ', 'card.shareToast': 'የግዢ ሊንክ በቅንብር ቦርድ ተቀድቷል!',
+        'card.countdownEnds': 'የሚያበቃው በ{0}', 'card.endsToday': 'ዛሬ ያበቃል',
+        'card.calendar': 'የመቀበያ ማስታወሻን ወደ ካሌንደር ያክሉ',
+        'share.title': 'ግዢ ያጋሩ', 'share.linkCopied': 'የግዢ ሊንክ በቅንብር ቦርድ ተቀድቷል!',
         'card.noPools': 'ከመስፈርቶችዎ ጋር የሚስማማ የቡድን ግዢ አልተገኘም።',
         'badge.ready': 'ለመቀበል ዝግጁ', 'badge.transit': 'በመስመር ላይ',
         'badge.locked': 'ግዢ ተቆልፏል', 'badge.active': 'ንቁ ግዢ',
@@ -385,6 +396,7 @@ const I18N = {
         'details.organizer': 'አዘጋጅ: {0}', 'details.reserve': 'ቦታ ያዙ',
         'details.board': 'የሰፈር ማህበረሰብ መግለጫ ሰሌዳ ({0})', 'details.commentPh': 'ጥያቄ ይጠይቁ ወይም ለግዢ አስተባባሪ ማስታወሻ ይለጥፉ...',
         'details.post': 'ለጥፍ', 'details.coordinator': 'አስተባባሪ',
+        'details.like': 'እወዳለሁ', 'details.liked': 'ወድጄዋለሁ', 'details.likeToast': 'አስተያየት ተወድዷል!', 'details.unlikeToast': 'እወዳለሁ ተወግዷል።',
         'create.title': 'አዲስ የግዢ ቡድን ይጀምሩ', 'create.item': 'እቃ / የምርት ስም',
         'create.itemPh': 'ለምሳሌ ጤፍ (ነጭ ጎጃም) - 50ኪግ', 'create.category': 'ምድብ', 'create.town': 'ከተማ / ማዕከል',
         'create.woreda': 'የወረዳ መነሻ', 'create.woredaPh': 'ለምሳሌ ደብረ ማርቆስ', 'create.unit': 'የማሸጊያ ክፍል',
@@ -495,6 +507,11 @@ const I18N = {
         'card.reservation': 'Ajaja Bakka Bituu', 'card.shares': 'qooda {0} / {1} ({2}%)',
         'card.daysLeft': '{0} guyyaa hafe', 'card.lockingToday': 'Har\'a cufama', 'card.organizer': 'Qindeessaa: {0}',
         'card.reserve': 'Bakka Fudhadhu', 'card.fullyReserved': 'Bituun guutumaan bakka buufame',
+        'card.share': 'Bituu Qooddhaa', 'card.shareTitle': 'Waliin qooddhaa', 'card.shareTelegram': 'Telegraamii',
+        'card.shareWhatsapp': 'Waats-App', 'card.copyLink': 'Limmoo Galeessi', 'card.shareToast': 'Limmoon bituu gara galmee quxxumaa garagaltee!',
+        'card.countdownEnds': 'Dhuma: {0}', 'card.endsToday': 'Har\'a dhuma',
+        'card.calendar': 'Yaadachiisa Fudhachaa Kaalaandarii Itti Dabali',
+        'share.title': 'Bituu Qooddhaa', 'share.linkCopied': 'Limmoon bituu gara galmee quxxumaa garagaltee!',
         'card.noPools': 'Bituu waldaa ulaagaa keessan wajjin wal qabu hin argamne.',
         'badge.ready': 'Fudhachuuf Qophii', 'badge.transit': 'Daandii Geejjibaa Irra',
         'badge.locked': 'Bituun Cufame', 'badge.active': 'Bituu Ijoo',
@@ -549,6 +566,7 @@ const I18N = {
         'details.organizer': 'Qindeessaa: {0}', 'details.reserve': 'Bakka Fudhadhu',
         'details.board': 'Gabatee Hawaasa Naannoo ({0})', 'details.commentPh': 'Gaaffii gaafadhu yookiin koordinaatorii bituuf hubachiisa galchi...',
         'details.post': 'Galchi', 'details.coordinator': 'Koordinaatorii',
+        'details.like': 'Jaalladhu', 'details.liked': 'Jaalladheera', 'details.likeToast': 'Yaadni jaallatame!', 'details.unlikeToast': 'Jaallannoon buqqa\'e.',
         'create.title': 'Bituu Waldaa Haaraya Jalqabi', 'create.item': 'Wantoota / Maqaa Oomishaa',
         'create.itemPh': 'fkn. Xaafii (Adii Gojjam) - 50kg', 'create.category': 'Ramaddii', 'create.town': 'Magaalaa / Buufata',
         'create.woreda': 'Ka\'umsa Aanaa', 'create.woredaPh': 'fkn. Debre Markos', 'create.unit': 'Gita Gurmaa',
@@ -793,6 +811,12 @@ function normalizePool(p) {
     const targetShares = Number(p.target_shares ?? p.targetShares) || 1;
     const locked = !!(p.locked || p.status === 'locked' || currentShares >= targetShares);
     const town = p.town || 'Addis Ababa';
+    const daysRemaining = Number(p.daysRemaining ?? p.days_remaining ?? 3);
+    const createdTs = p.created_at ? new Date(p.created_at).getTime() : NaN;
+    const fallbackEnd = Date.now() + daysRemaining * 24 * 60 * 60 * 1000;
+    const endsAt = !isNaN(createdTs)
+        ? Math.max(Date.now(), createdTs + 7 * 24 * 60 * 60 * 1000)
+        : fallbackEnd;
     return {
         ...p,
         id: String(p.id),
@@ -805,7 +829,8 @@ function normalizePool(p) {
         currentShares,
         targetShares,
         locked,
-        daysRemaining: p.daysRemaining ?? p.days_remaining ?? 3,
+        daysRemaining,
+        endsAt,
         hubLocation: p.hub_location || p.hubLocation || town + ' Neighborhood Distribution Hub',
         imageUrl: p.image_url || p.imageUrl || DEFAULT_IMAGE,
         organizer: p.organizer || 'Neighborhood Group Coordinator',
@@ -1187,13 +1212,16 @@ function renderPools() {
                             '<div class="h-full rounded-full transition-all duration-500 ' + (percentage >= 100 ? 'bg-amber-500' : 'bg-emerald-600') + '" style="width: ' + percentage + '%"></div>' +
                         '</div>' +
                         '<div class="flex justify-between text-[11px] text-slate-400 font-medium">' +
-                            '<span>' + esc(pool.daysRemaining > 0 ? tt('card.daysLeft', pool.daysRemaining) : t('card.lockingToday')) + '</span>' +
+                            '<span class="font-bold text-slate-500" data-countdown="' + pool.endsAt + '">' + esc(tt('card.countdownEnds', formatCountdownLeft(pool.endsAt - Date.now()))) + '</span>' +
                             '<span>' + esc(tt('card.organizer', String(pool.organizer).split(' ')[0])) + '</span>' +
                         '</div>' +
                     '</div>' +
                 '</div>' +
             '</div>' +
             '<div class="p-5 pt-0 flex gap-2">' +
+                '<button onclick="sharePool(\'' + pool.id + '\', event)" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="' + esc(t('card.share')) + '">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>' +
+                '</button>' +
                 '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="Community Discussion & Details">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
                     '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
@@ -1424,6 +1452,7 @@ function buildVoucherHTML(reservation, pool, closeFn) {
             '</div>' +
             '<div class="flex justify-center gap-2 pt-1 not-printable">' +
                 '<button type="button" onclick="copyVoucherCode(\'' + esc(code) + '\')" class="px-4 py-2.5 rounded-xl border border-emerald-200 text-emerald-800 text-xs font-black hover:bg-emerald-50 transition">' + esc(t('success.copy')) + '</button>' +
+                '<button type="button" onclick="downloadPickupReminder(\'' + esc(pool.id) + '\')" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 text-xs font-black hover:bg-slate-100 transition">' + esc(t('card.calendar')) + '</button>' +
                 '<button type="button" onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-black hover:bg-slate-800 transition">' + esc(t('success.print')) + '</button>' +
                 '<button type="button" onclick="' + closeFn + '()" class="px-6 py-2.5 rounded-xl bg-emerald-800 text-white text-xs font-black hover:bg-emerald-700 transition">' + esc(t('success.done')) + '</button>' +
             '</div>' +
@@ -1433,6 +1462,7 @@ function buildVoucherHTML(reservation, pool, closeFn) {
 function renderReserveSuccess(reservation, pool) {
     const card = document.getElementById('reserve-modal-card');
     if (!card) return;
+    window._voucherPool = pool;
     card.innerHTML = buildVoucherHTML(reservation, pool, 'closeReserveModal');
 }
 
@@ -1442,6 +1472,7 @@ function openVoucherModal(resId) {
     const res = myReservations.find(function (r) { return String(r.id) === String(resId); });
     if (!res) return;
     const pool = normalizePool(res.pool || {});
+    window._voucherPool = pool;
     const card = document.getElementById('voucher-modal-card');
     if (!card) return;
     card.innerHTML = buildVoucherHTML(res, pool, 'closeVoucherModal');
@@ -1499,12 +1530,21 @@ function renderDetails() {
     const commentList = comments.length === 0
         ? '<p class="text-xs text-slate-400 text-center py-4">' + esc(t('details.noComments')) + '</p>'
         : comments.map(function (c) {
+            const likes = Number(c.likes_count ?? c.likesCount ?? 0);
+            const liked = !!(c.liked || c.userLiked);
             return '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs space-y-1">' +
                 '<div class="flex justify-between items-center font-bold">' +
                     '<span class="text-slate-800 flex items-center gap-1">' + esc(c.user_name || c.userName || 'Neighbor Buyer') + ' (' + esc(localizeTown(c.user_town || 'Addis Ababa')) + ')' + (c.is_coordinator || c.isCoordinator ? '<span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-extrabold">' + esc(t('details.coordinator')) + '</span>' : '') + '</span>' +
                     '<span class="text-[10px] text-slate-400">' + esc(c.created_at || 'Just now') + '</span>' +
                 '</div>' +
                 '<p class="text-slate-600">' + esc(c.text) + '</p>' +
+                '<div class="flex justify-end pt-1">' +
+                    '<button type="button" onclick="likeComment(\'' + esc(c.id) + '\', this)" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-bold transition ' + (liked ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-100') + '">' +
+                        (liked ? '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10h4.764a2 2 0 011.947 2.477l-1.4 6A2 2 0 0117.34 20H8m10 0v-6m0 0V6a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 012-2z"/></svg>') +
+                        '<span>' + (liked ? esc(t('details.liked')) : esc(t('details.like'))) + '</span>' +
+                        '<span data-like-count="' + esc(c.id) + '">' + (likes || '') + '</span>' +
+                    '</button>' +
+                '</div>' +
             '</div>';
         }).join('');
 
@@ -1574,6 +1614,43 @@ async function postComment(e) {
         renderDetails();
         showToast('Comment posted to the community board.');
     } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+async function likeComment(commentId, btn) {
+    if (!currentUser) {
+        showToast('Please sign in first to like a comment.');
+        openAuthModal();
+        return;
+    }
+    const prevLiked = btn.classList.contains('bg-emerald-50');
+    const optimistic = function (liked, count) {
+        if (liked) {
+            btn.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-700');
+            btn.classList.remove('bg-white', 'border-slate-200', 'text-slate-500');
+        } else {
+            btn.classList.add('bg-white', 'border-slate-200', 'text-slate-500');
+            btn.classList.remove('bg-emerald-50', 'border-emerald-200', 'text-emerald-700');
+        }
+        const label = btn.querySelector('span:not([data-like-count])');
+        if (label) label.textContent = liked ? t('details.liked') : t('details.like');
+        const countEl = btn.querySelector('[data-like-count]');
+        if (countEl) countEl.textContent = count > 0 ? count : '';
+    };
+    const cur = detailsState.comments.find(function (c) { return String(c.id) === String(commentId); });
+    const curLikes = cur ? (Number(cur.likes_count ?? cur.likesCount ?? 0)) : 0;
+    optimistic(!prevLiked, curLikes + (prevLiked ? -1 : 1));
+    try {
+        const data = await api('/api/comments/' + commentId + '/like', { method: 'POST' });
+        optimistic(!!data.liked, Number(data.likes) || 0);
+        if (cur) {
+            cur.liked = !!data.liked;
+            cur.likes_count = Number(data.likes) || 0;
+        }
+        showToast(data.liked ? t('details.likeToast') : t('details.unlikeToast'));
+    } catch (err) {
+        optimistic(prevLiked, curLikes);
         showToast(err.message, true);
     }
 }
@@ -2157,6 +2234,135 @@ function initCountdown() {
     setInterval(updateCountdown, 1000);
 }
 
+// ---------- Pool Card Live Countdown ----------
+
+function formatCountdownLeft(ms) {
+    if (ms <= 0) return '00:00:00';
+    const h = Math.floor(ms / (1000 * 60 * 60));
+    const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((ms % (1000 * 60)) / 1000);
+    if (h >= 48) {
+        return Math.floor(h / 24) + 'd ' + String(Math.floor((h % 24))).padStart(2, '0') + 'h';
+    }
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function startPoolCountdowns() {
+    if (window._poolCountdownTimer) return;
+    function tick() {
+        const els = document.querySelectorAll('[data-countdown]');
+        els.forEach(function (el) {
+            const end = Number(el.getAttribute('data-countdown'));
+            const left = end - Date.now();
+            el.textContent = left <= 0 ? t('card.endsToday') : tt('card.countdownEnds', formatCountdownLeft(left));
+        });
+    }
+    tick();
+    window._poolCountdownTimer = setInterval(tick, 1000);
+}
+
+// ---------- Share Pool ----------
+
+function sharePool(poolId, event) {
+    if (event && event.stopPropagation) event.stopPropagation();
+    const pool = pools.find(function (p) { return p.id === String(poolId); });
+    if (!pool) return;
+    const url = window.location.origin + window.location.pathname + '?pool=' + pool.id;
+    const title = pool.title + ' — ' + fmt(pool.price) + ' ETB';
+    const text = t('card.share') + ': ' + pool.title + ' • ' + localizeTown(pool.town) + ' • ' + fmt(pool.price) + ' ETB';
+
+    if (navigator.share) {
+        navigator.share({ title: title, text: text, url: url })
+            .catch(function () { /* user cancelled */ });
+        return;
+    }
+
+    const menu = document.getElementById('share-menu');
+    if (menu) {
+        menu.classList.remove('hidden');
+        menu.classList.add('flex');
+        menu.querySelector('[data-share-title]').textContent = pool.title;
+        menu.querySelector('[data-share-telegram]').setAttribute('href',
+            'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text));
+        menu.querySelector('[data-share-whatsapp]').setAttribute('href',
+            'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url));
+        menu.querySelector('[data-share-copy]').setAttribute('data-copy-url', url);
+    }
+}
+
+function closeShareMenu() {
+    const menu = document.getElementById('share-menu');
+    if (menu) {
+        menu.classList.add('hidden');
+        menu.classList.remove('flex');
+    }
+}
+
+function copyShareLink(el) {
+    const url = el.getAttribute('data-copy-url') || window.location.href;
+    const fallback = function () {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* clipboard fallback */ }
+        document.body.removeChild(ta);
+        showToast(t('card.shareToast'));
+        closeShareMenu();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+            showToast(t('card.shareToast'));
+            closeShareMenu();
+        }, fallback);
+    } else {
+        fallback();
+    }
+}
+
+// ---------- Pickup Reminder (.ics) ----------
+
+function downloadPickupReminder(poolId) {
+    const pool = pools.find(function (p) { return p.id === String(poolId); })
+        || (window._voucherPool && String(window._voucherPool.id) === String(poolId) ? window._voucherPool : null);
+    if (!pool) return;
+    const base = new Date(pool.endsAt);
+    const end = new Date(base.getTime() + 60 * 60 * 1000);
+    const fmtIcs = function (d) {
+        return d.getUTCFullYear() +
+            String(d.getUTCMonth() + 1).padStart(2, '0') +
+            String(d.getUTCDate()).padStart(2, '0') + 'T' +
+            String(d.getUTCHours()).padStart(2, '0') +
+            String(d.getUTCMinutes()).padStart(2, '0') + '00Z';
+    };
+    const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//NuroTewedede//Pickup Reminder//EN',
+        'BEGIN:VEVENT',
+        'UID:nt-pickup-' + pool.id + '-' + Date.now() + '@nurotewedede',
+        'DTSTAMP:' + fmtIcs(new Date()),
+        'DTSTART:' + fmtIcs(base),
+        'DTEND:' + fmtIcs(end),
+        'SUMMARY:' + esc(t('success.title')) + ' — ' + pool.title,
+        'DESCRIPTION:' + tt('card.pickup', pool.pickupDate) + ' • ' + (pool.hubLocation || '') + ' • ' + fmt(pool.price) + ' ETB',
+        'LOCATION:' + (pool.hubLocation || localizeTown(pool.town)),
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'nurotewedede-pickup-' + pool.id + '.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function () { URL.revokeObjectURL(link.href); }, 2000);
+    showToast(t('card.calendar'));
+}
+
 // ---------- Boot ----------
 
 function populateTownSelects() {
@@ -2365,6 +2571,7 @@ function init() {
             closeLangDropdown();
             closeMenuDropdown();
             closeTownDropdowns();
+            closeShareMenu();
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
         }
@@ -2385,11 +2592,19 @@ function init() {
     modalBackdropClick(reserveModal, closeReserveModal);
     modalBackdropClick(detailsModal, closeDetailsModal);
     modalBackdropClick(authModal, closeAuthModal);
+    modalBackdropClick(document.getElementById('share-menu'), closeShareMenu);
 
     renderCalculator();
     renderHubs();
     renderAiChips();
     renderAiMessages();
+    startPoolCountdowns();
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(function (err) {
+            console.warn('Service worker registration failed:', err);
+        });
+    }
 
     api('/api/auth/me')
         .then(function (data) {
@@ -2540,6 +2755,11 @@ window.setLang = setLang;
 window.openVoucherModal = openVoucherModal;
 window.closeVoucherModal = closeVoucherModal;
 window.copyVoucherCode = copyVoucherCode;
+window.sharePool = sharePool;
+window.closeShareMenu = closeShareMenu;
+window.copyShareLink = copyShareLink;
+window.downloadPickupReminder = downloadPickupReminder;
+window.likeComment = likeComment;
 window.openBulkModal = openBulkModal;
 window.closeBulkModal = closeBulkModal;
 window.handleBulkSubmit = handleBulkSubmit;
