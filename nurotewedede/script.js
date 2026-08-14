@@ -5,6 +5,7 @@
 let pools = [];
 let currentFilter = 'All';
 let currentCategory = 'All';
+let currentProduce = null;
 let currentSearchQuery = '';
 let currentSort = 'default';
 let currentUser = null;
@@ -107,6 +108,70 @@ const CATEGORY_L10N = {
     'Fruits': 'cat.fruits'
 };
 
+const PRODUCE_GROUPS = [
+    {
+        category: 'Grains & Teff',
+        label: { en: 'Cereals & Grains', am: 'እህል እና ጥራጥሬ', om: 'Midhaanii' },
+        items: [
+            { id: 'teff', label: { en: 'Teff (White, Black, Mixed)', am: 'ጤፍ (ነጭ፣ ጥቁር፣ ድብልቅ)', om: 'Xaafii (Adii, Gurraacha, Makawaa)' }, keywords: ['teff', 'ጤፍ', 'xaafii'] },
+            { id: 'wheat', label: { en: 'Wheat', am: 'ስንዴ', om: 'Qamadii' }, keywords: ['wheat', 'ስንዴ', 'qamadii', 'sindee'] },
+            { id: 'barley', label: { en: 'Barley', am: 'ገብስ', om: 'Garbuu' }, keywords: ['barley', 'ገብስ', 'garbuu', 'gebs'] },
+            { id: 'sorghum', label: { en: 'Sorghum', am: 'ማሽላ', om: 'Bishingaa' }, keywords: ['sorghum', 'ማሽላ', 'bishingaa', 'mashilla'] },
+            { id: 'millet', label: { en: 'Millet', am: 'ደጉሳ', om: 'Daagussa' }, keywords: ['millet', 'ደጉሳ', 'daagussa'] }
+        ]
+    },
+    {
+        category: 'Oil & Pulses',
+        label: { en: 'Legumes & Pulses', am: 'ጥራጥሬ እና ሙሉ ባቄላ', om: 'Huubuu fi Sanyii' },
+        items: [
+            { id: 'chickpeas', label: { en: 'Chickpeas (Shimbra)', am: 'ሽምብራ', om: 'Shimbraa' }, keywords: ['chickpea', 'shimbra', 'ሽምብራ', 'shimbraa'] },
+            { id: 'lentils', label: { en: 'Lentils (Misir)', am: 'ምስር', om: 'Misiraa' }, keywords: ['lentil', 'misir', 'ምስር', 'misiraa'] },
+            { id: 'fieldpeas', label: { en: 'Field Peas (Ater)', am: 'አተር', om: 'Ateraa' }, keywords: ['field pea', 'ater', 'አተር', 'ateraa'] },
+            { id: 'favabeans', label: { en: 'Fava Beans (Bakela)', am: 'ባቄላ', om: 'Baqeelaa' }, keywords: ['fava', 'faba', 'bakela', 'ባቄላ', 'baqeelaa'] },
+            { id: 'haricotbeans', label: { en: 'Haricot Beans', am: 'ቦሎቄ', om: 'Boqqolloo' }, keywords: ['haricot', 'ቦሎቄ', 'boqqolloo'] }
+        ]
+    },
+    {
+        category: 'Oil & Pulses',
+        label: { en: 'Oilseeds', am: 'የዘይት ዘሮች', om: 'Sanyii Zayitaa' },
+        items: [
+            { id: 'sesame', label: { en: 'Sesame (Nech/Key)', am: 'ሰሊጥ (ነጭ/ቀይ)', om: 'Salitti (Adii/Dimaa)' }, keywords: ['sesame', 'ሰሊጥ', 'salitti', 'selit'] },
+            { id: 'nug', label: { en: 'Niger Seed (Nug)', am: 'ኑግ', om: 'Nuugii' }, keywords: ['niger seed', 'nug', 'ኑግ', 'nuugii'] },
+            { id: 'linseed', label: { en: 'Linseed (Telba)', am: 'ተልባ', om: 'Talbaa' }, keywords: ['linseed', 'telba', 'ተልባ', 'talbaa'] },
+            { id: 'sunflower', label: { en: 'Sunflower', am: 'ሱፍ አበባ', om: 'Abaaboo Adii' }, keywords: ['sunflower', 'ሱፍ አበባ'] },
+            { id: 'rapeseed', label: { en: 'Rapeseed', am: 'የራፕ ዘር', om: 'Sanyii Rapaa' }, keywords: ['rapeseed', 'የራፕ ዘር'] }
+        ]
+    },
+    {
+        category: 'Coffee & Spices',
+        label: { en: 'Cash Crops & Stimulants', am: 'ቡና እና ቅመማ ቅመም', om: 'Buna fi Urgooftuu' },
+        items: [
+            { id: 'coffee', label: { en: 'Coffee', am: 'ቡና', om: 'Bunaa' }, keywords: ['coffee', 'ቡና', 'bunaa', 'buna'] },
+            { id: 'spices', label: { en: 'Spices (Berbere, Korarima, Black Cumin, Fenugreek)', am: 'ቅመማ ቅመም (በርበሬ፣ ኮረሪማ፣ ጥቁር አዝሙድ፣ አብሶ)', om: 'Urgooftuu (Birberee, Korarimaa, Magazia, Huluugee)' }, keywords: ['spice', 'berbere', 'korarima', 'cumin', 'fenugreek', 'ቅመም', 'በርበሬ', 'ኮረሪማ'] }
+        ]
+    },
+    {
+        category: 'Vegetables',
+        label: { en: 'Vegetables & Root Crops', am: 'አትክልቶች እና ስርወ ሰብሎች', om: 'Kuduraa fi Hidda' },
+        items: [
+            { id: 'onions', label: { en: 'Onions', am: 'ሽንኩርት', om: 'Shunkurtii' }, keywords: ['onion', 'ሽንኩርት', 'shunkurtii'] },
+            { id: 'garlic', label: { en: 'Garlic', am: 'ነጭ ሽንኩርት', om: 'Qullubbii Adii' }, keywords: ['garlic', 'ነጭ ሽንኩርት'] },
+            { id: 'potatoes', label: { en: 'Potatoes', am: 'ድንች', om: 'Dinchii' }, keywords: ['potato', 'ድንች', 'dinchii'] },
+            { id: 'tomatoes', label: { en: 'Tomatoes', am: 'ቲማቲም', om: 'Timatimii' }, keywords: ['tomato', 'ቲማቲም', 'timatimii'] },
+            { id: 'cabbage', label: { en: 'Cabbage', am: 'ጎመን', om: 'Goomeen' }, keywords: ['cabbage', 'ጎመን', 'goomeen'] }
+        ]
+    },
+    {
+        category: null,
+        label: { en: 'Industrial & Bulk Goods', am: 'የኢንዱስትሪ እና የጅምላ እቃዎች', om: 'Meelaa Industriii fi Guddaa' },
+        items: [
+            { id: 'sugar', label: { en: 'Sugar', am: 'ስኳር', om: 'Sukkaaraa' }, keywords: ['sugar', 'ስኳር', 'sukkaaraa'] },
+            { id: 'cookingoil', label: { en: 'Edible Cooking Oil', am: 'የምግብ ዘይት', om: 'Zayita Nyaataa' }, keywords: ['cooking oil', 'edible oil', 'ዘይት', 'zayita'] },
+            { id: 'flour', label: { en: 'Flour', am: 'ዱቄት', om: 'Daakuu' }, keywords: ['flour', 'ዱቄት', 'daakuu'] }
+        ]
+    }
+];
+
 const I18N = {
     en: {
         'nav.pools': 'Active Pools', 'nav.calculator': 'Savings Calculator',
@@ -154,7 +219,7 @@ const I18N = {
         'how.statDeliverySub': 'Fair trade to your door',
         'bulk.cta': '🏭 Bulk & Institutional Orders',
         'metric.savings': 'Avg Retail Savings', 'metric.woredas': 'Connected Woredas', 'metric.pools': 'Active Pools',
-        'pools.title': 'Active Group Pools', 'pools.showing': 'Showing all pools',
+        'pools.title': 'Active Group Pools', 'pools.showing': 'Showing all pools', 'pools.allProducts': 'All Products',
         'pools.search': 'Search produce, category or woreda...', 'pools.sortBy': 'Sort By:',
         'pools.allTowns': 'All Towns / Hubs',
         'pools.sortDefault': 'Default', 'pools.sortSavings': 'Highest Savings %',
@@ -276,7 +341,45 @@ const I18N = {
         'footer.tagline': '© 2026 NuroTewedede Direct Sourcing Platform • Neighborhood Group Buying Network',
         'toast.copied': 'Voucher code copied!',
         'toast.reserved': 'Successfully reserved {0} share(s)! Digital pickup voucher generated.',
-        'toast.bulkSubmitted': 'Bulk inquiry {0} submitted! Our woreda sourcing team will contact you within 24 hours.'
+        'toast.bulkSubmitted': 'Bulk inquiry {0} submitted! Our woreda sourcing team will contact you within 24 hours.',
+        'brand.tagline': 'Neighborhood Group Buying Platform',
+        'meta.title': 'NuroTewedede : Neighborhood Group Buying Platform',
+        'meta.description': 'Ethiopian neighborhood group buying platform: lock wholesale prices with your neighbors, reserve shares and track pickup vouchers.',
+        'aria.toggleMenu': 'Toggle menu', 'aria.toggleTheme': 'Toggle dark mode', 'aria.selectLang': 'Select language',
+        'aria.ticker': 'Live wholesale price ticker', 'aria.openAi': 'Open NuroAI Assistant', 'aria.closeAi': 'Close NuroAI Assistant',
+        'aria.closeModal': 'Close modal', 'aria.close': 'Close', 'aria.backToTop': 'Back to top',
+        'calc.year': '/ year',
+        'calc.item1': 'White Teff (Gojjam)', 'calc.item2': 'Red Onions (Ziway)', 'calc.item3': 'Raw Coffee Beans (Sidama)',
+        'calc.item4': 'Sunflower Cooking Oil (Litre)', 'calc.item5': 'Red Lentils (Misir)',
+        'hubs.live': 'Live Corridor Tracking: Ethiopia', 'hubs.hubLabel': 'Hub:',
+        'hubs.sourcingUnions': 'Primary Sourcing Unions:', 'hubs.address': 'Hub Address:', 'hubs.directLinks': 'Direct Woreda Links:',
+        'ai.title': 'NuroAI Assistant', 'ai.badgeYou': 'YOU', 'ai.badgeAi': 'AI',
+        'ai.noResponse': 'No response received.', 'ai.error': 'Unable to connect to Gemini AI Assistant',
+        'ai.prompt1': 'How do we plan a 20-family Teff & Spice group order for Addis Ababa?',
+        'ai.prompt2': 'What are the best storage tips for 50kg red onions to prevent rotting?',
+        'ai.prompt3': 'When is peak harvest season for Gojjam White Teff and price trends?',
+        'ai.prompt4': 'Suggest a bulk grocery supply list for a 30-person holiday feast',
+        'time.justNow': 'Just now', 'time.today': 'Today', 'time.d': 'd', 'time.h': 'h',
+        'err.serverUnreachable': 'Cannot reach the server. Make sure the backend is running (npm start in the project folder).',
+        'err.htmlInsteadJson': 'Server answered with HTML instead of JSON', 'err.requestFailed': 'Request failed',
+        'toast.signinReserve': 'Please sign in first to reserve a share.',
+        'toast.poolFullyReserved': 'This pool is already fully reserved.',
+        'toast.signinComment': 'Please sign in first to post a comment.',
+        'toast.commentPosted': 'Comment posted to the community board.',
+        'toast.signinLike': 'Please sign in first to like a comment.',
+        'toast.signinLaunch': 'Please sign in first to launch a pool.',
+        'toast.poolLaunched': 'New group-buying pool launched successfully!',
+        'toast.poolCreateError': 'Error creating pool', 'toast.signedOut': 'Signed out successfully.',
+        'pool.fallbackTitle': 'Community Buying Pool', 'pool.fallbackWoreda': 'Regional Woreda',
+        'pool.fallbackUnit': '1 Share', 'pool.fallbackOrganizer': 'Neighborhood Group Coordinator',
+        'pool.fallbackPickup': 'This Week', 'pool.fallbackCategory': 'Groceries',
+        'pool.fallbackHubSuffix': 'Neighborhood Distribution Hub', 'pool.fallbackGroupPool': 'Group Pool',
+        'pool.fallbackBag': '50 kg Bag',
+        'details.neighborBuyer': 'Neighbor Buyer', 'details.title': 'Community Discussion & Details',
+        'myshares.signinBtn': 'Sign In', 'myshares.emptyTitle': 'You haven\'t reserved any pool shares yet.',
+        'myshares.viewVoucher': 'View Voucher',
+        'bulk.notesPh': 'e.g. Special delivery instructions, quality preferences, or preferred contact time.',
+        'voucher.qrAlt': 'QR voucher'
     },
     am: {
         'nav.pools': 'ንቁ ግዢዎች', 'nav.calculator': 'የቁጠባ ካልኩሌተር',
@@ -324,7 +427,7 @@ const I18N = {
         'how.statDeliverySub': 'ፍትሃዊ ንግድ እስከ ቤትዎ',
         'bulk.cta': '🏭 የጅምላ እና ተቋማዊ ትዕዛዞች',
         'metric.savings': 'አማካይ የችርቻሮ ቁጠባ', 'metric.woredas': 'የተገናኙ ወረዳዎች', 'metric.pools': 'ንቁ ግዢዎች',
-        'pools.title': 'ንቁ የቡድን ግዢዎች', 'pools.showing': 'ሁሉንም ግዢዎች በማሳየት ላይ',
+        'pools.title': 'ንቁ የቡድን ግዢዎች', 'pools.showing': 'ሁሉንም ግዢዎች በማሳየት ላይ', 'pools.allProducts': 'ሁሉም ምርቶች',
         'pools.search': 'ምርት፣ ምድብ ወይም ወረዳ ይፈልጉ...', 'pools.sortBy': 'ቅደም ተከተል:',
         'pools.allTowns': 'ሁሉም ከተሞች / ማዕከሎች',
         'pools.sortDefault': 'ነባሪ', 'pools.sortSavings': 'ከፍተኛ ቁጠባ %',
@@ -446,7 +549,45 @@ const I18N = {
         'footer.tagline': '© 2026 NuroTewedede ቀጥተኛ አቅርቦት መድረክ • የሰፈር ቡድን ግዢ መረብ',
         'toast.copied': 'የቫውቸር ኮድ ተቀድቷል!',
         'toast.reserved': '{0} አክሲዮን(ኦች) በተሳካ ሁኔታ ተይዘዋል! ዲጂታል የመቀበያ ቫውቸር ተዘጋጅቷል።',
-        'toast.bulkSubmitted': 'የጅምላ ጥያቄ {0} ገብቷል! የወረዳ አቅርቦት ቡድናችን በ24 ሰዓት ውስጥ ያነጋግርዎታል።'
+        'toast.bulkSubmitted': 'የጅምላ ጥያቄ {0} ገብቷል! የወረዳ አቅርቦት ቡድናችን በ24 ሰዓት ውስጥ ያነጋግርዎታል።',
+        'brand.tagline': 'የሰፈር የቡድን ግዢ መድረክ',
+        'meta.title': 'NuroTewedede : የሰፈር የቡድን ግዢ መድረክ',
+        'meta.description': 'የኢትዮጵያ የሰፈር የቡድን ግዢ መድረክ፡ ከጎረቤቶችዎ ጋር የጅምላ ዋጋ ይቆልፉ፣ አክሲዮኖችን ይያዙ እና የመቀበያ ቫውቸሮችን ይከታተሉ።',
+        'aria.toggleMenu': 'ምናሌ ይቀይሩ', 'aria.toggleTheme': 'የጨለማ ሁነታን ይቀይሩ', 'aria.selectLang': 'ቋንቋ ይምረጡ',
+        'aria.ticker': 'የቀጥታ የጅምላ ዋጋ ታይፕ', 'aria.openAi': 'NuroAI ረዳትን ይክፈቱ', 'aria.closeAi': 'NuroAI ረዳትን ይዝጉ',
+        'aria.closeModal': 'መስኮቱን ይዝጉ', 'aria.close': 'ዝጋ', 'aria.backToTop': 'ወደ ላይ ተመለስ',
+        'calc.year': '/ በዓመት',
+        'calc.item1': 'ነጭ ጤፍ (ጎጃም)', 'calc.item2': 'ቀይ ሽንኩርት (ዝዌይ)', 'calc.item3': 'ድፍድፍ የቡና ፍሬ (ሲዳማ)',
+        'calc.item4': 'የሱፍ አበባ የምግብ ዘይት (ሊትር)', 'calc.item5': 'ቀይ ምስር',
+        'hubs.live': 'የቀጥታ የኮሪደር ክትትል: ኢትዮጵያ', 'hubs.hubLabel': 'ማዕከል:',
+        'hubs.sourcingUnions': 'ዋና የአቅርቦት ህብረት ስራዎች:', 'hubs.address': 'የማዕከል አድራሻ:', 'hubs.directLinks': 'ቀጥተኛ የወረዳ አገናኞች:',
+        'ai.title': 'NuroAI ረዳት', 'ai.badgeYou': 'እርስዎ', 'ai.badgeAi': 'AI',
+        'ai.noResponse': 'ምንም ምላሽ አልተቀበለም።', 'ai.error': 'ከGemini AI ረዳት ጋር መገናኘት አልተቻለም',
+        'ai.prompt1': 'የ20 ቤተሰብ ጤፍ እና ቅመማ ቅመም የቡድን ትዕዛዝ ለአዲስ አበባ እንዴት እናቅዳለን?',
+        'ai.prompt2': 'የ50ኪግ ቀይ ሽንኩርት መበስበስን ለመከላከል ምን የማከማቻ ምክሮች አሉ?',
+        'ai.prompt3': 'የጎጃም ነጭ ጤፍ የመኸር ሰሞን መቼ ነው እና የዋጋ አዝማሚያው ምን ይመስላል?',
+        'ai.prompt4': 'ለ30 ሰው የበዓል ግብዣ የጅምላ ግሮሰሪ አቅርቦት ዝርዝር ጠቁም',
+        'time.justNow': 'አሁን ብቻ', 'time.today': 'ዛሬ', 'time.d': 'ቀ', 'time.h': 'ሰ',
+        'err.serverUnreachable': 'አገልጋዩ ላይ መድረስ አልተቻለም። የኋላ ማዕከሉ እየሰራ መሆኑን ያረጋግጡ (npm start በፕሮጀክት አቃፊው)።',
+        'err.htmlInsteadJson': 'አገልጋዩ ከJSON ይልቅ በHTML መልሷል', 'err.requestFailed': 'ጥያቄው አልተሳካም',
+        'toast.signinReserve': 'አክሲዮን ለማስያዝ እባክዎ መጀመሪያ ይግቡ።',
+        'toast.poolFullyReserved': 'ይህ ግዢ ሙሉ በሙሉ ተይዟል።',
+        'toast.signinComment': 'አስተያየት ለመለጠፍ እባክዎ መጀመሪያ ይግቡ።',
+        'toast.commentPosted': 'አስተያየት በማህበረሰብ መግለጫ ሰሌዳ ላይ ተለጠፈ።',
+        'toast.signinLike': 'አስተያየት ለመውደድ እባክዎ መጀመሪያ ይግቡ።',
+        'toast.signinLaunch': 'ግዢ ለመጀመር እባክዎ መጀመሪያ ይግቡ።',
+        'toast.poolLaunched': 'አዲስ የቡድን ግዢ በተሳካ ሁኔታ ተጀመረ!',
+        'toast.poolCreateError': 'ግዢ ሲፈጠር ስህተት ተከሰተ', 'toast.signedOut': 'በተሳካ ሁኔታ ወጥተዋል።',
+        'pool.fallbackTitle': 'የማህበረሰብ ግዢ', 'pool.fallbackWoreda': 'የክልል ወረዳ',
+        'pool.fallbackUnit': '1 አክሲዮን', 'pool.fallbackOrganizer': 'የሰፈር ቡድን አስተባባሪ',
+        'pool.fallbackPickup': 'በዚህ ሳምንት', 'pool.fallbackCategory': 'ግሮሰሪ',
+        'pool.fallbackHubSuffix': 'የሰፈር ስርጭት ማዕከል', 'pool.fallbackGroupPool': 'የቡድን ግዢ',
+        'pool.fallbackBag': '50ኪግ ቦርሳ',
+        'details.neighborBuyer': 'ጎረቤት ገዢ', 'details.title': 'የማህበረሰብ ውይይት እና ዝርዝሮች',
+        'myshares.signinBtn': 'ግባ', 'myshares.emptyTitle': 'እስካሁን የቡድን ግዢ አክሲዮን አላስያዙም።',
+        'myshares.viewVoucher': 'ቫውቸር ይመልከቱ',
+        'bulk.notesPh': 'ለምሳሌ ልዩ የመላኪያ መመሪያዎች፣ የጥራት ምርጫዎች ወይም የሚመርጡት የመገናኛ ሰዓት።',
+        'voucher.qrAlt': 'የQR ቫውቸር'
     },
     om: {
         'nav.pools': 'Bituuwwan Ijoo', 'nav.calculator': 'Herrega Qusannaa',
@@ -494,7 +635,7 @@ const I18N = {
         'how.statDeliverySub': 'Daldala haqaa balbala keetti',
         'bulk.cta': '🏭 Ajaja Waldaa fi Dhaabbataa',
         'metric.savings': 'Qusannaa Giddu Galeessaa', 'metric.woredas': 'Aanaalee Qunnamtee', 'metric.pools': 'Buufata Ijoo',
-        'pools.title': 'Bituuwwan Waldaa Ijoo', 'pools.showing': 'Bituuwwan hunda mul\'isaa',
+        'pools.title': 'Bituuwwan Waldaa Ijoo', 'pools.showing': 'Bituuwwan hunda mul\'isaa', 'pools.allProducts': 'Oomisha Hunda',
         'pools.search': 'Oomisha, ramaddii yookiin aanaa barbaadi...', 'pools.sortBy': 'Haarami:',
         'pools.allTowns': 'Magaalota / Buufata Hunda',
         'pools.sortDefault': 'Durtii', 'pools.sortSavings': 'Qusannaa Olii %',
@@ -503,7 +644,7 @@ const I18N = {
         'pools.showingCount': 'Bituu(wwan) {0} mul\'isaa', 'pools.searchResults': 'Ibsa "{1}" {0} (wwan) mul\'isaa',
         'card.origin': 'Ka\'umsa: {0}', 'card.pickup': 'Fudhachaa: {0}', 'card.unit': 'Gita: {0}',
         'card.hub': 'Buufata {0}', 'card.groupPrice': 'Gatii Waldaa', 'card.marketRetail': 'Daldala Gabaa',
-        'card.saveUnit': 'Qusadhu {0} Birrii / gita', 'card.savePct': '{0}% Qusadhu',
+        'card.saveUnit': 'Qusadhu {0} ETB / gita', 'card.savePct': '{0}% Qusadhu',
         'card.reservation': 'Ajaja Bakka Bituu', 'card.shares': 'qooda {0} / {1} ({2}%)',
         'card.daysLeft': '{0} guyyaa hafe', 'card.lockingToday': 'Har\'a cufama', 'card.organizer': 'Qindeessaa: {0}',
         'card.reserve': 'Bakka Fudhadhu', 'card.fullyReserved': 'Bituun guutumaan bakka buufame',
@@ -527,8 +668,8 @@ const I18N = {
         'calc.note': 'Ajajoota waldaa maatiilee 10–20 wajjin cufuudhaan baasii geejjiba walqixaan ramadama, dabaluu daldalaa ni cufa.',
         'calc.chartTitle': 'Walbira Qabsiisa Baasii Ji\'a — Daldala fi Waldaa',
         'calc.chartRetail': 'Daldala Gabaa', 'calc.chartGroup': 'Waldaa NuroTewedede',
-        'calc.month': '{0} {1} / ji\'a', 'calc.groupRate': 'Gatii Waldaa: {0} Birr/unit',
-        'calc.retailMarket': 'Gabaa Daldalaa: {0} Birr/unit', 'calc.saveItem': '{0} Birrii qusadhu',
+        'calc.month': '{0} {1} / ji\'a', 'calc.groupRate': 'Gatii Waldaa: {0} ETB/unit',
+        'calc.retailMarket': 'Gabaa Daldalaa: {0} ETB/unit', 'calc.saveItem': '{0} ETB qusadhu',
         'calc.unitsKg': 'kg', 'calc.unitsLitres': 'Liiitra',
         'hubs.badge': 'Sarkiyaa Dhiyeessaa Aanaa-Buufataa', 'hubs.title': 'Maapa Qulqullinaa Itoophiyaa fi Argama Buufataa',
         'hubs.subtitle': 'Sochi oomishaa waldaalee qonnaa hanga iddoowwan raabsaa naannootti hordofaa.',
@@ -550,7 +691,7 @@ const I18N = {
         'reserve.subtotal': 'Waliigala', 'reserve.retailCost': 'Baasii gabaa daldalaa:',
         'reserve.youSave': 'Waldaa wajjin Qusattu:', 'reserve.paymentMethod': 'Mala Kaffaltii / Waasti Argadhu',
         'reserve.notice': 'Beeksisa ajajaa {0} waliin ergama. Iddoo fudhachaa: {1} {2}tti.',
-        'reserve.confirm': 'Bakka Buufachuu Mirkaneessi ({0} Birr)', 'reserve.reserving': 'Bakka buufachaa jira...',
+        'reserve.confirm': 'Bakka Buufachuu Mirkaneessi ({0} ETB)', 'reserve.reserving': 'Bakka buufachaa jira...',
         'pay.telebirr': 'TeleBirr', 'pay.cbe': 'CBE Birrii', 'pay.cash': 'Buufataatti Kaffali',
         'success.title': 'Bakka Buufachuun Mirkanaa\'e!',
         'success.subtitle': 'Vaawwarcha fudhachaa digitaalaa kee {0}tti qophaa\'eera.',
@@ -570,7 +711,7 @@ const I18N = {
         'create.title': 'Bituu Waldaa Haaraya Jalqabi', 'create.item': 'Wantoota / Maqaa Oomishaa',
         'create.itemPh': 'fkn. Xaafii (Adii Gojjam) - 50kg', 'create.category': 'Ramaddii', 'create.town': 'Magaalaa / Buufata',
         'create.woreda': 'Ka\'umsa Aanaa', 'create.woredaPh': 'fkn. Debre Markos', 'create.unit': 'Gita Gurmaa',
-        'create.unitPh': 'fkn. Korojoo 50kg', 'create.wholesale': 'Gatii Daldala (Birrii)', 'create.retail': 'Gatii Daldalaa (Birrii)',
+        'create.unitPh': 'fkn. Korojoo 50kg', 'create.wholesale': 'Gatii Daldala (ETB)', 'create.retail': 'Gatii Daldalaa (ETB)',
         'create.retailPh': 'auto (45% dabaluu)', 'create.target': 'Qooda Galma', 'create.hub': 'Iddoo Buufata Fudhachaa',
         'create.hubPh': 'fkn. Buufata Bole Megenagna #2', 'create.organizer': 'Maqaa Qindeessaa / Hoogganaa Waldaa',
         'create.organizerPh': 'fkn. Abebe Tadesse (Koordinaatorii Kebele)', 'create.submit': 'Bituu Uumi',
@@ -597,7 +738,7 @@ const I18N = {
         'bulk.submit': 'Gaaffii Waldaa Ergi', 'bulk.successTitle': 'Gaaffiin Waldaa Fudhatame!',
         'bulk.successText': 'Gareen dhiyeessaa aanaa keenya gatii, hir\'ina baay\'ina fi sagantaa geessuu mirkaneessuuf sa\'aatii 24 keessatti si qunnama.',
         'bulk.ref': 'Wabi:', 'bulk.done': 'Xumurame',
-        'bulk.summaryValue': 'Gatii ajajaa ji\'a tilmaama: {0} Birrii',
+        'bulk.summaryValue': 'Gatii ajajaa ji\'a tilmaama: {0} ETB',
         'bulk.summarySavings': 'Qusannaa daldalaa tilmaama (~{0}%)',
         'bulk.validation': 'Maaloo dirqama hunda guuti.',
         'bulk.required': 'Maaloo dirqama hunda guuti.', 'bulk.produceDefault': 'Oomisha filadhu',
@@ -616,7 +757,45 @@ const I18N = {
         'footer.tagline': '© 2026 NuroTewedede Platform Dhiyeessaa Qulqullinaa • Network Bituu Waldaa Naannoo',
         'toast.copied': 'Koodiin vaawwarchaa galateeffame!',
         'toast.reserved': 'Qooda(wwan) {0} milkaa\'inaan bakka buufame! Vaawwarcha fudhachaa digitaalaa qophaa\'e.',
-        'toast.bulkSubmitted': 'Gaaffiin waldaa {0} ergame! Gareen dhiyeessaa aanaa keenya sa\'aatii 24 keessatti si qunnama.'
+        'toast.bulkSubmitted': 'Gaaffiin waldaa {0} ergame! Gareen dhiyeessaa aanaa keenya sa\'aatii 24 keessatti si qunnama.',
+        'brand.tagline': 'Platform Bituu Waldaa Naannoo',
+        'meta.title': 'NuroTewedede : Platform Bituu Waldaa Naannoo',
+        'meta.description': 'Platform bituu waldaa naannoo Itoophiyaa: gatii daldalaa gaaressa keessan wajjin cufadhaa, qooda bakka buufadhaa, vaawwarcha fudhachaa hordofaa.',
+        'aria.toggleMenu': 'Menu jijjiiri', 'aria.toggleTheme': 'Haala dukkanaa jijjiiri', 'aria.selectLang': 'Afaan filadhu',
+        'aria.ticker': 'Gatii daldalaa diinqaa', 'aria.openAi': 'Gargaaraa NuroAI bani', 'aria.closeAi': 'Gargaaraa NuroAI cufi',
+        'aria.closeModal': 'Foddaa cufi', 'aria.close': 'Cufi', 'aria.backToTop': 'Gara gubbaa deebi',
+        'calc.year': '/ waggaatti',
+        'calc.item1': 'Xaafii Adii (Gojjam)', 'calc.item2': 'Shunkurtii Diimaa (Ziway)', 'calc.item3': 'Buna Diimaa (Sidaama)',
+        'calc.item4': 'Zayitaa Suufii (Liitra)', 'calc.item5': 'Misira Diimaa',
+        'hubs.live': 'Hordoffii Corridoor Diinqaa: Itoophiyaa', 'hubs.hubLabel': 'Buufata:',
+        'hubs.sourcingUnions': 'Waldaalee Dhiyeessaa Ijoo:', 'hubs.address': 'Teessoo Buufataa:', 'hubs.directLinks': 'Qunnamtii Aanaa Qulqullinaa:',
+        'ai.title': 'Gargaaraa NuroAI', 'ai.badgeYou': 'ATI', 'ai.badgeAi': 'AI',
+        'ai.noResponse': 'Deebiin hin arganne.', 'ai.error': 'Gargaaraa Gemini AI wajjin wal quunnamuu hin danda\'amne',
+        'ai.prompt1': 'Akeekan daldalaa Teeffii fi mi\'eessitootaa maatii 20f Addis Ababaatti akkamitti karoorfanna?',
+        'ai.prompt2': 'Shunkurtii diimaa 50kg akka hin bonquuf gorsa kuusaa kamtu jira?',
+        'ai.prompt3': 'Yoomtu yeroo midhaan Xaafii Adii Gojjam fi gatii isaa akkamitti jijjirra?',
+        'ai.prompt4': 'Tarree dhiyeessaa meelaa waldaa cidhaa namoota 30f akeeki',
+        'time.justNow': 'Amma gaaf', 'time.today': 'Har\'a', 'time.d': 'g', 'time.h': 's',
+        'err.serverUnreachable': 'Gara serverii ga\'uun hin danda\'amne. Backend kee hojjachaa jiraachuu mirkaneessi (npm start galmee keessa).',
+        'err.htmlInsteadJson': 'Server HTML deebise (JSON osoo hin ta\'in)', 'err.requestFailed': 'Gaafatni hin milkoofne',
+        'toast.signinReserve': 'Qooda bakka buufachuuf maaloo dura seeni.',
+        'toast.poolFullyReserved': 'Bituun kun guutumaan bakka buufameera.',
+        'toast.signinComment': 'Yaada galchuuf maaloo dura seeni.',
+        'toast.commentPosted': 'Yaadni gabatee hawaasaatti galateeffame.',
+        'toast.signinLike': 'Yaada jaallachuuf maaloo dura seeni.',
+        'toast.signinLaunch': 'Bituu jalqabuuf maaloo dura seeni.',
+        'toast.poolLaunched': 'Bituun waldaa haaraan milkaa\'inaan jalqabame!',
+        'toast.poolCreateError': 'Bituu uumuudhaan dogoggora', 'toast.signedOut': 'Milkaa\'inaan ba\'aniiru.',
+        'pool.fallbackTitle': 'Bituu Hawaasaa', 'pool.fallbackWoreda': 'Aanaa Naannoo',
+        'pool.fallbackUnit': 'Qooda 1', 'pool.fallbackOrganizer': 'Koordinaatorii Garee Naannoo',
+        'pool.fallbackPickup': 'Torban kana', 'pool.fallbackCategory': 'Meelaa',
+        'pool.fallbackHubSuffix': 'Buufata Raabsaa Naannoo', 'pool.fallbackGroupPool': 'Bituu Waldaa',
+        'pool.fallbackBag': 'Korojoo 50kg',
+        'details.neighborBuyer': 'Bituuftuu Gaaressa', 'details.title': 'Marii fi Ibsa Hawaasaa',
+        'myshares.signinBtn': 'Seeni', 'myshares.emptyTitle': 'Amma yoomuu qooda bituu hin buufanne.',
+        'myshares.viewVoucher': 'Vaawwarchaa Ilaali',
+        'bulk.notesPh': 'fkn. Qajeelfama geessuu addaa, filannoo qulqullinaa, yookiin yeroo qunnamtii filattuu.',
+        'voucher.qrAlt': 'Vaawwarcha QR'
     }
 };
 
@@ -648,7 +827,7 @@ function localizeCategory(cat) {
     return key ? t(key) : cat;
 }
 
-const LANG_NAMES = { en: 'English', am: 'አማርኛ', om: 'Afaan Oromoo' };
+const LANG_NAMES = { en: 'English', am: 'Amharic', om: 'Afaan Oromoo' };
 
 function updateLangButtons() {
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
@@ -714,7 +893,17 @@ function applyI18n() {
     document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
         el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
     });
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
+        el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria-label')));
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
+        el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+    });
     if (document.documentElement) document.documentElement.lang = appLang;
+    document.title = t('meta.title');
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', t('meta.description'));
+    applyCurrencyUnits();
     updateLangButtons();
     syncAuthFields();
     staggerHeroTitle();
@@ -727,6 +916,7 @@ function setLang(lang) {
     applyI18n();
     closeLangDropdown();
     populateTownSelects();
+    renderProduceDropdown();
     renderCategoryPills();
     renderPools();
     renderCalculator();
@@ -735,6 +925,8 @@ function setLang(lang) {
     renderTicker();
     if (aiMessages[0] && aiMessages[0].id === 'welcome') aiMessages[0].text = t('ai.welcome');
     renderAiMessages();
+    renderBulkCatalog(document.getElementById('bulk-catalog'));
+    updateBulkSummary();
     if (currentUser) loadMyShares();
 }
 
@@ -751,11 +943,11 @@ function staggerHeroTitle() {
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80';
 
 const PRESET_SAVINGS_ITEMS = [
-    { name: 'White Teff (Gojjam)', unitPriceWholesale: 96, unitPriceRetail: 144, defaultKgPerMonth: 25, min: 10, max: 150 },
-    { name: 'Red Onions (Ziway)', unitPriceWholesale: 54, unitPriceRetail: 88, defaultKgPerMonth: 15, min: 5, max: 80 },
-    { name: 'Raw Coffee Beans (Sidama)', unitPriceWholesale: 290, unitPriceRetail: 450, defaultKgPerMonth: 5, min: 2, max: 20 },
-    { name: 'Sunflower Cooking Oil (Litre)', unitPriceWholesale: 155, unitPriceRetail: 210, defaultKgPerMonth: 10, min: 2, max: 30 },
-    { name: 'Red Lentils (Misir)', unitPriceWholesale: 168, unitPriceRetail: 236, defaultKgPerMonth: 8, min: 5, max: 50 }
+    { key: 'calc.item1', name: 'White Teff (Gojjam)', unitPriceWholesale: 96, unitPriceRetail: 144, defaultKgPerMonth: 25, min: 10, max: 150 },
+    { key: 'calc.item2', name: 'Red Onions (Ziway)', unitPriceWholesale: 54, unitPriceRetail: 88, defaultKgPerMonth: 15, min: 5, max: 80 },
+    { key: 'calc.item3', name: 'Raw Coffee Beans (Sidama)', unitPriceWholesale: 290, unitPriceRetail: 450, defaultKgPerMonth: 5, min: 2, max: 20 },
+    { key: 'calc.item4', name: 'Sunflower Cooking Oil (Litre)', unitPriceWholesale: 155, unitPriceRetail: 210, defaultKgPerMonth: 10, min: 2, max: 30 },
+    { key: 'calc.item5', name: 'Red Lentils (Misir)', unitPriceWholesale: 168, unitPriceRetail: 236, defaultKgPerMonth: 8, min: 5, max: 50 }
 ];
 
 const SUPPLY_HUBS = [
@@ -767,25 +959,80 @@ const SUPPLY_HUBS = [
     { id: 'hub-sodo', name: 'Wolaita Sodo Hub', town: 'Wolaita Sodo', address: 'Main Terminal Station', woredaOrigins: ['Chencha Highlands', 'Humbo Farmers Union'], activeDeliveriesCount: 2, coordinates: { x: 46, y: 72 } }
 ];
 
+const HUB_L10N = {
+    'hub-addis': {
+        name: { en: 'Addis Ababa Central Hub', am: 'የአዲስ አበባ ማዕከላዊ ማዕከል', om: 'Buufata Giddugaleessaa Finfinnee' },
+        address: { en: 'Bole Megenagna & Kazanchis Stations', am: 'የቦሌ መገናኛ እና ካዛንቺስ ጣቢያዎች', om: 'Istaashinii Bole Megenagna fi Kazanchis' },
+        woredas: {
+            en: ['Debre Markos (Gojjam)', 'Ziway / Batu', 'Arsi Zone'],
+            am: ['ደብረ ማርቆስ (ጎጃም)', 'ዝዌይ / ባቱ', 'የአርሲ ዞን'],
+            om: ['Debre Markos (Gojjam)', 'Ziway / Batu', 'Naannoo Arsii']
+        }
+    },
+    'hub-adama': {
+        name: { en: 'Adama Trade Hub', am: 'የአዳማ የንግድ ማዕከል', om: 'Buufata Daldalaa Adaamaa' },
+        address: { en: 'Posta Bet District', am: 'የፖስታ ቤት ወረዳ', om: 'Godina Posta Bet' },
+        woredas: {
+            en: ['Mojo Sourcing', 'Wonji Agricultural Zone'],
+            am: ['የሞጆ አቅርቦት', 'የወንጂ የእርሻ ዞን'],
+            om: ['Dhiyeessaa Mojo', 'Naannoo Qonnaa Wonji']
+        }
+    },
+    'hub-hawassa': {
+        name: { en: 'Hawassa Lake Hub', am: 'የአዋሳ ሀይቅ ማዕከል', om: 'Buufata Haroo Hawaasaa' },
+        address: { en: 'Central Market Station', am: 'የማዕከላዊ ገበያ ጣቢያ', om: 'Istaashinii Gabaa Giddugaleessaa' },
+        woredas: {
+            en: ['Yirgacheffe', 'Sidama Highlands'],
+            am: ['ይርጋቸፍ', 'የሲዳማ ደጋማ አካባቢዎች'],
+            om: ['Yirgacheffe', 'Tulluuwwan Sidaama']
+        }
+    },
+    'hub-bahirdar': {
+        name: { en: 'Bahir Dar Tana Hub', am: 'የባሕር ዳር ጣና ማዕከል', om: 'Buufata Bahirdaar Tanaa' },
+        address: { en: 'Kebele 11 Distribution Depot', am: 'ቀበሌ 11 የስርጭት መጋዘን', om: 'Qindaa Istaashinii Kebele 11' },
+        woredas: {
+            en: ['East Gojjam Cooperative', 'South Gondar'],
+            am: ['የምስራቅ ጎጃም ህብረት', 'ደቡብ ጎንደር'],
+            om: ['Waldaa Gojjam Bahaa', 'Godantu Gonder Kibbaa']
+        }
+    },
+    'hub-jimma': {
+        name: { en: 'Jimma Kaffa Hub', am: 'የጅማ ካፋ ማዕከል', om: 'Buufata Jimmaa Kaffaa' },
+        address: { en: 'University Gate Station', am: 'የዩኒቨርሲቲ በር ጣቢያ', om: 'Istaashinii Baraa Yuunivarsiitii' },
+        woredas: {
+            en: ['Jimma Farmers Union', 'Bonga Valley'],
+            am: ['የጅማ ገበሬዎች ህብረት', 'የቦንጋ ሸለቆ'],
+            om: ['Waldaa Qonnaan Bultoota Jimmaa', 'Sulula Boongaa']
+        }
+    },
+    'hub-sodo': {
+        name: { en: 'Wolaita Sodo Hub', am: 'የወላይታ ሶዶ ማዕከል', om: 'Buufata Wolayita Sooddoo' },
+        address: { en: 'Main Terminal Station', am: 'ዋና የተርሚናል ጣቢያ', om: 'Istaashinii Terminal Ijoo' },
+        woredas: {
+            en: ['Chencha Highlands', 'Humbo Farmers Union'],
+            am: ['የቸንቻ ደጋማ አካባቢዎች', 'የሃምቦ ገበሬዎች ህብረት'],
+            om: ['Tulluuwwan Chencha', 'Waldaa Qonnaan Bultoota Humboo']
+        }
+    }
+};
+
+function localizeHub(hub) {
+    const l = HUB_L10N[hub.id];
+    if (!l) return { name: hub.name, address: hub.address, woredas: hub.woredaOrigins };
+    const lang = appLang in l.name ? appLang : 'en';
+    const woredas = l.woredas[lang] || hub.woredaOrigins;
+    return { name: l.name[lang], address: l.address[lang], woredas: woredas };
+}
+
 const AI_QUICK_PROMPTS = [
-    'How do we plan a 20-family Teff & Spice group order for Addis Ababa?',
-    'What are the best storage tips for 50kg red onions to prevent rotting?',
-    'When is peak harvest season for Gojjam White Teff and price trends?',
-    'Suggest a bulk grocery supply list for a 30-person holiday feast'
+    { labelKey: 'ai.chip1', promptKey: 'ai.prompt1' },
+    { labelKey: 'ai.chip2', promptKey: 'ai.prompt2' },
+    { labelKey: 'ai.chip3', promptKey: 'ai.prompt3' },
+    { labelKey: 'ai.chip4', promptKey: 'ai.prompt4' }
 ];
 
-const AI_WELCOME = `Hello! I am **NuroTewedede AI**, your direct agricultural sourcing and group-buying advisor for Ethiopian neighborhood hubs.
-
-I can assist you with:
-- **Bulk Supply Estimates:** Calculating Teff, Onions, Coffee, Oil, or Pulse quantities for 5 to 50 families.
-- **Harvest & Price Seasonality:** Finding peak harvest months in Gojjam, Sidama, Ziway, Arsi, and Jimma.
-- **Produce Storage Guidelines:** Keeping bulk 50kg bags fresh without spoilage.
-- **Holiday Feast Planning:** Scaling bulk grocery orders for community celebrations (Enkutatash, Genna, Timkat, Eid).
-
-Select a quick topic below or type your question!`;
-
 let aiMessages = [
-    { id: 'welcome', sender: 'assistant', text: t('ai.welcome'), timestamp: 'Just now' }
+    { id: 'welcome', sender: 'assistant', text: t('ai.welcome'), timestamp: t('time.justNow') }
 ];
 let aiLoading = false;
 
@@ -804,6 +1051,16 @@ function fmt(n) {
     return Number(n || 0).toLocaleString();
 }
 
+function currencyUnit() {
+    return appLang === 'am' ? 'ብር' : 'ETB';
+}
+
+function applyCurrencyUnits() {
+    document.querySelectorAll('[data-currency-unit]').forEach(function (el) {
+        el.textContent = currencyUnit();
+    });
+}
+
 function normalizePool(p) {
     const price = Number(p.price) || 0;
     const retailPrice = Number(p.retail_price ?? p.retailPrice) || Math.round(price * 1.35);
@@ -820,23 +1077,23 @@ function normalizePool(p) {
     return {
         ...p,
         id: String(p.id),
-        title: p.title || 'Community Buying Pool',
+        title: p.title || t('pool.fallbackTitle'),
         town,
-        woreda: p.woreda || 'Regional Woreda',
+        woreda: p.woreda || t('pool.fallbackWoreda'),
         price,
         retailPrice,
-        unit: p.unit || '1 Share',
+        unit: p.unit || t('pool.fallbackUnit'),
         currentShares,
         targetShares,
         locked,
         daysRemaining,
         endsAt,
-        hubLocation: p.hub_location || p.hubLocation || town + ' Neighborhood Distribution Hub',
+        hubLocation: p.hub_location || p.hubLocation || town + ' ' + t('pool.fallbackHubSuffix'),
         imageUrl: p.image_url || p.imageUrl || DEFAULT_IMAGE,
-        organizer: p.organizer || 'Neighborhood Group Coordinator',
+        organizer: p.organizer || t('pool.fallbackOrganizer'),
         commentsCount: p.comments_count ?? p.commentsCount ?? 0,
-        pickupDate: p.pickup_date || p.pickupDate || 'This Week',
-        category: p.category || 'Groceries',
+        pickupDate: p.pickup_date || p.pickupDate || t('pool.fallbackPickup'),
+        category: p.category || t('pool.fallbackCategory'),
         status: p.status || (locked ? 'locked' : 'active')
     };
 }
@@ -867,9 +1124,10 @@ function api(path, options = {}) {
             // served from another origin (Live Server, another port) that answered
             // with HTML, treat it as a failed request and fall back to the real backend.
             if (!r.ok || !jsonOk) {
-                const err = new Error(jsonOk ? (body.error || 'Request failed') : 'Server answered with HTML instead of JSON');
+                const err = new Error(jsonOk ? (body.error || t('err.requestFailed')) : t('err.htmlInsteadJson'));
                 err.status = r.status;
                 err.serverReached = jsonOk;
+                err.serverUnreachable = !jsonOk;
                 throw err;
             }
             return body;
@@ -881,7 +1139,9 @@ function api(path, options = {}) {
             const shouldRetry = (err instanceof TypeError || !err.serverReached) && index < bases.length - 1;
             if (shouldRetry) return attempt(index + 1);
             if (err instanceof TypeError || !err.serverReached) {
-                throw new Error('Cannot reach the server. Make sure the backend is running (npm start in the project folder).');
+                const netErr = new Error(t('err.serverUnreachable'));
+                netErr.serverUnreachable = true;
+                throw netErr;
             }
             throw err;
         });
@@ -995,6 +1255,12 @@ function setTown(town) {
 
 function setCategory(category) {
     currentCategory = category;
+    if (category === 'All' || category == null) {
+        currentProduce = null;
+    } else if (currentProduce && currentProduce.category !== category) {
+        currentProduce = null;
+    }
+    renderProduceDropdown();
     renderCategoryPills();
     renderPools();
 }
@@ -1039,7 +1305,7 @@ async function fetchPools() {
     } catch (err) {
         console.error('Error fetching pools:', err.message);
         pools = [];
-        if (/Cannot reach the server/.test(err.message)) {
+        if (err.serverUnreachable) {
             showToast(err.message, true);
         }
     }
@@ -1138,7 +1404,15 @@ function renderPools() {
         ? pools
         : pools.filter(function (p) { return p.town === currentFilter; });
 
-    if (currentCategory !== 'All') {
+    if (currentProduce) {
+        const kws = currentProduce.keywords || [];
+        filtered = filtered.filter(function (p) {
+            const catOk = currentProduce.category ? p.category === currentProduce.category : true;
+            const title = (p.title || '').toLowerCase();
+            const kwOk = kws.some(function (k) { return title.indexOf(k) !== -1; });
+            return catOk && kwOk;
+        });
+    } else if (currentCategory !== 'All') {
         filtered = filtered.filter(function (p) { return p.category === currentCategory; });
     }
 
@@ -1201,8 +1475,8 @@ function renderPools() {
                         '<p class="text-xs text-slate-500 font-medium">' + esc(tt('card.unit', pool.unit)) + '</p>' +
                     '</div>' +
                     '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between">' +
-                        '<div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">' + esc(t('card.groupPrice')) + '</p><p class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ETB</p></div>' +
-                        '<div class="text-right"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">' + esc(t('card.marketRetail')) + '</p><p class="text-xs font-semibold text-slate-400 line-through">' + fmt(pool.retailPrice) + ' ETB</p><p class="text-[10px] font-bold text-emerald-600">' + esc(tt('card.saveUnit', fmt(savingsAmount))) + '</p></div>' +
+                        '<div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">' + esc(t('card.groupPrice')) + '</p><p class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ' + currencyUnit() + '</p></div>' +
+                        '<div class="text-right"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">' + esc(t('card.marketRetail')) + '</p><p class="text-xs font-semibold text-slate-400 line-through">' + fmt(pool.retailPrice) + ' ' + currencyUnit() + '</p><p class="text-[10px] font-bold text-emerald-600">' + esc(tt('card.saveUnit', fmt(savingsAmount))) + '</p></div>' +
                     '</div>' +
                     '<div class="space-y-1.5">' +
                         '<div class="flex justify-between items-center text-xs font-bold text-slate-700">' +
@@ -1222,7 +1496,7 @@ function renderPools() {
                 '<button onclick="sharePool(\'' + pool.id + '\', event)" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="' + esc(t('card.share')) + '">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>' +
                 '</button>' +
-                '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="Community Discussion & Details">' +
+                '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="' + esc(t('details.title')) + '">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
                     '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
                 '</button>' +
@@ -1250,7 +1524,7 @@ function renderTicker() {
         return '<span class="inline-flex items-center gap-2 text-xs font-bold">' +
             '<span class="text-slate-500">' + esc(localizeTown(p.town)) + '</span>' +
             '<span class="text-white">' + esc(p.title) + '</span>' +
-            '<span class="text-emerald-300">' + fmt(p.price) + ' ETB</span>' +
+            '<span class="text-emerald-300">' + fmt(p.price) + ' ' + currencyUnit() + '</span>' +
             '<span class="text-slate-500 line-through text-[10px]">' + fmt(p.retailPrice) + '</span>' +
             '<span class="text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded-md">' + savePct + '%</span>' +
         '</span>';
@@ -1263,14 +1537,14 @@ function renderTicker() {
 
 function openReserveModal(id) {
     if (!currentUser) {
-        showToast('Please sign in first to reserve a share.');
+        showToast(t('toast.signinReserve'));
         openAuthModal();
         return;
     }
     const pool = pools.find(function (p) { return p.id === String(id); });
     if (!pool) return;
     if (pool.locked || pool.currentShares >= pool.targetShares) {
-        showToast('This pool is already fully reserved.');
+        showToast(t('toast.poolFullyReserved'));
         return;
     }
     reserveState = { pool: pool, shares: 1, payment: 'telebirr' };
@@ -1313,7 +1587,7 @@ function renderReserveForm() {
     }).join('');
 
     card.innerHTML =
-        '<button onclick="closeReserveModal()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Close">' +
+        '<button onclick="closeReserveModal()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="' + esc(t('aria.close')) + '">' +
             '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
         '</button>' +
         '<div class="space-y-5">' +
@@ -1330,13 +1604,13 @@ function renderReserveForm() {
                     '<button type="button" onclick="reserveStep(-1)" class="w-10 h-10 rounded-xl bg-white border border-slate-300 font-black text-lg text-slate-800 hover:bg-slate-100 transition">-</button>' +
                     '<span class="text-lg font-black text-slate-900 min-w-[2rem] text-center">' + shares + '</span>' +
                     '<button type="button" onclick="reserveStep(1)" class="w-10 h-10 rounded-xl bg-white border border-slate-300 font-black text-lg text-slate-800 hover:bg-slate-100 transition">+</button>' +
-                    '<div class="flex-1 text-right"><p class="text-[10px] text-slate-400 font-bold uppercase">' + esc(t('reserve.subtotal')) + '</p><p class="text-lg font-black text-emerald-800">' + fmt(totalPrice) + ' ETB</p></div>' +
+                    '<div class="flex-1 text-right"><p class="text-[10px] text-slate-400 font-bold uppercase">' + esc(t('reserve.subtotal')) + '</p><p class="text-lg font-black text-emerald-800">' + fmt(totalPrice) + ' ' + currencyUnit() + '</p></div>' +
                 '</div>' +
                 '<div class="pt-2 border-t border-slate-200 flex justify-between text-xs font-semibold">' +
-                    '<span class="text-slate-500">' + esc(t('reserve.retailCost')) + '</span><span class="text-slate-400 line-through">' + fmt(totalRetailPrice) + ' ETB</span>' +
+                    '<span class="text-slate-500">' + esc(t('reserve.retailCost')) + '</span><span class="text-slate-400 line-through">' + fmt(totalRetailPrice) + ' ' + currencyUnit() + '</span>' +
                 '</div>' +
                 '<div class="flex justify-between text-xs font-bold text-emerald-700">' +
-                    '<span>' + esc(t('reserve.youSave')) + '</span><span>' + fmt(totalSavings) + ' ETB</span>' +
+                    '<span>' + esc(t('reserve.youSave')) + '</span><span>' + fmt(totalSavings) + ' ' + currencyUnit() + '</span>' +
                 '</div>' +
             '</div>' +
             '<div class="space-y-2">' +
@@ -1420,13 +1694,13 @@ function buildVoucherHTML(reservation, pool, closeFn) {
     const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(code);
     const method = (reservation.paymentMethod || reservation.payment_method || 'telebirr').toUpperCase();
     const qty = reservation.shares || 1;
-    const unit = pool.unit || '1 Share';
-    const hub = pool.hubLocation || pool.hub_location || (pool.town || 'Addis Ababa') + ' Neighborhood Distribution Hub';
-    const date = pool.pickupDate || pool.pickup_date || 'This Week';
+    const unit = pool.unit || t('pool.fallbackUnit');
+    const hub = pool.hubLocation || pool.hub_location || (pool.town || 'Addis Ababa') + ' ' + t('pool.fallbackHubSuffix');
+    const date = pool.pickupDate || pool.pickup_date || t('pool.fallbackPickup');
     const customer = currentUser && currentUser.email ? currentUser.email : '—';
 
     return '' +
-        '<button onclick="' + closeFn + '()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition not-printable" aria-label="Close">' +
+        '<button onclick="' + closeFn + '()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition not-printable" aria-label="' + esc(t('aria.close')) + '">' +
             '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
         '</button>' +
         '<div class="voucher-print space-y-5 text-center py-2">' +
@@ -1439,7 +1713,7 @@ function buildVoucherHTML(reservation, pool, closeFn) {
             '</div>' +
             '<div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 max-w-xs mx-auto space-y-3">' +
                 '<div class="bg-white p-3 rounded-2xl shadow-inner w-36 h-36 mx-auto flex items-center justify-center border border-slate-200">' +
-                    '<img src="' + esc(qr) + '" alt="QR voucher" class="w-full h-full object-contain">' +
+                    '<img src="' + esc(qr) + '" alt="' + esc(t('voucher.qrAlt')) + '" class="w-full h-full object-contain">' +
                 '</div>' +
                 '<div><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">' + esc(t('success.ticketCode')) + '</p><p class="text-base font-black text-emerald-800 tracking-wider">' + esc(code) + '</p></div>' +
                 '<div class="text-[11px] text-slate-600 space-y-1 text-left border-t border-slate-200 pt-3">' +
@@ -1534,8 +1808,8 @@ function renderDetails() {
             const liked = !!(c.liked || c.userLiked);
             return '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs space-y-1">' +
                 '<div class="flex justify-between items-center font-bold">' +
-                    '<span class="text-slate-800 flex items-center gap-1">' + esc(c.user_name || c.userName || 'Neighbor Buyer') + ' (' + esc(localizeTown(c.user_town || 'Addis Ababa')) + ')' + (c.is_coordinator || c.isCoordinator ? '<span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-extrabold">' + esc(t('details.coordinator')) + '</span>' : '') + '</span>' +
-                    '<span class="text-[10px] text-slate-400">' + esc(c.created_at || 'Just now') + '</span>' +
+                    '<span class="text-slate-800 flex items-center gap-1">' + esc(c.user_name || c.userName || t('details.neighborBuyer')) + ' (' + esc(localizeTown(c.user_town || 'Addis Ababa')) + ')' + (c.is_coordinator || c.isCoordinator ? '<span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-extrabold">' + esc(t('details.coordinator')) + '</span>' : '') + '</span>' +
+                    '<span class="text-[10px] text-slate-400">' + esc(c.created_at || t('time.justNow')) + '</span>' +
                 '</div>' +
                 '<p class="text-slate-600">' + esc(c.text) + '</p>' +
                 '<div class="flex justify-end pt-1">' +
@@ -1549,7 +1823,7 @@ function renderDetails() {
         }).join('');
 
     card.innerHTML =
-        '<button onclick="closeDetailsModal()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Close">' +
+        '<button onclick="closeDetailsModal()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="' + esc(t('aria.close')) + '">' +
             '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
         '</button>' +
         '<div class="flex flex-col sm:flex-row gap-4 items-start">' +
@@ -1562,8 +1836,8 @@ function renderDetails() {
                 '<h3 class="text-xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
                 '<p class="text-xs text-slate-500">' + esc(tt('details.unit', pool.unit, pool.hubLocation)) + '</p>' +
                 '<div class="pt-1 flex items-center gap-3">' +
-                    '<span class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ETB</span>' +
-                    '<span class="text-xs text-slate-400 line-through">' + fmt(pool.retailPrice) + ' ETB</span>' +
+                    '<span class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ' + currencyUnit() + '</span>' +
+                    '<span class="text-xs text-slate-400 line-through">' + fmt(pool.retailPrice) + ' ' + currencyUnit() + '</span>' +
                 '</div>' +
             '</div>' +
         '</div>' +
@@ -1593,7 +1867,7 @@ async function postComment(e) {
     e.preventDefault();
     if (!detailsState.pool) return;
     if (!currentUser) {
-        showToast('Please sign in first to post a comment.');
+        showToast(t('toast.signinComment'));
         openAuthModal();
         return;
     }
@@ -1612,7 +1886,7 @@ async function postComment(e) {
             if (badge) badge.textContent = detailsState.pool.commentsCount;
         }
         renderDetails();
-        showToast('Comment posted to the community board.');
+        showToast(t('toast.commentPosted'));
     } catch (err) {
         showToast(err.message, true);
     }
@@ -1620,7 +1894,7 @@ async function postComment(e) {
 
 async function likeComment(commentId, btn) {
     if (!currentUser) {
-        showToast('Please sign in first to like a comment.');
+        showToast(t('toast.signinLike'));
         openAuthModal();
         return;
     }
@@ -1660,7 +1934,7 @@ async function likeComment(commentId, btn) {
 function calcInitQuantities() {
     const q = {};
     PRESET_SAVINGS_ITEMS.forEach(function (item) {
-        q[item.name] = item.defaultKgPerMonth;
+        q[item.key] = item.defaultKgPerMonth;
     });
     return q;
 }
@@ -1673,18 +1947,18 @@ function renderCalculator() {
     }
 
     container.innerHTML = PRESET_SAVINGS_ITEMS.map(function (item, idx) {
-        const qty = calcQuantities[item.name] || 0;
+        const qty = calcQuantities[item.key] || 0;
         const itemRetail = qty * item.unitPriceRetail;
         const itemWholesale = qty * item.unitPriceWholesale;
         const itemSaved = itemRetail - itemWholesale;
         const fillPct = item.max > item.min ? Math.round(((qty - item.min) / (item.max - item.min)) * 100) : 50;
-        const unitLabel = item.name.indexOf('Litre') !== -1 ? t('calc.unitsLitres') : t('calc.unitsKg');
+        const unitLabel = item.key === 'calc.item4' ? t('calc.unitsLitres') : t('calc.unitsKg');
         return '<div class="card-enter bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2" style="animation-delay: ' + (idx * 70) + 'ms">' +
             '<div class="flex justify-between items-center text-xs font-bold">' +
-                '<span class="text-slate-800">' + esc(item.name) + '</span>' +
+                '<span class="text-slate-800">' + esc(t(item.key)) + '</span>' +
                 '<span class="text-emerald-700 font-extrabold">' + esc(tt('calc.month', qty, unitLabel)) + '</span>' +
             '</div>' +
-            '<input type="range" min="' + item.min + '" max="' + item.max + '" step="1" value="' + qty + '" oninput="calcQuantityChange(this)" data-item="' + esc(item.name) + '" style="--fill: ' + fillPct + '%" class="w-full h-2 cursor-pointer">' +
+            '<input type="range" min="' + item.min + '" max="' + item.max + '" step="1" value="' + qty + '" oninput="calcQuantityChange(this)" data-item="' + esc(item.key) + '" style="--fill: ' + fillPct + '%" class="w-full h-2 cursor-pointer">' +
             '<div class="flex justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-200">' +
                 '<span>' + esc(tt('calc.groupRate', item.unitPriceWholesale)) + '</span>' +
                 '<span>' + esc(tt('calc.retailMarket', item.unitPriceRetail)) + '</span>' +
@@ -1703,8 +1977,8 @@ function calcQuantityChange(input) {
     if (max > min) input.style.setProperty('--fill', Math.round(((input.value - min) / (max - min)) * 100) + '%');
     const valueLabel = input.parentElement.querySelector('span.text-emerald-700');
     if (valueLabel) {
-        const item = PRESET_SAVINGS_ITEMS.find(function (it) { return it.name === input.dataset.item; });
-        const unitLabel = item && item.name.indexOf('Litre') !== -1 ? t('calc.unitsLitres') : t('calc.unitsKg');
+        const item = PRESET_SAVINGS_ITEMS.find(function (it) { return it.key === input.dataset.item; });
+        const unitLabel = item && item.key === 'calc.item4' ? t('calc.unitsLitres') : t('calc.unitsKg');
         valueLabel.textContent = tt('calc.month', input.value, unitLabel);
     }
     updateCalculatorSummary();
@@ -1716,7 +1990,7 @@ function updateCalculatorSummary() {
     const rows = [];
     let maxCost = 0;
     PRESET_SAVINGS_ITEMS.forEach(function (item) {
-        const qty = calcQuantities[item.name] || 0;
+        const qty = calcQuantities[item.key] || 0;
         const retailCost = qty * item.unitPriceRetail;
         const wholesaleCost = qty * item.unitPriceWholesale;
         totalWholesale += wholesaleCost;
@@ -1762,19 +2036,19 @@ function updateCalculatorSummary() {
         const itemSavePct = r.retailCost > 0 ? Math.round((r.saved / r.retailCost) * 100) : 0;
         return '<div class="bg-white border border-slate-200 rounded-2xl p-3">' +
             '<div class="flex justify-between items-center text-xs font-bold text-slate-800 mb-2">' +
-                '<span>' + esc(r.item.name) + '</span>' +
+                '<span>' + esc(t(r.item.key)) + '</span>' +
                 '<span class="text-emerald-600">' + esc(tt('calc.saveItem', fmt(r.saved))) + ' (' + itemSavePct + '%)</span>' +
             '</div>' +
             '<div class="space-y-1.5">' +
                 '<div class="flex items-center gap-2">' +
                     '<span class="w-24 shrink-0 text-[10px] font-bold text-slate-500 uppercase">' + esc(t('calc.chartRetail')) + '</span>' +
                     '<div class="flex-1 bg-slate-100 h-3 rounded-full overflow-hidden"><div class="bg-slate-800 h-3 rounded-full transition-all duration-500" style="width: ' + retailW + '%"></div></div>' +
-                    '<span class="w-20 shrink-0 text-[10px] font-semibold text-slate-500 text-right">' + fmt(r.retailCost) + ' ETB</span>' +
+                    '<span class="w-20 shrink-0 text-[10px] font-semibold text-slate-500 text-right">' + fmt(r.retailCost) + ' ' + currencyUnit() + '</span>' +
                 '</div>' +
                 '<div class="flex items-center gap-2">' +
                     '<span class="w-24 shrink-0 text-[10px] font-bold text-emerald-700 uppercase">' + esc(t('calc.chartGroup')) + '</span>' +
                     '<div class="flex-1 bg-slate-100 h-3 rounded-full overflow-hidden"><div class="bg-emerald-500 h-3 rounded-full transition-all duration-500" style="width: ' + groupW + '%"></div></div>' +
-                    '<span class="w-20 shrink-0 text-[10px] font-semibold text-emerald-700 text-right">' + fmt(r.wholesaleCost) + ' ETB</span>' +
+                    '<span class="w-20 shrink-0 text-[10px] font-semibold text-emerald-700 text-right">' + fmt(r.wholesaleCost) + ' ' + currencyUnit() + '</span>' +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -1786,7 +2060,7 @@ function setFamilySize(size) {
     const multiplier = size / 4;
     const q = {};
     PRESET_SAVINGS_ITEMS.forEach(function (item) {
-        q[item.name] = Math.round(item.defaultKgPerMonth * multiplier);
+        q[item.key] = Math.round(item.defaultKgPerMonth * multiplier);
     });
     calcQuantities = q;
     document.querySelectorAll('.calc-family-btn').forEach(function (btn) {
@@ -1805,10 +2079,11 @@ function renderHubs() {
     if (list) {
         list.innerHTML = SUPPLY_HUBS.map(function (hub, idx) {
             const active = hub.id === selected.id;
+            const localized = localizeHub(hub);
             return '<button onclick="selectHub(\'' + hub.id + '\')" style="animation-delay: ' + (idx * 60) + 'ms" class="card-enter w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between ' + (active ? 'bg-emerald-800 text-white border-emerald-700 shadow-md' : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100') + '">' +
                 '<div>' +
-                    '<h4 class="text-sm font-bold flex items-center gap-1.5">' + esc(hub.name) + '</h4>' +
-                    '<p class="text-xs mt-0.5 ' + (active ? 'text-emerald-100' : 'text-slate-500') + '">' + esc(hub.address) + '</p>' +
+                    '<h4 class="text-sm font-bold flex items-center gap-1.5">' + esc(localized.name) + '</h4>' +
+                    '<p class="text-xs mt-0.5 ' + (active ? 'text-emerald-100' : 'text-slate-500') + '">' + esc(localized.address) + '</p>' +
                 '</div>' +
                 '<span class="text-[10px] font-bold px-2 py-1 rounded-full ' + (active ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800') + '">' + esc(tt('hubs.activePools', hub.activeDeliveriesCount)) + '</span>' +
             '</button>';
@@ -1834,11 +2109,12 @@ function renderHubs() {
     const nameEl = document.getElementById('hub-name');
     const addressEl = document.getElementById('hub-address');
     const originsEl = document.getElementById('hub-origins');
+    const selectedLocalized = localizeHub(selected);
     if (townEl) townEl.textContent = localizeTown(selected.town);
-    if (woredasEl) woredasEl.textContent = selected.woredaOrigins.join(', ');
-    if (nameEl) nameEl.textContent = tt('hubs.details', selected.name);
-    if (addressEl) addressEl.textContent = selected.address;
-    if (originsEl) originsEl.textContent = selected.woredaOrigins.join(' • ');
+    if (woredasEl) woredasEl.textContent = selectedLocalized.woredas.join(', ');
+    if (nameEl) nameEl.textContent = tt('hubs.details', selectedLocalized.name);
+    if (addressEl) addressEl.textContent = selectedLocalized.address;
+    if (originsEl) originsEl.textContent = selectedLocalized.woredas.join(' • ');
 }
 
 function selectHub(id) {
@@ -1869,7 +2145,7 @@ function renderAiMessages() {
         const isUser = msg.sender === 'user';
         return '<div class="flex items-start gap-3 ' + (isUser ? 'flex-row-reverse' : '') + '">' +
             '<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ' + (isUser ? 'bg-slate-900 text-white' : 'bg-emerald-800 text-white') + '">' +
-                (isUser ? '<span class="text-[10px]">YOU</span>' : '<span class="text-[10px]">AI</span>') +
+                (isUser ? '<span class="text-[10px]">' + esc(t('ai.badgeYou')) + '</span>' : '<span class="text-[10px]">' + esc(t('ai.badgeAi')) + '</span>') +
             '</div>' +
             '<div class="max-w-[85%] rounded-3xl p-4 text-xs sm:text-sm leading-relaxed ' + (isUser ? 'bg-emerald-800 text-white rounded-tr-none' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-tl-none') + '">' +
                 '<div class="whitespace-pre-wrap font-sans">' + renderMarkdown(msg.text) + '</div>' +
@@ -1881,7 +2157,7 @@ function renderAiMessages() {
     if (aiLoading) {
         container.insertAdjacentHTML('beforeend',
             '<div class="flex items-center gap-3">' +
-                '<div class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center text-xs"><span class="animate-pulse">AI</span></div>' +
+                '<div class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center text-xs"><span class="animate-pulse">' + esc(t('ai.badgeAi')) + '</span></div>' +
                 '<div class="bg-slate-100 p-3 rounded-2xl rounded-tl-none text-xs text-slate-500 flex items-center gap-2">' +
                     '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>' + esc(t('ai.processing')) +
                 '</div>' +
@@ -1894,9 +2170,10 @@ function renderAiMessages() {
 function renderAiChips() {
     const chips = document.getElementById('ai-chips');
     if (!chips) return;
-    const labels = [t('ai.chip1'), t('ai.chip2'), t('ai.chip3'), t('ai.chip4')];
     chips.innerHTML = AI_QUICK_PROMPTS.map(function (qp, i) {
-        return '<button onclick="sendQuickPrompt(this)"' + (aiLoading ? ' disabled' : '') + ' data-prompt="' + esc(qp) + '" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 text-xs font-semibold whitespace-nowrap transition border border-slate-200 disabled:opacity-50">💡 ' + esc(labels[i] || qp) + '</button>';
+        const label = t(qp.labelKey);
+        const prompt = t(qp.promptKey);
+        return '<button onclick="sendQuickPrompt(this)"' + (aiLoading ? ' disabled' : '') + ' data-prompt="' + esc(prompt) + '" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 text-xs font-semibold whitespace-nowrap transition border border-slate-200 disabled:opacity-50">💡 ' + esc(label) + '</button>';
     }).join('');
 }
 
@@ -1924,14 +2201,14 @@ async function sendAiMessage(textToSend) {
         aiMessages.push({
             id: 'ai-' + Date.now(),
             sender: 'assistant',
-            text: data.reply || 'No response received.',
+            text: data.reply || t('ai.noResponse'),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
     } catch (err) {
         aiMessages.push({
             id: 'err-' + Date.now(),
             sender: 'assistant',
-            text: '⚠️ Unable to connect to Gemini AI Assistant: ' + err.message,
+            text: '⚠️ ' + t('ai.error') + ': ' + err.message,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
     } finally {
@@ -2006,15 +2283,15 @@ async function loadMyShares() {
         const status = getReservationStatus(res);
         const badge = getStatusBadge(status);
         const method = (res.payment_method || res.paymentMethod || 'telebirr').toUpperCase();
-        const created = res.created_at ? new Date(res.created_at).toLocaleDateString() : 'Today';
+        const created = res.created_at ? new Date(res.created_at).toLocaleDateString() : t('time.today');
         const pickup = res.pickup_date || res.pickupDate || '—';
         return '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">' +
             '<div class="w-20 h-20 bg-white p-2 rounded-xl border border-slate-200 flex items-center justify-center flex-shrink-0">' +
-                '<img src="' + esc('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(code)) + '" alt="QR voucher" class="w-full h-full object-contain">' +
+                '<img src="' + esc('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(code)) + '" alt="' + esc(t('voucher.qrAlt')) + '" class="w-full h-full object-contain">' +
             '</div>' +
             '<div class="space-y-1 text-xs flex-1 min-w-0">' +
                 '<div class="flex flex-wrap items-center gap-2">' +
-                    '<h4 class="font-extrabold text-slate-900 truncate">' + esc(pool.title || 'Group Pool') + '</h4>' +
+                    '<h4 class="font-extrabold text-slate-900 truncate">' + esc(pool.title || t('pool.fallbackGroupPool')) + '</h4>' +
                     badge +
                 '</div>' +
                 '<p class="text-slate-500 font-semibold">' + esc(tt('myshares.shares', res.shares || 1)) + ' • ' + esc(tt('myshares.method', method)) + '</p>' +
@@ -2040,7 +2317,7 @@ function getReservationStatus(res) {
 
 function handleLaunchPool() {
     if (!currentUser) {
-        showToast('Please sign in first to launch a pool.');
+        showToast(t('toast.signinLaunch'));
         openAuthModal();
         return;
     }
@@ -2068,10 +2345,10 @@ async function handleCreatePool(e) {
         woreda: document.getElementById('item-woreda').value,
         price: Number(document.getElementById('item-price').value),
         retailPrice: document.getElementById('item-retail').value ? Number(document.getElementById('item-retail').value) : undefined,
-        unit: document.getElementById('item-unit').value || '50 kg Bag',
+        unit: document.getElementById('item-unit').value || t('pool.fallbackBag'),
         targetShares: Number(document.getElementById('item-target').value),
-        hubLocation: document.getElementById('item-hub').value || document.getElementById('item-town').value + ' Neighborhood Distribution Hub',
-        organizer: document.getElementById('item-organizer').value || 'Neighborhood Group Coordinator'
+        hubLocation: document.getElementById('item-hub').value || document.getElementById('item-town').value + ' ' + t('pool.fallbackHubSuffix'),
+        organizer: document.getElementById('item-organizer').value || t('pool.fallbackOrganizer')
     };
 
     try {
@@ -2082,9 +2359,9 @@ async function handleCreatePool(e) {
         if (form) form.reset();
         renderCategoryPills();
         renderPools();
-        showToast('New group-buying pool launched successfully!');
+        showToast(t('toast.poolLaunched'));
     } catch (err) {
-        showToast('Error creating pool: ' + err.message, true);
+        showToast(t('toast.poolCreateError') + ': ' + err.message, true);
     }
 }
 
@@ -2206,7 +2483,7 @@ async function handleLogout() {
     currentUser = null;
     updateAuthUI();
     fetchPools();
-    showToast('Signed out successfully.');
+    showToast(t('toast.signedOut'));
 }
 
 function updateAuthUI() {
@@ -2260,7 +2537,7 @@ function formatCountdownLeft(ms) {
     const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
     const s = Math.floor((ms % (1000 * 60)) / 1000);
     if (h >= 48) {
-        return Math.floor(h / 24) + 'd ' + String(Math.floor((h % 24))).padStart(2, '0') + 'h';
+        return Math.floor(h / 24) + t('time.d') + ' ' + String(Math.floor((h % 24))).padStart(2, '0') + t('time.h');
     }
     return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
 }
@@ -2286,8 +2563,8 @@ function sharePool(poolId, event) {
     const pool = pools.find(function (p) { return p.id === String(poolId); });
     if (!pool) return;
     const url = window.location.origin + window.location.pathname + '?pool=' + pool.id;
-    const title = pool.title + ' — ' + fmt(pool.price) + ' ETB';
-    const text = t('card.share') + ': ' + pool.title + ' • ' + localizeTown(pool.town) + ' • ' + fmt(pool.price) + ' ETB';
+    const title = pool.title + ' — ' + fmt(pool.price) + ' ' + currencyUnit();
+    const text = t('card.share') + ': ' + pool.title + ' • ' + localizeTown(pool.town) + ' • ' + fmt(pool.price) + ' ' + currencyUnit();
 
     // Use the native share sheet only on touch/mobile devices. On desktop the
     // OS share dialog is confusing (it can open a blank page), so we show the
@@ -2375,7 +2652,7 @@ function downloadPickupReminder(poolId) {
         'DTSTART:' + fmtIcs(base),
         'DTEND:' + fmtIcs(end),
         'SUMMARY:' + esc(t('success.title')) + ' — ' + pool.title,
-        'DESCRIPTION:' + tt('card.pickup', pool.pickupDate) + ' • ' + (pool.hubLocation || '') + ' • ' + fmt(pool.price) + ' ETB',
+        'DESCRIPTION:' + tt('card.pickup', pool.pickupDate) + ' • ' + (pool.hubLocation || '') + ' • ' + fmt(pool.price) + ' ' + currencyUnit(),
         'LOCATION:' + (pool.hubLocation || localizeTown(pool.town)),
         'END:VEVENT',
         'END:VCALENDAR'
@@ -2463,6 +2740,98 @@ function selectTownFromDropdown(value, e) {
     closeTownDropdowns();
 }
 
+// ---------- Produce Type Dropdown (categorized) ----------
+
+function produceLabel(entry) {
+    return (entry.label && entry.label[appLang]) || (entry.label && entry.label.en) || '';
+}
+
+function renderProduceDropdown() {
+    const btnLabel = document.getElementById('produce-current-label');
+    if (btnLabel) btnLabel.textContent = currentProduce ? produceLabel(currentProduce) : t('pools.allProducts');
+
+    const menu = document.getElementById('produce-dropdown-menu');
+    if (!menu) return;
+
+    let html =
+        '<button type="button" onclick="setProduce(null, event)" class="produce-option w-full flex items-center justify-between px-3 py-2 text-left text-xs font-black ' + (!currentProduce ? 'produce-option-active' : '') + '" role="option" aria-selected="' + (!currentProduce) + '">' +
+            '<span>' + esc(t('pools.allProducts')) + '</span>' +
+            '<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg>' +
+        '</button>' +
+        '<div class="menu-divider mx-3 my-1 border-t"></div>';
+
+    PRODUCE_GROUPS.forEach(function (group) {
+        const groupActive = !currentProduce && currentCategory === group.category && group.category !== null;
+        html +=
+            '<button type="button" onclick="setCategoryGroup(\'' + esc(group.category || '') + '\', event)" class="w-full flex items-center justify-between px-3 pt-2.5 pb-1.5 text-left text-[10px] font-black uppercase tracking-wider text-slate-400 hover:text-emerald-700 transition ' + (groupActive ? 'text-emerald-700' : '') + '">' +
+                '<span>' + esc(produceLabel(group)) + '</span>' +
+                '<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>' +
+            '</button>';
+        group.items.forEach(function (item) {
+            const active = currentProduce && currentProduce.id === item.id;
+            html +=
+                '<button type="button" onclick="setProduce(\'' + item.id + '\', event)" class="produce-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 transition ' + (active ? 'produce-option-active' : '') + '" role="option" aria-selected="' + !!active + '">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0 text-emerald-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2 3 5 4 5 9a5 5 0 01-10 0c0-5 3-6 5-9z"/></svg>' +
+                    '<span>' + esc(produceLabel(item)) + '</span>' +
+                '</button>';
+        });
+        html += '<div class="menu-divider mx-3 my-1 border-t"></div>';
+    });
+
+    menu.innerHTML = html;
+}
+
+function setProduce(id, e) {
+    if (e) e.stopPropagation();
+    if (!id) {
+        currentProduce = null;
+        currentCategory = 'All';
+    } else {
+        for (var i = 0; i < PRODUCE_GROUPS.length; i++) {
+            var group = PRODUCE_GROUPS[i];
+            for (var j = 0; j < group.items.length; j++) {
+                if (group.items[j].id === id) {
+                    currentProduce = group.items[j];
+                    currentCategory = group.category || 'All';
+                    break;
+                }
+            }
+        }
+    }
+    renderProduceDropdown();
+    renderCategoryPills();
+    renderPools();
+    closeProduceDropdown();
+}
+
+function setCategoryGroup(category, e) {
+    if (e) e.stopPropagation();
+    setCategory(category || 'All');
+    closeProduceDropdown();
+}
+
+function toggleProduceDropdown(e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('produce-dropdown-menu');
+    const btn = document.getElementById('produce-dropdown-btn');
+    if (!menu) return;
+    const open = menu.classList.toggle('hidden');
+    if (btn) btn.setAttribute('aria-expanded', String(!open));
+    if (!open) {
+        closeTownDropdowns();
+        const other = document.getElementById('town-dropdown-menu');
+        if (other) other.classList.add('hidden');
+    }
+    renderProduceDropdown();
+}
+
+function closeProduceDropdown() {
+    const menu = document.getElementById('produce-dropdown-menu');
+    const btn = document.getElementById('produce-dropdown-btn');
+    if (menu) menu.classList.add('hidden');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
 // ---------- Scroll FX: progress bar, header state, back-to-top ----------
 
 function initScrollFX() {
@@ -2515,6 +2884,7 @@ function init() {
     applyI18n();
     initCountdown();
     populateTownSelects();
+    renderProduceDropdown();
     initScrollFX();
     initReveals();
 
@@ -2592,6 +2962,11 @@ function init() {
         if (townDDm && townMenum && !townMenum.classList.contains('hidden') && !townDDm.contains(e.target)) {
             closeTownDropdowns();
         }
+        const prodDD = document.getElementById('produce-dropdown');
+        const prodMenu = document.getElementById('produce-dropdown-menu');
+        if (prodDD && prodMenu && !prodMenu.classList.contains('hidden') && !prodDD.contains(e.target)) {
+            closeProduceDropdown();
+        }
     });
 
     document.addEventListener('keydown', function (e) {
@@ -2599,6 +2974,7 @@ function init() {
             closeLangDropdown();
             closeMenuDropdown();
             closeTownDropdowns();
+            closeProduceDropdown();
             closeShareMenu();
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
@@ -2675,6 +3051,7 @@ function closeBulkModal() {
 }
 
 function renderBulkCatalog(grid) {
+    if (!grid) return;
     const items = [
         { name: t('bulk.prodTeff'), unit: t('calc.unitsKg'), wholesale: 96, retail: 144 },
         { name: t('bulk.prodOnions'), unit: t('calc.unitsKg'), wholesale: 54, retail: 88 },
@@ -2685,8 +3062,8 @@ function renderBulkCatalog(grid) {
     grid.innerHTML = items.map(function (it) {
         return '<div class="bg-white border border-slate-200 rounded-xl p-3 text-center space-y-1">' +
             '<h4 class="text-xs font-extrabold text-slate-800">' + esc(it.name) + '</h4>' +
-            '<p class="text-[10px] text-slate-500">' + esc(it.wholesale) + ' ETB/' + esc(it.unit) + '</p>' +
-            '<p class="text-[10px] text-slate-400 line-through">' + esc(it.retail) + ' ETB ' + esc(t('bulk.retailTag')) + '</p>' +
+            '<p class="text-[10px] text-slate-500">' + esc(it.wholesale) + ' ' + currencyUnit() + '/' + esc(it.unit) + '</p>' +
+            '<p class="text-[10px] text-slate-400 line-through">' + esc(it.retail) + ' ' + currencyUnit() + ' ' + esc(t('bulk.retailTag')) + '</p>' +
         '</div>';
     }).join('');
 }
@@ -2712,9 +3089,9 @@ function updateBulkSummary() {
     else card.classList.add('hidden');
     card.innerHTML = '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">' +
         '<div class="flex justify-between font-bold text-slate-700"><span>' + esc(t('bulk.estQty')) + '</span><span>' + qty + ' ' + (produce === 'Oil' ? t('calc.unitsLitres') : t('calc.unitsKg')) + '</span></div>' +
-        '<div class="flex justify-between font-bold text-slate-700"><span>' + esc(t('bulk.estWholesale')) + '</span><span>' + fmt(totalWholesale) + ' ETB</span></div>' +
-        '<div class="flex justify-between font-bold text-slate-400"><span>' + esc(t('bulk.estRetail')) + '</span><span class="line-through">' + fmt(totalRetail) + ' ETB</span></div>' +
-        '<div class="flex justify-between font-black text-emerald-700 border-t border-slate-200 pt-2"><span>' + esc(t('bulk.estSave')) + '</span><span>' + fmt(saved) + ' ETB</span></div>' +
+        '<div class="flex justify-between font-bold text-slate-700"><span>' + esc(t('bulk.estWholesale')) + '</span><span>' + fmt(totalWholesale) + ' ' + currencyUnit() + '</span></div>' +
+        '<div class="flex justify-between font-bold text-slate-400"><span>' + esc(t('bulk.estRetail')) + '</span><span class="line-through">' + fmt(totalRetail) + ' ' + currencyUnit() + '</span></div>' +
+        '<div class="flex justify-between font-black text-emerald-700 border-t border-slate-200 pt-2"><span>' + esc(t('bulk.estSave')) + '</span><span>' + fmt(saved) + ' ' + currencyUnit() + '</span></div>' +
         '<p class="text-[10px] text-slate-400">' + esc(t('bulk.disclaimer')) + '</p>' +
     '</div>';
 }
@@ -2796,5 +3173,9 @@ window.toggleAiFab = toggleAiFab;
 window.toggleLangDropdown = toggleLangDropdown;
 window.toggleTownDropdown = toggleTownDropdown;
 window.selectTownFromDropdown = selectTownFromDropdown;
+window.toggleProduceDropdown = toggleProduceDropdown;
+window.closeProduceDropdown = closeProduceDropdown;
+window.setProduce = setProduce;
+window.setCategoryGroup = setCategoryGroup;
 
 init();

@@ -31,11 +31,11 @@
                 </div>
                 <button onclick="showTab('pools')" class="text-left group focus:outline-none">
                     <h1 class="text-xl font-bold tracking-tight leading-tight">NuroTewedede</h1>
-                    <p class="text-[10px] text-emerald-100 leading-tight">Neighborhood Group Buying Platform</p>
+                    <p class="text-[10px] text-emerald-100 leading-tight" data-i18n="brand.tagline">Neighborhood Group Buying Platform</p>
                 </button>
             </div>
 
-            <button id="mobile-menu-toggle" class="md:hidden relative w-10 h-10 rounded-lg hover:bg-white/10 transition" aria-label="Toggle menu" aria-expanded="false">
+            <button id="mobile-menu-toggle" class="md:hidden relative w-10 h-10 rounded-lg hover:bg-white/10 transition" data-i18n-aria-label="aria.toggleMenu" aria-label="Toggle menu" aria-expanded="false">
                 <svg id="icon-hamburger" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
@@ -52,17 +52,7 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <!-- Town Selector (custom dropdown, options populated by JS) -->
-                <div id="town-dropdown" class="relative hidden sm:block">
-                    <button id="town-dropdown-btn" onclick="toggleTownDropdown('town-dropdown', event)" class="flex items-center gap-1.5 bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-800 transition" aria-haspopup="listbox" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        <span id="town-current-label" class="hidden xl:inline">All Towns / Hubs</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div id="town-dropdown-menu" class="hidden absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50 max-h-80 overflow-y-auto scrollbar-thin" role="listbox"></div>
-                </div>
-
-                <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-white/10 transition" aria-label="Toggle dark mode">
+                <button id="theme-toggle" onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-white/10 transition" data-i18n-aria-label="aria.toggleTheme" aria-label="Toggle dark mode">
                     <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                     </svg>
@@ -73,14 +63,13 @@
 
                 <!-- Language Selector Dropdown -->
                 <div id="lang-dropdown" class="relative hidden sm:block">
-                    <button id="lang-dropdown-btn" onclick="toggleLangDropdown(event)" class="flex items-center gap-1.5 bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-800 transition" aria-haspopup="listbox" aria-expanded="false" aria-label="Select language">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span id="lang-current-label" class="hidden xl:inline">English</span>
+                    <button id="lang-dropdown-btn" onclick="toggleLangDropdown(event)" class="flex items-center gap-1.5 bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-800 transition" aria-haspopup="listbox" aria-expanded="false" data-i18n-aria-label="aria.selectLang" aria-label="Select language">
+                        <span id="lang-current-label">English</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </button>
                     <div id="lang-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50" role="listbox">
                         <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="en" onclick="setLang('en')" role="option">🇬🇧 English</button>
-                        <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="am" onclick="setLang('am')" role="option">🇪🇹 አማርኛ</button>
+                        <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="am" onclick="setLang('am')" role="option">🇪🇹 Amharic</button>
                         <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="om" onclick="setLang('om')" role="option">🇪🇹 Afaan Oromoo</button>
                     </div>
                 </div>
@@ -100,9 +89,6 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="handleLaunchPool()" class="bg-white text-emerald-800 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-emerald-50 transition shadow whitespace-nowrap" data-i18n="nav.launch">
-                    + Launch a Pool
-                </button>
             </div>
         </div>
 
@@ -120,14 +106,6 @@
                 <button onclick="openBulkModal()" class="w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition text-emerald-200" data-i18n="nav.bulk">Bulk &amp; Institutional</button>
             </div>
             <div class="px-4 py-3 border-t border-emerald-700/60 flex flex-wrap items-center justify-between gap-2">
-                <span class="text-xs text-emerald-200 font-semibold" data-i18n="nav.townHub">Town Hub:</span>
-                <div id="town-dropdown-mobile" class="relative">
-                    <button id="town-dropdown-mobile-btn" onclick="toggleTownDropdown('town-dropdown-mobile', event)" class="flex items-center gap-1.5 bg-emerald-900 text-xs font-bold text-white px-2 py-1.5 rounded-lg border border-emerald-700" aria-haspopup="listbox" aria-expanded="false">
-                        <span id="town-current-label-mobile">All Towns / Hubs</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div id="town-dropdown-mobile-menu" class="hidden absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50 max-h-72 overflow-y-auto scrollbar-thin" role="listbox"></div>
-                </div>
                 <div class="flex items-center bg-emerald-900/60 border border-emerald-700 rounded-xl p-0.5 text-xs font-bold w-full sm:w-auto justify-center">
                     <button class="lang-btn px-2 py-1 rounded-lg transition flex-1" data-lang="en" onclick="setLang('en')">EN</button>
                     <button class="lang-btn px-2 py-1 rounded-lg transition flex-1" data-lang="am" onclick="setLang('am')">አም</button>
@@ -141,7 +119,7 @@
     <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
 
         <!-- Live Wholesale Price Ticker (populated by JS from pool data) -->
-        <section id="ticker" class="bg-slate-900 text-emerald-300 border border-slate-800 rounded-xl px-3 py-2.5 overflow-hidden mb-6 shadow-sm" aria-label="Live wholesale price ticker" data-reveal="up">
+        <section id="ticker" class="bg-slate-900 text-emerald-300 border border-slate-800 rounded-xl px-3 py-2.5 overflow-hidden mb-6 shadow-sm" data-i18n-aria-label="aria.ticker" aria-label="Live wholesale price ticker" data-reveal="up">
             <div class="flex items-center gap-3">
                 <span class="shrink-0 bg-emerald-700 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1">
                     <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
@@ -159,12 +137,9 @@
             <!-- Hero Section -->
             <section id="home" class="hero-glow relative isolate overflow-hidden bg-gradient-to-r from-emerald-800 to-teal-700 rounded-2xl p-6 md:p-8 text-white shadow-lg" data-reveal="zoom">
                 <h2 id="hero-title" class="text-3xl font-extrabold mb-2" data-i18n="hero.title">Combat Food Inflation Together</h2>
-                <p class="text-emerald-100 max-w-2xl mb-6 text-sm md:text-base" data-i18n="hero.subtitle">
+                <p class="text-emerald-100 max-w-2xl text-sm md:text-base" data-i18n="hero.subtitle">
                     Connecting regional farming production directly to neighborhood distribution hubs in Ethiopia to secure bulk wholesale prices for local communities.
                 </p>
-
-                <!-- Category Pills Bar (populated by JS) -->
-                <div id="category-pills" class="flex flex-wrap gap-2 items-center"></div>
 
                 <!-- Bulk CTA -->
                 <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -239,6 +214,31 @@
                         </div>
                     </div>
                     <div id="search-status" class="hidden mt-2 text-xs text-slate-500 font-medium"></div>
+                </div>
+
+                <!-- Action Toolbar: Town Filter + Produce Type + Launch CTA (moved from global navbar) -->
+                <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <div id="town-dropdown" class="relative">
+                            <button id="town-dropdown-btn" onclick="toggleTownDropdown('town-dropdown', event)" class="flex items-center gap-1.5 bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-800 transition" aria-haspopup="listbox" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span id="town-current-label" data-i18n="pools.allTowns">All Towns / Hubs</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div id="town-dropdown-menu" class="hidden absolute left-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50 max-h-80 overflow-y-auto scrollbar-thin" role="listbox"></div>
+                        </div>
+                        <div id="produce-dropdown" class="relative">
+                            <button id="produce-dropdown-btn" onclick="toggleProduceDropdown(event)" class="flex items-center gap-1.5 bg-emerald-900/60 border border-emerald-600/60 rounded-xl px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-800 transition" aria-haspopup="listbox" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2 3 5 4 5 9a5 5 0 01-10 0c0-5 3-6 5-9z"/></svg>
+                                <span id="produce-current-label" data-i18n="pools.allProducts">All Products</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div id="produce-dropdown-menu" class="hidden absolute left-0 mt-2 w-72 sm:w-80 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50 max-h-[26rem] overflow-y-auto overscroll-contain scrollbar-thin" role="listbox"></div>
+                        </div>
+                    </div>
+                    <button onclick="handleLaunchPool()" class="bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow whitespace-nowrap" data-i18n="nav.launch">
+                        + Launch a Pool
+                    </button>
                 </div>
 
                 <div id="pools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -443,13 +443,13 @@
                         <span class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 px-3 py-1 rounded-full text-xs font-bold uppercase" data-i18n="calc.impact">Calculated Impact</span>
                         <div>
                             <p class="text-xs text-emerald-200/80 font-bold uppercase tracking-wider" data-i18n="calc.monthlySavings">Estimated Monthly Savings</p>
-                            <p class="text-3xl sm:text-4xl font-black text-white mt-1"><span id="calc-monthly-savings">0</span> <span class="text-lg font-bold text-emerald-300">ETB</span></p>
+                            <p class="text-3xl sm:text-4xl font-black text-white mt-1"><span id="calc-monthly-savings">0</span> <span class="text-lg font-bold text-emerald-300" data-currency-unit>ETB</span></p>
                             <p class="text-xs text-emerald-300 font-bold mt-1" id="calc-save-percent-line">Save <span id="calc-save-percent">0</span>% compared to market retail!</p>
                         </div>
                         <div class="pt-4 border-t border-emerald-800/80 space-y-2 text-xs">
-                            <div class="flex justify-between"><span class="text-emerald-200/70" data-i18n="calc.retail">Local Retail Expense:</span><span class="font-bold text-slate-300 line-through"><span id="calc-retail">0</span> ETB</span></div>
-                            <div class="flex justify-between"><span class="text-emerald-200/70" data-i18n="calc.wholesale">NuroTewedede Group Cost:</span><span class="font-bold text-emerald-300"><span id="calc-wholesale">0</span> ETB</span></div>
-                            <div class="flex justify-between pt-2 border-t border-emerald-800/60 text-sm font-extrabold text-amber-300"><span data-i18n="calc.annual">Annual Household Savings:</span><span><span id="calc-annual">0</span> ETB / year</span></div>
+                            <div class="flex justify-between"><span class="text-emerald-200/70" data-i18n="calc.retail">Local Retail Expense:</span><span class="font-bold text-slate-300 line-through"><span id="calc-retail">0</span> <span data-currency-unit>ETB</span></span></div>
+                            <div class="flex justify-between"><span class="text-emerald-200/70" data-i18n="calc.wholesale">NuroTewedede Group Cost:</span><span class="font-bold text-emerald-300"><span id="calc-wholesale">0</span> <span data-currency-unit>ETB</span></span></div>
+                            <div class="flex justify-between pt-2 border-t border-emerald-800/60 text-sm font-extrabold text-amber-300"><span data-i18n="calc.annual">Annual Household Savings:</span><span><span id="calc-annual">0</span> <span data-currency-unit>ETB</span> <span data-i18n="calc.year">/ year</span></span></div>
                         </div>
                         <div class="bg-white/10 p-3 rounded-2xl border border-white/10 text-[11px] text-emerald-100/90 leading-relaxed" data-i18n="calc.note">
                             By locking bulk orders with 10–20 neighborhood families, transport costs from farming woredas are divided equally, cutting out speculator markups.
@@ -478,12 +478,12 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h2 class="text-base font-black text-white flex items-center gap-2">NuroAI Assistant
+                    <h2 class="text-base font-black text-white flex items-center gap-2"><span data-i18n="ai.title">NuroAI Assistant</span>
                         <span class="inline-flex items-center gap-1 bg-white/15 text-emerald-100 text-[10px] font-bold px-2 py-0.5 rounded-full">Gemini 3.6 Flash</span>
                     </h2>
                     <p class="text-[11px] text-emerald-100 truncate" data-i18n="ai.subtitle">Direct Woreda Sourcing, Storage Guidelines, &amp; Group Buying Calculations</p>
                 </div>
-                <button onclick="toggleAiFab()" class="text-white/70 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition shrink-0" aria-label="Close NuroAI Assistant">
+                <button onclick="toggleAiFab()" class="text-white/70 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition shrink-0" data-i18n-aria-label="aria.closeAi" aria-label="Close NuroAI Assistant">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -526,14 +526,14 @@
                             <rect width="100%" height="100%" fill="url(#grid)" />
                         </svg>
                         <div class="relative z-10 flex justify-between items-center text-xs font-bold text-slate-300 bg-slate-900/80 backdrop-blur-md p-3 rounded-2xl border border-slate-800">
-                            <span class="flex items-center gap-1.5 text-emerald-400">Live Corridor Tracking: Ethiopia</span>
-                            <span>Hub: <span id="hub-town">Addis Ababa</span></span>
+                            <span class="flex items-center gap-1.5 text-emerald-400" data-i18n="hubs.live">Live Corridor Tracking: Ethiopia</span>
+                            <span><span data-i18n="hubs.hubLabel">Hub:</span> <span id="hub-town">Addis Ababa</span></span>
                         </div>
                         <div id="hub-map-nodes" class="relative z-10 w-full h-full"></div>
                         <div class="relative z-10 bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl border border-slate-800 flex items-center justify-between text-xs text-slate-300">
                             <div class="flex items-center gap-2">
                                 <span class="animate-bounce">🚚</span>
-                                <span>Primary Sourcing Unions: <strong id="hub-woredas" class="text-white"></strong></span>
+                                <span><span data-i18n="hubs.sourcingUnions">Primary Sourcing Unions:</span> <strong id="hub-woredas" class="text-white"></strong></span>
                             </div>
                         </div>
                     </div>
@@ -541,11 +541,11 @@
                         <h4 id="hub-name" class="text-sm font-extrabold text-slate-900"></h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
                             <div>
-                                <span class="text-slate-400 font-bold block">Hub Address:</span>
+                                <span class="text-slate-400 font-bold block" data-i18n="hubs.address">Hub Address:</span>
                                 <p id="hub-address" class="font-semibold text-slate-800"></p>
                             </div>
                             <div>
-                                <span class="text-slate-400 font-bold block">Direct Woreda Links:</span>
+                                <span class="text-slate-400 font-bold block" data-i18n="hubs.directLinks">Direct Woreda Links:</span>
                                 <p id="hub-origins" class="font-semibold text-emerald-700"></p>
                             </div>
                         </div>
@@ -649,7 +649,7 @@
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh] glass">
             <div class="flex justify-between items-center mb-1">
                 <h3 class="text-xl font-bold text-slate-800" data-i18n="bulk.title">Bulk &amp; Institutional Purchase</h3>
-                <button onclick="closeBulkModal()" class="text-slate-400 hover:text-slate-600 transition" aria-label="Close modal">
+                <button onclick="closeBulkModal()" class="text-slate-400 hover:text-slate-600 transition" data-i18n-aria-label="aria.closeModal" aria-label="Close modal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -685,11 +685,11 @@
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="bulk.produce">Primary Produce Needed</label>
                     <select id="bulk-produce" onchange="updateBulkSummary()" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
-                        <option value="Teff">White Teff (Gojjam)</option>
-                        <option value="Onions">Red Onions (Ziway)</option>
-                        <option value="Coffee">Raw Coffee Beans (Sidama)</option>
-                        <option value="Oil">Sunflower Cooking Oil</option>
-                        <option value="Lentils">Red Lentils (Misir)</option>
+                        <option value="Teff" data-i18n="calc.item1">White Teff (Gojjam)</option>
+                        <option value="Onions" data-i18n="calc.item2">Red Onions (Ziway)</option>
+                        <option value="Coffee" data-i18n="calc.item3">Raw Coffee Beans (Sidama)</option>
+                        <option value="Oil" data-i18n="calc.item4">Sunflower Cooking Oil</option>
+                        <option value="Lentils" data-i18n="calc.item5">Red Lentils (Misir)</option>
                     </select>
                 </div>
                 <div>
@@ -727,7 +727,7 @@
     <!-- Share Pool Modal -->
     <div id="share-menu" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative glass">
-            <button type="button" onclick="closeShareMenu()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="Close">
+            <button type="button" onclick="closeShareMenu()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" data-i18n-aria-label="aria.close" aria-label="Close">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
             <div class="space-y-4">
@@ -758,7 +758,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative glass">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="auth-modal-title" class="text-xl font-bold text-slate-800" data-i18n="auth.signin">Sign In</h3>
-                <button id="close-auth-modal" class="text-slate-400 hover:text-slate-600 transition" aria-label="Close modal">
+                <button id="close-auth-modal" class="text-slate-400 hover:text-slate-600 transition" data-i18n-aria-label="aria.closeModal" aria-label="Close modal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -797,7 +797,7 @@
     <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-emerald-900 text-white border border-emerald-700 px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold"></div>
 
     <!-- Floating NuroAI Assistant Launcher -->
-    <button id="ai-fab" onclick="toggleAiFab()" aria-label="Open NuroAI Assistant" class="ai-fab">
+    <button id="ai-fab" onclick="toggleAiFab()" data-i18n-aria-label="aria.openAi" aria-label="Open NuroAI Assistant" class="ai-fab">
         <span class="ai-fab-pulse"></span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         <span class="ai-fab-label">NuroAI</span>
@@ -815,7 +815,7 @@
     </footer>
 
     <!-- Back to top -->
-    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <button id="back-to-top" class="back-to-top" data-i18n-aria-label="aria.backToTop" aria-label="Back to top">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
     </button>
 
