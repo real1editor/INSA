@@ -2289,23 +2289,33 @@ function sharePool(poolId, event) {
     const title = pool.title + ' — ' + fmt(pool.price) + ' ETB';
     const text = t('card.share') + ': ' + pool.title + ' • ' + localizeTown(pool.town) + ' • ' + fmt(pool.price) + ' ETB';
 
-    if (navigator.share) {
-        navigator.share({ title: title, text: text, url: url })
-            .catch(function () { /* user cancelled */ });
+    // Use the native share sheet only on touch/mobile devices. On desktop the
+    // OS share dialog is confusing (it can open a blank page), so we show the
+    // in-app Telegram / WhatsApp / Copy menu instead.
+    const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    if (coarsePointer && navigator.share) {
+        if (navigator.canShare && !navigator.canShare({ title: title, text: text, url: url })) {
+            openShareMenu(pool, url, title, text);
+            return;
+        }
+        navigator.share({ title: title, text: text, url: url }).catch(function () { /* user cancelled */ });
         return;
     }
 
+    openShareMenu(pool, url, title, text);
+}
+
+function openShareMenu(pool, url, title, text) {
     const menu = document.getElementById('share-menu');
-    if (menu) {
-        menu.classList.remove('hidden');
-        menu.classList.add('flex');
-        menu.querySelector('[data-share-title]').textContent = pool.title;
-        menu.querySelector('[data-share-telegram]').setAttribute('href',
-            'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text));
-        menu.querySelector('[data-share-whatsapp]').setAttribute('href',
-            'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url));
-        menu.querySelector('[data-share-copy]').setAttribute('data-copy-url', url);
-    }
+    if (!menu) return;
+    menu.classList.remove('hidden');
+    menu.classList.add('flex');
+    menu.querySelector('[data-share-title]').textContent = pool.title;
+    menu.querySelector('[data-share-telegram]').setAttribute('href',
+        'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text));
+    menu.querySelector('[data-share-whatsapp]').setAttribute('href',
+        'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url));
+    menu.querySelector('[data-share-copy]').setAttribute('data-copy-url', url);
 }
 
 function closeShareMenu() {
