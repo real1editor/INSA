@@ -488,6 +488,37 @@ input[type="range"]::-webkit-slider-thumb {
     color: #ffffff;
 }
 
+/* ===== Auth modal role picker ===== */
+.auth-role-btn {
+    border-color: #e2e8f0;
+    color: #334155;
+    cursor: pointer;
+}
+.auth-role-btn:hover {
+    border-color: #a7f3d0;
+    background-color: #f0fdf4;
+}
+.auth-role-btn[data-selected="true"] {
+    border-color: #059669;
+    background-color: #ecfdf5;
+    color: #065f46;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+}
+[data-theme="dark"] .auth-role-btn {
+    border-color: #475569;
+    color: #e2e8f0;
+    background-color: #1e293b;
+}
+[data-theme="dark"] .auth-role-btn:hover {
+    border-color: #34d399;
+    background-color: #022c22;
+}
+[data-theme="dark"] .auth-role-btn[data-selected="true"] {
+    border-color: #10b981;
+    background-color: #064e3b;
+    color: #d1fae5;
+}
+
 /* ===== Live price ticker marquee ===== */
 @keyframes ticker-scroll {
     from {

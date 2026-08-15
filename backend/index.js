@@ -42,22 +42,32 @@ async function requireAuth(req, res, next) {
     }
 
     req.user = user;
-    // Attach the public profile (name/username) if one exists.
+    // Attach the public profile (name/username/role) if one exists.
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('name, username')
+        .select('name, username, role')
         .eq('id', user.id)
         .maybeSingle();
       if (profile) {
         req.user.name = profile.name;
         req.user.username = profile.username;
+        req.user.role = profile.role || 'buyer';
       }
     } catch (_) { /* profiles table may not exist yet */ }
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Authentication failed: ' + err.message });
   }
+}
+
+// Restrict a route to verified seller accounts. Must be chained AFTER requireAuth
+// so req.user (with its attached role) is already populated.
+function requireSeller(req, res, next) {
+  if (!req.user || req.user.role !== 'seller') {
+    return res.status(403).json({ error: 'Seller account required. Please sign in as a Seller to access this feature.' });
+  }
+  next();
 }
 
 // Create a Supabase client bound to the request's user session, so RLS
@@ -79,11 +89,12 @@ function likesNotEnabled(res) {
 
 // Sign Up
 app.post('/api/auth/signup', async (req, res) => {
-  const { email, password, name, username } = req.body;
+  const { email, password, name, username, role } = req.body;
 
   const normalizedEmail = String(email || '').trim().toLowerCase();
   const normalizedUsername = String(username || '').trim().toLowerCase().replace(/^@/, '');
   const displayName = String(name || '').trim();
+  const userRole = ['buyer', 'seller'].includes(role) ? role : 'buyer';
 
   if (!normalizedEmail || !password) {
     return res.status(400).json({ error: 'Email and password are required.' });
@@ -109,7 +120,7 @@ app.post('/api/auth/signup', async (req, res) => {
     email: normalizedEmail,
     password,
     options: {
-      data: { name: displayName, username: normalizedUsername }
+      data: { name: displayName, username: normalizedUsername, role: userRole }
     }
   });
 
@@ -124,7 +135,8 @@ app.post('/api/auth/signup', async (req, res) => {
         id: data.user.id,
         email: normalizedEmail,
         name: displayName,
-        username: normalizedUsername
+        username: normalizedUsername,
+        role: userRole
       }]);
     if (profileError && !/does not exist|could not find|schema cache/i.test(profileError.message)) {
       if (/duplicate|unique|already/i.test(profileError.message)) {
@@ -144,7 +156,7 @@ app.post('/api/auth/signup', async (req, res) => {
 
   res.json({
     message: 'User registered successfully',
-    user: { ...data.user, name: displayName, username: normalizedUsername },
+    user: { ...data.user, name: displayName, username: normalizedUsername, role: userRole },
     session: data.session
   });
 });
@@ -167,7 +179,7 @@ app.get('/api/health', async (req, res) => {
 
 // Sign In (with email OR username)
 app.post('/api/auth/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
   const identifier = String(email || '').trim();
   if (!identifier || !password) {
     return res.status(400).json({ error: 'Email/username and password are required.' });
@@ -194,15 +206,27 @@ app.post('/api/auth/login', async (req, res) => {
 
   if (error) return res.status(400).json({ error: error.message });
 
-  // Attach the public profile (name/username) to the returned user.
+  // Attach the public profile (name/username/role) to the returned user.
   let profile = null;
   if (data.user) {
     const { data: prof } = await supabase
       .from('profiles')
-      .select('name, username')
+      .select('name, username, role')
       .eq('id', data.user.id)
       .maybeSingle();
     if (prof) profile = prof;
+
+    // The user picked a portal at sign-in ("Continue as Buyer/Seller").
+    // Honor that choice by updating their stored role so routing is consistent
+    // across sessions and devices.
+    const selectedRole = ['buyer', 'seller'].includes(role) ? role : null;
+    if (selectedRole && profile && profile.role !== selectedRole) {
+      await supabase
+        .from('profiles')
+        .update({ role: selectedRole })
+        .eq('id', data.user.id);
+      profile.role = selectedRole;
+    }
   }
 
   // Set secure cookie for session
@@ -226,7 +250,7 @@ app.get('/api/auth/me', async (req, res) => {
   let profile = null;
   const { data: prof } = await supabase
     .from('profiles')
-    .select('name, username')
+    .select('name, username, role')
     .eq('id', user.id)
     .maybeSingle();
   if (prof) profile = prof;
@@ -238,6 +262,221 @@ app.get('/api/auth/me', async (req, res) => {
 app.post('/api/auth/logout', (req, res) => {
   res.clearCookie('sb-access-token');
   res.json({ message: 'Signed out successfully' });
+});
+
+// ==================== MARKETPLACE / SUPPLY ROUTES ====================
+
+const PRODUCT_STATUSES = ['active', 'draft', 'sold', 'inactive'];
+const PRODUCT_VOLUME_UNITS = ['quintal', 'kg', 'mt'];
+const PRODUCT_PRICING_MODELS = ['fixed', 'negotiable'];
+
+// Get All Active Product Listings (public marketplace).
+// Optional filters: ?crop= , ?town= , ?search=
+app.get('/api/products', async (req, res) => {
+  const { crop, town, search } = req.query;
+
+  let query = supabase
+    .from('products')
+    .select('*')
+    .eq('status', 'active');
+
+  if (crop && crop !== 'All') query = query.eq('crop_type', crop);
+  if (town && town !== 'All') query = query.eq('origin_town', town);
+  query = query.order('created_at', { ascending: false });
+
+  const { data, error } = await query;
+  if (error) {
+    if (/does not exist|could not find|schema cache/i.test(error.message)) {
+      return res.status(503).json({ error: 'The products table has not been created yet. Run backend/migrations.sql in your Supabase SQL editor first.' });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+
+  let products = data || [];
+  if (search && typeof search === 'string' && search.trim()) {
+    const q = search.toLowerCase();
+    products = products.filter(p =>
+      String(p.crop_type || '').toLowerCase().includes(q) ||
+      String(p.variety || '').toLowerCase().includes(q) ||
+      String(p.origin_region || '').toLowerCase().includes(q) ||
+      String(p.origin_zone || '').toLowerCase().includes(q) ||
+      String(p.origin_town || '').toLowerCase().includes(q) ||
+      String(p.seller_name || '').toLowerCase().includes(q)
+    );
+  }
+
+  res.json({ products });
+});
+
+// Get the signed-in seller's own listings (any status).
+app.get('/api/products/mine', requireAuth, requireSeller, async (req, res) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('seller_id', req.user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    if (/does not exist|could not find|schema cache/i.test(error.message)) {
+      return res.status(503).json({ error: 'The products table has not been created yet. Run backend/migrations.sql in your Supabase SQL editor first.' });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+  res.json({ products: data || [] });
+});
+
+// Get a single listing (public).
+app.get('/api/products/:id', async (req, res) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', Number(req.params.id))
+    .maybeSingle();
+  if (error) {
+    if (/does not exist|could not find|schema cache/i.test(error.message)) {
+      return res.status(503).json({ error: 'The products table has not been created yet. Run backend/migrations.sql in your Supabase SQL editor first.' });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+  if (!data) return res.status(404).json({ error: 'Listing not found.' });
+  res.json({ product: data });
+});
+
+// Create a Listing ("+ List Your Harvest") — seller only.
+app.post('/api/products', requireAuth, requireSeller, async (req, res) => {
+  const {
+    cropType, variety, grade, moistureContent, cleanliness, harvestYear,
+    volume, volumeUnit, minOrderLot, minOrderUnit,
+    pricingModel, pricePerUnit,
+    originRegion, originZone, originTown,
+    availabilityFrom, availabilityTo, photos, description
+  } = req.body;
+
+  if (!cropType || !volume || !pricePerUnit) {
+    return res.status(400).json({ error: 'Crop type, volume and price per unit are required.' });
+  }
+
+  const unit = PRODUCT_VOLUME_UNITS.includes(volumeUnit) ? volumeUnit : 'quintal';
+  const minUnit = PRODUCT_VOLUME_UNITS.includes(minOrderUnit) ? minOrderUnit : unit;
+  const model = PRODUCT_PRICING_MODELS.includes(pricingModel) ? pricingModel : 'fixed';
+
+  const insertPayload = {
+    seller_id: req.user.id,
+    seller_name: req.user.name || req.user.username || 'Seller',
+    crop_type: cropType,
+    variety: String(variety || ''),
+    grade: String(grade || ''),
+    moisture_content: moistureContent != null && moistureContent !== '' ? Number(moistureContent) : null,
+    cleanliness: cleanliness != null && cleanliness !== '' ? Number(cleanliness) : null,
+    harvest_year: String(harvestYear || ''),
+    volume: Number(volume) || 0,
+    volume_unit: unit,
+    min_order_lot: Number(minOrderLot) || 0,
+    min_order_unit: minUnit,
+    pricing_model: model,
+    price_per_unit: Number(pricePerUnit) || 0,
+    currency: 'ETB',
+    origin_region: String(originRegion || ''),
+    origin_zone: String(originZone || ''),
+    origin_town: String(originTown || ''),
+    availability_from: availabilityFrom || null,
+    availability_to: availabilityTo || null,
+    photos: Array.isArray(photos) ? photos : [],
+    description: String(description || ''),
+    status: 'active'
+  };
+
+  const { data, error } = await supabase
+    .from('products')
+    .insert([insertPayload])
+    .select()
+    .single();
+
+  if (error) {
+    if (/does not exist|could not find|schema cache/i.test(error.message)) {
+      return res.status(503).json({ error: 'The products table has not been created yet. Run backend/migrations.sql in your Supabase SQL editor first.' });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.status(201).json({ message: 'Listing published', product: data });
+});
+
+// Update a Listing — seller owns it.
+app.put('/api/products/:id', requireAuth, requireSeller, async (req, res) => {
+  const { data: existing, error: fetchError } = await supabase
+    .from('products')
+    .select('seller_id')
+    .eq('id', Number(req.params.id))
+    .maybeSingle();
+  if (fetchError) return res.status(500).json({ error: fetchError.message });
+  if (!existing) return res.status(404).json({ error: 'Listing not found.' });
+  if (existing.seller_id !== req.user.id) {
+    return res.status(403).json({ error: 'You can only edit your own listings.' });
+  }
+
+  const allowed = {
+    crop_type: 'cropType',
+    variety: 'variety',
+    grade: 'grade',
+    harvest_year: 'harvestYear',
+    volume: 'volume',
+    volume_unit: 'volumeUnit',
+    min_order_lot: 'minOrderLot',
+    min_order_unit: 'minOrderUnit',
+    pricing_model: 'pricingModel',
+    price_per_unit: 'pricePerUnit',
+    origin_region: 'originRegion',
+    origin_zone: 'originZone',
+    origin_town: 'originTown',
+    availability_from: 'availabilityFrom',
+    availability_to: 'availabilityTo',
+    photos: 'photos',
+    description: 'description',
+    status: 'status'
+  };
+
+  const updates = {};
+  for (const [dbKey, bodyKey] of Object.entries(allowed)) {
+    if (req.body[bodyKey] !== undefined) {
+      let value = req.body[bodyKey];
+      if (['volume', 'min_order_lot', 'price_per_unit'].includes(dbKey)) value = Number(value) || 0;
+      if (dbKey === 'status' && !PRODUCT_STATUSES.includes(value)) value = 'active';
+      updates[dbKey] = value;
+    }
+  }
+
+  const { data, error } = await supabase
+    .from('products')
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq('id', Number(req.params.id))
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ message: 'Listing updated', product: data });
+});
+
+// Delete a Listing — seller owns it.
+app.delete('/api/products/:id', requireAuth, requireSeller, async (req, res) => {
+  const { data: existing, error: fetchError } = await supabase
+    .from('products')
+    .select('seller_id')
+    .eq('id', Number(req.params.id))
+    .maybeSingle();
+  if (fetchError) return res.status(500).json({ error: fetchError.message });
+  if (!existing) return res.status(404).json({ error: 'Listing not found.' });
+  if (existing.seller_id !== req.user.id) {
+    return res.status(403).json({ error: 'You can only delete your own listings.' });
+  }
+
+  const { error } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', Number(req.params.id));
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.json({ message: 'Listing deleted' });
 });
 
 // ==================== POOL ROUTES ====================

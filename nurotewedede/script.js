@@ -32,6 +32,14 @@ const ETHIOPIAN_TOWNS = [
 let reserveState = { pool: null, shares: 1, payment: 'telebirr' };
 let detailsState = { pool: null, comments: [] };
 
+// ---------- Dual-sided marketplace state ----------
+let currentRole = 'buyer';            // authoritative role from the server profile
+let authRole = 'buyer';               // role selected in the auth modal
+let myProducts = [];
+let marketProducts = [];
+let editingProductId = null;
+let harvestPhotoData = [];            // uploaded/base64 photos pending submit
+
 let calcQuantities = {};
 let calcFamilySize = 4;
 let selectedHubId = 'hub-addis';
@@ -435,7 +443,64 @@ const I18N = {
         'myshares.signinBtn': 'Sign In', 'myshares.emptyTitle': 'You haven\'t reserved any pool shares yet.',
         'myshares.viewVoucher': 'View Voucher',
         'bulk.notesPh': 'e.g. Special delivery instructions, quality preferences, or preferred contact time.',
-        'voucher.qrAlt': 'QR voucher'
+        'voucher.qrAlt': 'QR voucher',
+        'nav.marketplace': 'Marketplace', 'nav.sellerDashboard': 'Seller Dashboard',
+        'auth.roleLabel': 'Continue as',
+        'auth.roleBuyer': 'Buyer', 'auth.roleBuyerSub': 'Join pools & reserve shares',
+        'auth.roleSeller': 'Seller', 'auth.roleSellerSub': 'List your harvest',
+        'unit.quintal': 'Quintal (100 kg)', 'unit.kg': 'Kilograms (kg)', 'unit.mt': 'Metric Ton (1000 kg)',
+        'market.badge': 'Farmer Supply Marketplace',
+        'market.title': 'Buy Directly From Sellers',
+        'market.subtitle': 'Browse verified harvest listings from farmers and cooperatives across Ethiopia, with wholesale volume pricing.',
+        'market.sellCta': '+ Sell Your Harvest',
+        'market.search': 'Search crop, variety, region or seller...',
+        'market.allCrops': 'All Crops', 'market.allTowns': 'All Towns',
+        'market.empty': 'No harvest listings match your filters yet.',
+        'market.beFirst': 'Be the first seller to list here',
+        'market.contactCta': 'View Details',
+        'market.pricingFixed': 'Fixed Price', 'market.pricingNegotiable': 'Price Negotiable',
+        'market.by': 'Listed by', 'market.minLot': 'Min. order',
+        'seller.badge': 'Seller Portal',
+        'seller.title': 'Your Harvest, Your Marketplace',
+        'seller.subtitle': 'Publish quality-graded supply listings and connect directly with neighborhood buyers.',
+        'seller.listCta': '+ List Your Harvest',
+        'seller.empty': 'You haven\'t listed any harvest yet.',
+        'seller.emptyCta': 'List your first harvest',
+        'seller.statsListings': 'Total Listings', 'seller.statsVolume': 'Total Volume', 'seller.statsActive': 'Active Listings',
+        'seller.statusActive': 'Active', 'seller.statusSold': 'Sold', 'seller.statusDraft': 'Draft', 'seller.statusInactive': 'Inactive',
+        'seller.edit': 'Edit', 'seller.delete': 'Delete', 'seller.view': 'View',
+        'seller.available': 'Available', 'seller.volume': 'Volume',
+        'seller.published': 'Published', 'seller.listedOn': 'Listed on',
+        'harvest.title': 'List Your Harvest', 'harvest.editTitle': 'Edit Listing',
+        'harvest.subtitle': 'Publish your supply listing — quality, volume, pricing and origin. Buyers in the marketplace will see it instantly.',
+        'harvest.crop': 'Crop / Produce',
+        'harvest.variety': 'Variety', 'harvest.varietyPh': 'e.g. White Gojjam',
+        'harvest.year': 'Harvest Year', 'harvest.yearPh': 'e.g. 2026',
+        'harvest.quality': 'Quality / Grade',
+        'harvest.gradePh': 'e.g. Grade 1', 'harvest.moisture': 'Moisture %', 'harvest.cleanliness': 'Cleanliness %',
+        'harvest.volume': 'Total Volume', 'harvest.volumePh': 'e.g. 50',
+        'harvest.volumeUnit': 'Unit', 'harvest.unitQuintal': 'Quintal (100 kg)', 'harvest.unitKg': 'Kilograms (kg)', 'harvest.unitMt': 'Metric Ton (1000 kg)',
+        'harvest.minLot': 'Min. Order Lot', 'harvest.minLotPh': 'e.g. 1',
+        'harvest.minLotUnit': 'Lot Unit',
+        'harvest.pricing': 'Pricing Model', 'harvest.pricingFixed': 'Fixed Price (ETB)', 'harvest.pricingNegotiable': 'Negotiable',
+        'harvest.pricePerUnit': 'Price per Lot (ETB)', 'harvest.pricePh': 'e.g. 4500',
+        'harvest.origin': 'Origin Location', 'harvest.regionPh': 'Region', 'harvest.zonePh': 'Zone',
+        'harvest.availableFrom': 'Available From', 'harvest.availableTo': 'Available Until',
+        'harvest.photos': 'Product Photos', 'harvest.photoUrlPh': 'https://... (optional)',
+        'harvest.upload': 'Upload from device',
+        'harvest.desc': 'Description (optional)', 'harvest.descPh': 'e.g. Cleaned, dried and ready for pickup at the woreda warehouse.',
+        'harvest.submit': 'Publish Listing', 'harvest.submitEdit': 'Save Changes',
+        'product.origin': 'Origin', 'product.quality': 'Quality', 'product.details': 'Listing Details',
+        'product.volume': 'Total Volume', 'product.minLot': 'Min. Order Lot',
+        'product.price': 'Price', 'product.available': 'Availability',
+        'product.seller': 'Seller', 'product.desc': 'Description',
+        'product.year': 'Harvest Year', 'product.moisture': 'Moisture', 'product.cleanliness': 'Cleanliness', 'product.grade': 'Grade',
+        'product.close': 'Close', 'product.noDesc': 'No description provided.', 'product.flexible': 'Flexible schedule',
+        'toast.productPublished': 'Your harvest listing is now live in the marketplace!',
+        'toast.productUpdated': 'Listing updated successfully.',
+        'toast.productDeleted': 'Listing deleted.',
+        'toast.sellerOnly': 'Please sign in as a Seller to list your harvest.',
+        'toast.switchToSeller': 'Please choose Seller to access the seller portal.'
     },
     am: {
         'nav.pools': 'ንቁ ግዢዎች', 'nav.calculator': 'የቁጠባ ካልኩሌተር',
@@ -646,7 +711,64 @@ const I18N = {
         'myshares.signinBtn': 'ግባ', 'myshares.emptyTitle': 'እስካሁን የቡድን ግዢ አክሲዮን አላስያዙም።',
         'myshares.viewVoucher': 'ቫውቸር ይመልከቱ',
         'bulk.notesPh': 'ለምሳሌ ልዩ የመላኪያ መመሪያዎች፣ የጥራት ምርጫዎች ወይም የሚመርጡት የመገናኛ ሰዓት።',
-        'voucher.qrAlt': 'የQR ቫውቸር'
+        'voucher.qrAlt': 'የQR ቫውቸር',
+        'nav.marketplace': 'የገበያ ቦታ', 'nav.sellerDashboard': 'የሻጭ ዳሽቦርድ',
+        'auth.roleLabel': 'ቀጥል እንደ',
+        'auth.roleBuyer': 'ገዢ', 'auth.roleBuyerSub': 'የግዢ ቡድኖችን ይቀላቀሉ',
+        'auth.roleSeller': 'ሻጭ', 'auth.roleSellerSub': 'ምርትዎን ይዘርዝሩ',
+        'unit.quintal': 'ኩንታል (100 ኪግ)', 'unit.kg': 'ኪሎግራም (ኪግ)', 'unit.mt': 'ሜትሪክ ቶን (1000 ኪግ)',
+        'market.badge': 'የገበሬዎች አቅርቦት ገበያ',
+        'market.title': 'በቀጥታ ከሻጮች ይግዙ',
+        'market.subtitle': 'በመላ ኢትዮጵያ ከገበሬዎች እና ከህብረት ስራ ማህበራት የተረጋገጡ የአቅርቦት ዝርዝሮችን በጅምላ ዋጋ ያስሱ።',
+        'market.sellCta': '+ ምርትዎን ይሽጡ',
+        'market.search': 'ምርት፣ ዝርያ፣ ክልል ወይም ሻጭ ይፈልጉ...',
+        'market.allCrops': 'ሁሉም ሰብሎች', 'market.allTowns': 'ሁሉም ከተሞች',
+        'market.empty': 'ከማጣሪያዎ ጋር የሚዛመድ የአቅርቦት ዝርዝር እስካሁን የለም።',
+        'market.beFirst': 'እዚህ ለመዘርዘር የመጀመሪያው ሻጭ ይሁኑ',
+        'market.contactCta': 'ዝርዝሮችን ይመልከቱ',
+        'market.pricingFixed': 'ቋሚ ዋጋ', 'market.pricingNegotiable': 'ድርድር ይቻላል',
+        'market.by': 'የተዘረዘረው በ', 'market.minLot': 'ዝቅተኛ ትዕዛዝ',
+        'seller.badge': 'የሻጭ መግቢያ',
+        'seller.title': 'ምርትዎ፣ ገበያዎ',
+        'seller.subtitle': 'በጥራት የተፈተኑ የአቅርቦት ዝርዝሮችን ያትሙ እና ከሰፈር ገዢዎች ጋር ይገናኙ።',
+        'seller.listCta': '+ ምርትዎን ይዘርዝሩ',
+        'seller.empty': 'እስካሁን ምርት አልዘረዘሩም።',
+        'seller.emptyCta': 'የመጀመሪያ ምርትዎን ይዘርዝሩ',
+        'seller.statsListings': 'ጠቅላላ ዝርዝሮች', 'seller.statsVolume': 'ጠቅላላ መጠን', 'seller.statsActive': 'ንቁ ዝርዝሮች',
+        'seller.statusActive': 'ንቁ', 'seller.statusSold': 'የተሸጠ', 'seller.statusDraft': 'ረቂቅ', 'seller.statusInactive': 'የማይሰራ',
+        'seller.edit': 'አርትዕ', 'seller.delete': 'ሰርዝ', 'seller.view': 'ይመልከቱ',
+        'seller.available': 'ይገኛል', 'seller.volume': 'መጠን',
+        'seller.published': 'የታተመ', 'seller.listedOn': 'የተዘረዘረው በ',
+        'harvest.title': 'ምርትዎን ይዘርዝሩ', 'harvest.editTitle': 'ዝርዝሩን አርትዕ',
+        'harvest.subtitle': 'የአቅርቦት ዝርዝርዎን ያትሙ — ጥራት፣ መጠን፣ ዋጋ እና አመጣጥ። ገዢዎች በገበያው ውስጥ ወዲያውኑ ያዩታል።',
+        'harvest.crop': 'ሰብል / ምርት',
+        'harvest.variety': 'ዝርያ', 'harvest.varietyPh': 'ለምሳሌ ነጭ ጎጃም',
+        'harvest.year': 'የመኸር ዓመት', 'harvest.yearPh': 'ለምሳሌ 2026',
+        'harvest.quality': 'ጥራት / ደረጃ',
+        'harvest.gradePh': 'ለምሳሌ ደረጃ 1', 'harvest.moisture': 'የእርጥበት %', 'harvest.cleanliness': 'የንጽህና %',
+        'harvest.volume': 'ጠቅላላ መጠን', 'harvest.volumePh': 'ለምሳሌ 50',
+        'harvest.volumeUnit': 'አሃድ', 'harvest.unitQuintal': 'ኩንታል (100 ኪግ)', 'harvest.unitKg': 'ኪሎግራም (ኪግ)', 'harvest.unitMt': 'ሜትሪክ ቶን (1000 ኪግ)',
+        'harvest.minLot': 'ዝቅተኛ ትዕዛዝ', 'harvest.minLotPh': 'ለምሳሌ 1',
+        'harvest.minLotUnit': 'የትዕዛዝ አሃድ',
+        'harvest.pricing': 'የዋጋ አሰራር', 'harvest.pricingFixed': 'ቋሚ ዋጋ (ETB)', 'harvest.pricingNegotiable': 'ድርድር ይቻላል',
+        'harvest.pricePerUnit': 'በትዕዛዝ ዋጋ (ETB)', 'harvest.pricePh': 'ለምሳሌ 4500',
+        'harvest.origin': 'አመጣጥ ቦታ', 'harvest.regionPh': 'ክልል', 'harvest.zonePh': 'ዞን',
+        'harvest.availableFrom': 'የሚገኝ ከ', 'harvest.availableTo': 'የሚገኝ እስከ',
+        'harvest.photos': 'የምርት ፎቶዎች', 'harvest.photoUrlPh': 'https://... (አማራጭ)',
+        'harvest.upload': 'ከመሳሪያዎ ያስገቡ',
+        'harvest.desc': 'መግለጫ (አማራጭ)', 'harvest.descPh': 'ለምሳሌ የተጸዳ፣ የደረቀ እና በወረዳ መጋዘን ለመውሰድ ዝግጁ።',
+        'harvest.submit': 'ዝርዝሩን አትም', 'harvest.submitEdit': 'ለውጦችን አስቀምጥ',
+        'product.origin': 'አመጣጥ', 'product.quality': 'ጥራት', 'product.details': 'የዝርዝሩ ዝርዝሮች',
+        'product.volume': 'ጠቅላላ መጠን', 'product.minLot': 'ዝቅተኛ ትዕዛዝ',
+        'product.price': 'ዋጋ', 'product.available': 'ተገኝነት',
+        'product.seller': 'ሻጭ', 'product.desc': 'መግለጫ',
+        'product.year': 'የመኸር ዓመት', 'product.moisture': 'እርጥበት', 'product.cleanliness': 'ንጽህና', 'product.grade': 'ደረጃ',
+        'product.close': 'ዝጋ', 'product.noDesc': 'መግለጫ የለም።', 'product.flexible': 'ተለዋዋጭ ጊዜ',
+        'toast.productPublished': 'የአቅርቦት ዝርዝርዎ አሁን በገበያው ውስጥ ይገኛል!',
+        'toast.productUpdated': 'ዝርዝሩ በተሳካ ሁኔታ ተዘምኗል።',
+        'toast.productDeleted': 'ዝርዝሩ ተሰርዟል።',
+        'toast.sellerOnly': 'ምርትዎን ለመዘርዘር እባክዎ እንደ ሻጭ ይግቡ።',
+        'toast.switchToSeller': 'የሻጭ መግቢያውን ለመጠቀም እባክዎ ሻጭን ይምረጡ።'
     },
     om: {
         'nav.pools': 'Bituuwwan Ijoo', 'nav.calculator': 'Herrega Qusannaa',
@@ -857,7 +979,64 @@ const I18N = {
         'myshares.signinBtn': 'Seeni', 'myshares.emptyTitle': 'Amma yoomuu qooda bituu hin buufanne.',
         'myshares.viewVoucher': 'Vaawwarchaa Ilaali',
         'bulk.notesPh': 'fkn. Qajeelfama geessuu addaa, filannoo qulqullinaa, yookiin yeroo qunnamtii filattuu.',
-        'voucher.qrAlt': 'Vaawwarcha QR'
+        'voucher.qrAlt': 'Vaawwarcha QR',
+        'nav.marketplace': 'Gabaa', 'nav.sellerDashboard': 'Daa\'iraa Dhi\'ooftuu',
+        'auth.roleLabel': 'Itti fufi akka',
+        'auth.roleBuyer': 'Bituu', 'auth.roleBuyerSub': 'Waldaa bituu irratti hirmaadhu',
+        'auth.roleSeller': 'Dhi\'ooftuu', 'auth.roleSellerSub': 'Midhaan kee kaayi',
+        'unit.quintal': 'Kuntaala (100 kg)', 'unit.kg': 'Kiloo giraama (kg)', 'unit.mt': 'Toniin (1000 kg)',
+        'market.badge': 'Gabaa Dhiyeessaa Qotee Bulaa',
+        'market.title': 'Sagaantumaa Dhi\'ooftota Irraa Bitu',
+        'market.subtitle': 'Galmee dhiyeessaa mirkanaa\'aa qotee bulaa fi gamtaa irraa baalalee keessa gabaa guddichaan barbaadi.',
+        'market.sellCta': '+ Midhaan Kee Gurguri',
+        'market.search': 'Midhaan, sanyii, naannoo yookiin dhi\'ooftuu barbaadi...',
+        'market.allCrops': 'Midhaan Hundaa', 'market.allTowns': 'Magaalaa Hunda',
+        'market.empty': 'Galmee dhiyeessaa kan ilaalechi kee waliin walqabu hin jiru.',
+        'market.beFirst': 'Ati dhi\'ooftuu jalqabaa kan asitti galmee kaayitu ta\'i',
+        'market.contactCta': 'Ilaali',
+        'market.pricingFixed': 'Gatiin Hunda', 'market.pricingNegotiable': 'Gatiin Dubbifamaa',
+        'market.by': 'Kaaye:', 'market.minLot': 'Qaallii xiqqaa',
+        'seller.badge': 'Baraana Dhi\'ooftuu',
+        'seller.title': 'Midhaan Kee, Gabaan Kee',
+        'seller.subtitle': 'Galmee dhiyeessaa qulqullinaan madaalame maxxansi, bituuwwan naannoo waliin qunnami.',
+        'seller.listCta': '+ Midhaan Kee Kaayi',
+        'seller.empty': 'Amma hunda midhaan hin galmeessine.',
+        'seller.emptyCta': 'Midhaan jalqabaa kee galmeessi',
+        'seller.statsListings': 'Galmee Waliigalaa', 'seller.statsVolume': 'Hanga Waliigalaa', 'seller.statsActive': 'Galmee Ijoo',
+        'seller.statusActive': 'Ijoo', 'seller.statusSold': 'Gurgurame', 'seller.statusDraft': 'Rawwaafamaa', 'seller.statusInactive': 'Hojii irraa bu\'e',
+        'seller.edit': 'Sirreessi', 'seller.delete': 'Haqi', 'seller.view': 'Ilaali',
+        'seller.available': 'Argama', 'seller.volume': 'Hanga',
+        'seller.published': 'Maxxanfame', 'seller.listedOn': 'Kaayame:',
+        'harvest.title': 'Midhaan Kee Kaayi', 'harvest.editTitle': 'Galmee Sirreessi',
+        'harvest.subtitle': 'Galmee dhiyeessaa kee maxxansi — qulqullina, hanga, gatii fi sabaata. Bituuwwan gabaa keessatti yeroo sanumaa isa argatu.',
+        'harvest.crop': 'Midhaan / Oomisha',
+        'harvest.variety': 'Sanyii', 'harvest.varietyPh': 'fkn. Xaafii Adii Gojjam',
+        'harvest.year': 'Waggaa Midhaanii', 'harvest.yearPh': 'fkn. 2026',
+        'harvest.quality': 'Qulqullina / Sadarkaa',
+        'harvest.gradePh': 'fkn. Sadarkaa 1', 'harvest.moisture': 'Jiidhina %', 'harvest.cleanliness': 'Qulqullina %',
+        'harvest.volume': 'Hanga Waliigalaa', 'harvest.volumePh': 'fkn. 50',
+        'harvest.volumeUnit': 'Ramaddii', 'harvest.unitQuintal': 'Kuntaala (100 kg)', 'harvest.unitKg': 'Kiloo giraama (kg)', 'harvest.unitMt': 'Toniin (1000 kg)',
+        'harvest.minLot': 'Qaallii Ajaja Xiqqaa', 'harvest.minLotPh': 'fkn. 1',
+        'harvest.minLotUnit': 'Ramaddii Ajaja',
+        'harvest.pricing': 'Malii Gatii', 'harvest.pricingFixed': 'Gatiin Hunda (ETB)', 'harvest.pricingNegotiable': 'Dubbifamaa',
+        'harvest.pricePerUnit': 'Gatiin Ajaja Tokkootti (ETB)', 'harvest.pricePh': 'fkn. 4500',
+        'harvest.origin': 'Iddoo Sabaataa', 'harvest.regionPh': 'Naannoo', 'harvest.zonePh': 'Godina',
+        'harvest.availableFrom': 'Argama Irallee', 'harvest.availableTo': 'Argama Hanga',
+        'harvest.photos': 'Suuraa Oomishaa', 'harvest.photoUrlPh': 'https://... (filannoo)',
+        'harvest.upload': 'Meeshaa kee irraa baasi',
+        'harvest.desc': 'Ibsa (filannoo)', 'harvest.descPh': 'fkn. Qulqullifame, gogeefame, mana kuusaa godinaa irratti fudhachuuf qophii.',
+        'harvest.submit': 'Galmee Maxxansi', 'harvest.submitEdit': 'Jijjiirraa Olkaayi',
+        'product.origin': 'Sabaata', 'product.quality': 'Qulqullina', 'product.details': 'Bal\'ina Galmee',
+        'product.volume': 'Hanga Waliigalaa', 'product.minLot': 'Qaallii Ajaja Xiqqaa',
+        'product.price': 'Gatii', 'product.available': 'Argama',
+        'product.seller': 'Dhi\'ooftuu', 'product.desc': 'Ibsa',
+        'product.year': 'Waggaa Midhaanii', 'product.moisture': 'Jiidhina', 'product.cleanliness': 'Qulqullina', 'product.grade': 'Sadarkaa',
+        'product.close': 'Cufi', 'product.noDesc': 'Ibsi hin kennamne.', 'product.flexible': 'Yeroo Jijjiiramaa',
+        'toast.productPublished': 'Galmee dhiyeessaa kee amma gabaa keessatti jira!',
+        'toast.productUpdated': 'Galmeen sirreeffamee olkaa\'e.',
+        'toast.productDeleted': 'Galmeen haqame.',
+        'toast.sellerOnly': 'Midhaan kee kaasuuf maaloo akka Dhi\'ooftuutti seeni.',
+        'toast.switchToSeller': 'Baraana dhi\'ooftuu itti fayyadamuuf maaloo Dhi\'ooftuu filadhu.'
     }
 };
 
@@ -892,6 +1071,80 @@ function localizeCategory(cat) {
 function localizePickup(d) {
     const key = PICKUP_L10N[d];
     return key ? t(key) : d;
+}
+
+// ---------- Marketplace / Seller helpers ----------
+
+function produceEntry(id) {
+    for (let i = 0; i < PRODUCE_GROUPS.length; i++) {
+        const items = PRODUCE_GROUPS[i].items || [];
+        for (let j = 0; j < items.length; j++) {
+            if (items[j].id === id) return items[j];
+        }
+    }
+    return null;
+}
+
+function unitLabel(unit) {
+    const map = { quintal: t('unit.quintal'), kg: t('unit.kg'), mt: t('unit.mt') };
+    return map[unit] || unit;
+}
+
+function pricingModelLabel(model) {
+    return model === 'negotiable' ? t('market.pricingNegotiable') : t('market.pricingFixed');
+}
+
+function sellerStatusLabel(status) {
+    const map = {
+        active: t('seller.statusActive'),
+        sold: t('seller.statusSold'),
+        draft: t('seller.statusDraft'),
+        inactive: t('seller.statusInactive')
+    };
+    return map[status] || status;
+}
+
+function fmtVolume(product) {
+    const qty = Number(product.volume) || 0;
+    const minQty = Number(product.min_order_lot) || 0;
+    const unit = unitLabel(product.volume_unit || 'quintal');
+    const minUnit = unitLabel(product.min_order_unit || product.volume_unit || 'quintal');
+    let str = fmt(qty) + ' ' + unit;
+    if (minQty > 0) str += ' · ' + t('market.minLot') + ' ' + fmt(minQty) + ' ' + minUnit;
+    return str;
+}
+
+function productPriceText(product) {
+    const price = Number(product.price_per_unit) || 0;
+    const unit = unitLabel(product.min_order_unit || product.volume_unit || 'quintal');
+    if (!price) return pricingModelLabel(product.pricing_model);
+    return fmt(price) + ' ' + currencyUnit() + ' / ' + unit;
+}
+
+function productOriginText(product) {
+    const parts = [product.origin_town, product.origin_zone, product.origin_region].filter(Boolean);
+    if (product.origin_town) {
+        return [localizeTown(product.origin_town), product.origin_zone, product.origin_region].filter(Boolean).join(', ');
+    }
+    return parts.join(', ') || t('pool.fallbackWoreda');
+}
+
+function availabilityText(product) {
+    if (product.availability_from || product.availability_to) {
+        const from = product.availability_from ? product.availability_from.split('-').reverse().join('-') : '';
+        const to = product.availability_to ? product.availability_to.split('-').reverse().join('-') : '';
+        if (from && to) return from + ' → ' + to;
+        if (from) return t('harvest.availableFrom') + ' ' + from;
+        return t('harvest.availableTo') + ' ' + to;
+    }
+    return t('product.flexible');
+}
+
+function productPhotos(product) {
+    let photos = product.photos;
+    if (typeof photos === 'string') { try { photos = JSON.parse(photos); } catch (e) { photos = []; } }
+    if (!Array.isArray(photos)) photos = [];
+    return photos.filter(Boolean);
 }
 
 const LANG_NAMES = { en: 'English', am: 'Amharic', om: 'Afaan Oromoo' };
@@ -995,6 +1248,9 @@ function setLang(lang) {
     renderAiMessages();
     renderBulkCatalog(document.getElementById('bulk-catalog'));
     updateBulkSummary();
+    populateMarketFilters();
+    renderMarketplace();
+    if (activeTab === 'seller') renderSellerDashboard();
     if (currentUser) loadMyShares();
 }
 
@@ -1297,6 +1553,8 @@ function showTab(tab, noScroll) {
     if (tab === 'calculator') renderCalculator();
     if (tab === 'hubs') renderHubs();
     if (tab === 'myshares') loadMyShares();
+    if (tab === 'marketplace') fetchMarketplace();
+    if (tab === 'seller') enterSellerPortal();
     if (!noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2435,7 +2693,19 @@ async function handleCreatePool(e) {
 
 // ---------- Auth ----------
 
-function openAuthModal() {
+function selectAuthRole(role) {
+    authRole = (role === 'seller') ? 'seller' : 'buyer';
+    const hidden = document.getElementById('auth-role');
+    if (hidden) hidden.value = authRole;
+    document.querySelectorAll('.auth-role-btn').forEach(function (btn) {
+        const isSel = (btn.id === 'auth-role-' + authRole);
+        btn.dataset.selected = String(isSel);
+        btn.setAttribute('aria-checked', String(isSel));
+    });
+}
+
+function openAuthModal(role) {
+    selectAuthRole(role || 'buyer');
     const modal = document.getElementById('auth-modal');
     if (modal) {
         modal.classList.remove('hidden');
@@ -2516,9 +2786,10 @@ async function handleAuthSubmit(e) {
 
     try {
         const endpoint = isSignup ? '/api/auth/signup' : '/api/auth/login';
+        const role = authRole;
         const payload = isSignup
-            ? { email: email, password: password, name: name.trim(), username: username.trim() }
-            : { email: email, password: password };
+            ? { email: email, password: password, name: name.trim(), username: username.trim(), role: role }
+            : { email: email, password: password, role: role };
         const data = await api(endpoint, {
             method: 'POST',
             body: JSON.stringify(payload),
@@ -2536,10 +2807,14 @@ async function handleAuthSubmit(e) {
             localStorage.setItem('sb-access-token', data.session.access_token);
         }
         currentUser = data.user;
+        currentRole = (data.user && (data.user.role || data.user.user_metadata?.role)) || role;
+        localStorage.setItem('nt-role', currentRole);
         updateAuthUI();
         closeAuthModal();
         e.target.reset();
         showToast(t(isSignup ? 'auth.created' : 'auth.signedIn'));
+        // Route the user dynamically to their dedicated portal after sign-in.
+        showTab(currentRole === 'seller' ? 'seller' : 'pools');
     } catch (err) {
         showAuthError(message, err.message);
     }
@@ -2548,7 +2823,10 @@ async function handleAuthSubmit(e) {
 async function handleLogout() {
     try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
     localStorage.removeItem('sb-access-token');
+    localStorage.removeItem('nt-role');
     currentUser = null;
+    currentRole = 'buyer';
+    myProducts = [];
     updateAuthUI();
     fetchPools();
     showToast(t('toast.signedOut'));
@@ -2567,6 +2845,10 @@ function updateAuthUI() {
         if (authBtn) authBtn.classList.remove('hidden');
         if (userMenu) userMenu.classList.add('hidden');
     }
+
+    // The Seller Dashboard entry only appears for signed-in sellers.
+    const sellerLink = document.getElementById('user-seller-link');
+    if (sellerLink) sellerLink.classList.toggle('hidden', !(currentUser && currentRole === 'seller'));
 }
 
 // ---------- Countdown ----------
@@ -2947,6 +3229,542 @@ function initReveals() {
     });
 }
 
+// ==================== Marketplace & Seller Portal ====================
+
+function handleSellerEntryPoint() {
+    if (!currentUser) {
+        openAuthModal('seller');
+        return;
+    }
+    if (currentRole !== 'seller') {
+        showToast(t('toast.switchToSeller'), true);
+        openAuthModal('seller');
+        return;
+    }
+    showTab('seller');
+}
+
+function enterSellerPortal() {
+    if (!currentUser || currentRole !== 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        openAuthModal('seller');
+        return;
+    }
+    fetchMyProducts();
+}
+
+// ---------- Public marketplace (browse supply) ----------
+
+async function fetchMarketplace() {
+    const grid = document.getElementById('market-grid');
+    if (grid) grid.innerHTML = renderProductSkeleton();
+    try {
+        const data = await api('/api/products');
+        marketProducts = data.products || [];
+    } catch (err) {
+        marketProducts = [];
+        showToast(err.message, true);
+    }
+    renderMarketplace();
+}
+
+function renderMarketplace() {
+    const grid = document.getElementById('market-grid');
+    const empty = document.getElementById('market-empty');
+    if (!grid) return;
+
+    populateMarketFilters();
+
+    const q = String((document.getElementById('market-search-input')?.value || '')).toLowerCase().trim();
+    const cropSel = document.getElementById('market-crop-filter');
+    const townSel = document.getElementById('market-town-filter');
+    const crop = cropSel ? cropSel.value : 'All';
+    const town = townSel ? townSel.value : 'All';
+
+    const filtered = marketProducts.filter(function (p) {
+        if (crop !== 'All' && p.crop_type !== crop) return false;
+        if (town !== 'All' && p.origin_town !== town) return false;
+        if (q) {
+            const entry = produceEntry(p.crop_type);
+            const hay = [p.crop_type, p.variety, p.origin_region, p.origin_zone, p.origin_town, p.seller_name]
+                .concat(entry ? entry.keywords : [])
+                .join(' ').toLowerCase();
+            if (!hay.includes(q)) return false;
+        }
+        return true;
+    });
+
+    if (empty) empty.classList.toggle('hidden', filtered.length > 0);
+    grid.innerHTML = filtered.map(productCardHtml).join('');
+}
+
+function populateMarketFilters() {
+    const cropSel = document.getElementById('market-crop-filter');
+    if (cropSel) {
+        const prev = cropSel.value;
+        const ids = [];
+        const html = ['<option value="All">' + esc(t('market.allCrops')) + '</option>'];
+        PRODUCE_GROUPS.forEach(function (group) {
+            group.items.forEach(function (item) {
+                if (ids.indexOf(item.id) !== -1) return;
+                ids.push(item.id);
+                html.push('<option value="' + esc(item.id) + '">' + esc(produceLabel(item)) + '</option>');
+            });
+        });
+        cropSel.innerHTML = html.join('');
+        if (ids.indexOf(prev) !== -1) cropSel.value = prev;
+    }
+    const townSel = document.getElementById('market-town-filter');
+    if (townSel) {
+        const prev = townSel.value;
+        townSel.innerHTML = '<option value="All">' + esc(t('market.allTowns')) + '</option>' +
+            ETHIOPIAN_TOWNS.map(function (tn) {
+                return '<option value="' + esc(tn) + '">' + esc(localizeTown(tn)) + '</option>';
+            }).join('');
+        if (ETHIOPIAN_TOWNS.indexOf(prev) !== -1) townSel.value = prev;
+    }
+}
+
+function applyMarketFilters() {
+    renderMarketplace();
+}
+
+function renderProductSkeleton() {
+    let cards = '';
+    for (let i = 0; i < 6; i++) {
+        cards += '<div class="animate-pulse bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm h-72"></div>';
+    }
+    return cards;
+}
+
+function productCardHtml(p) {
+    const entry = produceEntry(p.crop_type);
+    const name = entry ? produceLabel(entry) : (p.crop_type || '');
+    const variety = p.variety ? ' · ' + esc(p.variety) : '';
+    const photos = productPhotos(p);
+    const img = photos.length
+        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-40 object-cover" onerror="this.style.display=\'none\'">'
+        : '<div class="w-full h-40 bg-gradient-to-br from-emerald-100 to-amber-100 flex items-center justify-center text-4xl">🌾</div>';
+
+    const origin = productOriginText(p);
+    const vol = fmtVolume(p);
+    const price = productPriceText(p);
+    const available = availabilityText(p);
+
+    return '' +
+        '<div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">' +
+            '<button onclick="openProductModal(\'' + esc(String(p.id)) + '\')" class="text-left">' + img + '</button>' +
+            '<div class="p-4 space-y-2 flex flex-col flex-1">' +
+                '<div class="flex items-start justify-between gap-2">' +
+                    '<button onclick="openProductModal(\'' + esc(String(p.id)) + '\')" class="text-left">' +
+                        '<h4 class="text-sm font-extrabold text-slate-900 leading-tight">' + esc(name) + variety + '</h4>' +
+                        '<p class="text-[10px] text-slate-400 mt-0.5">' + esc(p.crop_type) + '</p>' +
+                    '</button>' +
+                    (p.pricing_model === 'negotiable'
+                        ? '<span class="shrink-0 bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-0.5 rounded-full whitespace-nowrap">' + esc(t('market.pricingNegotiable')) + '</span>'
+                        : '') +
+                '</div>' +
+                '<p class="text-xs text-slate-600 font-bold">' + price + '</p>' +
+                '<p class="text-xs text-slate-500">' + vol + '</p>' +
+                '<p class="text-xs text-slate-500 flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' + esc(origin) + '</p>' +
+                '<p class="text-[10px] text-slate-400">' + esc(t('product.available')) + ': ' + esc(available) + '</p>' +
+                '<div class="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">' +
+                    '<span class="text-[10px] text-slate-400 truncate">' + esc(t('market.by')) + ' ' + esc(p.seller_name || '') + '</span>' +
+                    '<button onclick="openProductModal(\'' + esc(String(p.id)) + '\')" class="bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">' + esc(t('market.contactCta')) + '</button>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+}
+
+// ---------- Product detail modal ----------
+
+async function openProductModal(id) {
+    const card = document.getElementById('product-modal-card');
+    const modal = document.getElementById('product-modal');
+    if (!card || !modal) return;
+    card.innerHTML = '<div class="animate-pulse h-64 bg-slate-100 rounded-xl"></div>';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+
+    let p = marketProducts.find(function (x) { return String(x.id) === String(id); });
+    if (!p) {
+        try {
+            const data = await api('/api/products/' + id);
+            p = data.product;
+        } catch (err) {
+            card.innerHTML = '<div class="text-center py-10 text-sm text-slate-500">' + esc(err.message) + '</div>';
+            return;
+        }
+    }
+    card.innerHTML = productDetailHtml(p);
+}
+
+function productDetailHtml(p) {
+    const entry = produceEntry(p.crop_type);
+    const name = entry ? produceLabel(entry) : (p.crop_type || '');
+    const photos = productPhotos(p);
+    const img = photos.length
+        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-56 object-cover rounded-xl" onerror="this.style.display=\'none\'">'
+        : '<div class="w-full h-56 bg-gradient-to-br from-emerald-100 to-amber-100 rounded-xl flex items-center justify-center text-6xl">🌾</div>';
+
+    const qualityBits = [];
+    if (p.grade) qualityBits.push('<div><span class="text-[10px] text-slate-400">' + esc(t('product.grade')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(p.grade) + '</p></div>');
+    if (p.moisture_content != null && p.moisture_content !== '') qualityBits.push('<div><span class="text-[10px] text-slate-400">' + esc(t('product.moisture')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(p.moisture_content) + '%</p></div>');
+    if (p.cleanliness != null && p.cleanliness !== '') qualityBits.push('<div><span class="text-[10px] text-slate-400">' + esc(t('product.cleanliness')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(p.cleanliness) + '%</p></div>');
+    if (p.harvest_year) qualityBits.push('<div><span class="text-[10px] text-slate-400">' + esc(t('product.year')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(p.harvest_year) + '</p></div>');
+
+    return '' +
+        '<button onclick="closeProductModal()" class="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition" aria-label="' + esc(t('product.close')) + '">' +
+            '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
+        '</button>' +
+        img +
+        '<div class="mt-4 space-y-3">' +
+            '<div class="pr-8">' +
+                '<h3 class="text-xl font-black text-slate-900">' + esc(name) + (p.variety ? ' <span class="text-slate-500">· ' + esc(p.variety) + '</span>' : '') + '</h3>' +
+                '<p class="text-xs text-slate-500 mt-0.5">' + esc(productOriginText(p)) + '</p>' +
+            '</div>' +
+            '<div class="flex flex-wrap gap-2">' +
+                '<span class="bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1.5 rounded-full">' + esc(productPriceText(p)) + '</span>' +
+                '<span class="' + (p.pricing_model === 'negotiable' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700') + ' text-xs font-black px-3 py-1.5 rounded-full">' + esc(pricingModelLabel(p.pricing_model)) + '</span>' +
+            '</div>' +
+            '<div class="grid grid-cols-2 gap-3 bg-slate-50 border border-slate-200 rounded-xl p-3">' +
+                '<div><span class="text-[10px] text-slate-400">' + esc(t('product.volume')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(fmt(Number(p.volume) || 0) + ' ' + unitLabel(p.volume_unit || 'quintal')) + '</p></div>' +
+                '<div><span class="text-[10px] text-slate-400">' + esc(t('product.minLot')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(fmt(Number(p.min_order_lot) || 0) + ' ' + unitLabel(p.min_order_unit || p.volume_unit || 'quintal')) + '</p></div>' +
+                '<div><span class="text-[10px] text-slate-400">' + esc(t('product.available')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(availabilityText(p)) + '</p></div>' +
+                '<div><span class="text-[10px] text-slate-400">' + esc(t('product.seller')) + '</span><p class="text-xs font-bold text-slate-800">' + esc(p.seller_name || '') + '</p></div>' +
+            '</div>' +
+            (qualityBits.length
+                ? '<div class="space-y-1"><p class="text-[10px] font-black uppercase tracking-wider text-slate-400">' + esc(t('product.quality')) + '</p><div class="grid grid-cols-4 gap-2">' + qualityBits.join('') + '</div></div>'
+                : '') +
+            (p.description
+                ? '<div class="space-y-1"><p class="text-[10px] font-black uppercase tracking-wider text-slate-400">' + esc(t('product.desc')) + '</p><p class="text-xs text-slate-600 leading-relaxed">' + esc(p.description) + '</p></div>'
+                : '') +
+            '<button onclick="closeProductModal()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold py-2.5 rounded-xl transition">' + esc(t('product.close')) + '</button>' +
+        '</div>';
+}
+
+function closeProductModal() {
+    const modal = document.getElementById('product-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+    document.body.style.overflow = '';
+}
+
+// ---------- Seller dashboard ----------
+
+async function fetchMyProducts() {
+    const grid = document.getElementById('seller-grid');
+    if (grid) grid.innerHTML = renderProductSkeleton();
+    try {
+        const data = await api('/api/products/mine');
+        myProducts = data.products || [];
+    } catch (err) {
+        myProducts = [];
+        showToast(err.message, true);
+    }
+    renderSellerDashboard();
+}
+
+function renderSellerDashboard() {
+    const grid = document.getElementById('seller-grid');
+    const empty = document.getElementById('seller-empty');
+    const stats = document.getElementById('seller-stats');
+    if (!grid) return;
+
+    const active = myProducts.filter(function (p) { return p.status === 'active'; });
+    const totalVolume = myProducts.reduce(function (sum, p) {
+        const v = Number(p.volume) || 0;
+        const u = p.volume_unit || 'quintal';
+        return sum + (u === 'mt' ? v * 10 : u === 'kg' ? v / 100 : v);
+    }, 0);
+
+    if (stats) {
+        stats.innerHTML = [
+            { label: t('seller.statsListings'), value: myProducts.length, color: 'bg-emerald-100 text-emerald-800' },
+            { label: t('seller.statsActive'), value: active.length, color: 'bg-teal-100 text-teal-800' },
+            { label: t('seller.statsVolume'), value: fmt(Math.round(totalVolume)) + ' ' + t('unit.quintal'), color: 'bg-amber-100 text-amber-800' }
+        ].map(function (s) {
+            return '<div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center">' +
+                '<p class="text-2xl font-black ' + s.color + ' inline-block px-3 py-1 rounded-lg mb-1">' + esc(s.value) + '</p>' +
+                '<p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">' + esc(s.label) + '</p>' +
+            '</div>';
+        }).join('');
+    }
+
+    if (empty) empty.classList.toggle('hidden', myProducts.length > 0);
+    grid.innerHTML = myProducts.map(sellerProductCardHtml).join('') ||
+        '<p class="text-xs text-slate-400 col-span-full text-center py-8">' + esc(t('seller.empty')) + '</p>';
+}
+
+function sellerProductCardHtml(p) {
+    const entry = produceEntry(p.crop_type);
+    const name = entry ? produceLabel(entry) : (p.crop_type || '');
+    const photos = productPhotos(p);
+    const img = photos.length
+        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-36 object-cover" onerror="this.style.display=\'none\'">'
+        : '<div class="w-full h-36 bg-gradient-to-br from-emerald-100 to-amber-100 flex items-center justify-center text-4xl">🌾</div>';
+    const statusColor = p.status === 'active'
+        ? 'bg-emerald-100 text-emerald-800'
+        : p.status === 'sold'
+            ? 'bg-slate-100 text-slate-600'
+            : 'bg-rose-100 text-rose-700';
+
+    return '' +
+        '<div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">' +
+            img +
+            '<div class="p-4 space-y-2 flex flex-col flex-1">' +
+                '<div class="flex items-start justify-between gap-2">' +
+                    '<h4 class="text-sm font-extrabold text-slate-900 leading-tight">' + esc(name) + (p.variety ? ' · ' + esc(p.variety) : '') + '</h4>' +
+                    '<span class="shrink-0 text-[10px] font-black px-2 py-0.5 rounded-full ' + statusColor + '">' + esc(sellerStatusLabel(p.status)) + '</span>' +
+                '</div>' +
+                '<p class="text-xs text-slate-600 font-bold">' + esc(productPriceText(p)) + '</p>' +
+                '<p class="text-xs text-slate-500">' + esc(fmtVolume(p)) + '</p>' +
+                '<p class="text-xs text-slate-500">' + esc(productOriginText(p)) + '</p>' +
+                '<div class="flex items-center justify-between gap-2 mt-auto pt-2 border-t border-slate-100">' +
+                    '<button onclick="openProductModal(\'' + esc(String(p.id)) + '\')" class="text-xs font-bold text-emerald-800 hover:text-emerald-600 transition">' + esc(t('seller.view')) + '</button>' +
+                    '<div class="flex items-center gap-1">' +
+                        '<button onclick="editProduct(\'' + esc(String(p.id)) + '\')" class="text-xs font-bold text-slate-600 hover:text-emerald-700 px-2 py-1 rounded-lg hover:bg-slate-100 transition">' + esc(t('seller.edit')) + '</button>' +
+                        '<button onclick="deleteProduct(\'' + esc(String(p.id)) + '\')" class="text-xs font-bold text-rose-500 hover:bg-rose-50 px-2 py-1 rounded-lg transition">' + esc(t('seller.delete')) + '</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+}
+
+async function deleteProduct(id) {
+    if (!confirm(t('seller.delete') + '?')) return;
+    try {
+        await api('/api/products/' + id, { method: 'DELETE' });
+        showToast(t('toast.productDeleted'));
+        await fetchMyProducts();
+        fetchMarketplace();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+// ---------- List Your Harvest modal ----------
+
+function populateHarvestSelects(selectedCrop) {
+    const cropSel = document.getElementById('harvest-crop');
+    if (cropSel) {
+        let html = '';
+        PRODUCE_GROUPS.forEach(function (group) {
+            html += '<optgroup label="' + esc(produceLabel(group)) + '">';
+            group.items.forEach(function (item) {
+                html += '<option value="' + esc(item.id) + '">' + esc(produceLabel(item)) + '</option>';
+            });
+            html += '</optgroup>';
+        });
+        cropSel.innerHTML = html;
+        if (selectedCrop) cropSel.value = selectedCrop;
+    }
+    const townSel = document.getElementById('harvest-town');
+    if (townSel) {
+        townSel.innerHTML = ETHIOPIAN_TOWNS.map(function (tn) {
+            return '<option value="' + esc(tn) + '">' + esc(localizeTown(tn)) + '</option>';
+        }).join('');
+    }
+}
+
+function resetHarvestForm() {
+    ['harvest-variety', 'harvest-year', 'harvest-grade', 'harvest-moisture', 'harvest-cleanliness',
+     'harvest-volume', 'harvest-min-lot', 'harvest-price', 'harvest-region', 'harvest-zone',
+     'harvest-available-from', 'harvest-available-to', 'harvest-photo-url', 'harvest-desc']
+        .forEach(function (id) {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+    const cropSel = document.getElementById('harvest-crop');
+    if (cropSel) cropSel.value = 'teff';
+    const townSel = document.getElementById('harvest-town');
+    if (townSel && ETHIOPIAN_TOWNS.length) townSel.value = ETHIOPIAN_TOWNS[0];
+    const volUnit = document.getElementById('harvest-volume-unit');
+    if (volUnit) volUnit.value = 'quintal';
+    const minUnit = document.getElementById('harvest-min-unit');
+    if (minUnit) minUnit.value = 'quintal';
+    const pricing = document.getElementById('harvest-pricing');
+    if (pricing) pricing.value = 'fixed';
+    harvestPhotoData = [];
+    const previews = document.getElementById('harvest-photo-previews');
+    if (previews) {
+        previews.classList.add('hidden');
+        previews.innerHTML = '';
+    }
+}
+
+function openListHarvestModal(product) {
+    if (!currentUser || currentRole !== 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        openAuthModal('seller');
+        return;
+    }
+    resetHarvestForm();
+    populateHarvestSelects(product && product.crop_type);
+
+    const title = document.getElementById('harvest-modal-title');
+    const submitBtn = document.querySelector('#harvest-form button[type="submit"]');
+    if (product) {
+        editingProductId = product.id;
+        if (title) title.textContent = t('harvest.editTitle');
+        if (submitBtn) submitBtn.textContent = t('harvest.submitEdit');
+        const set = function (id, val) {
+            const el = document.getElementById(id);
+            if (el && val != null) el.value = val;
+        };
+        set('harvest-variety', product.variety);
+        set('harvest-year', product.harvest_year);
+        set('harvest-grade', product.grade);
+        set('harvest-moisture', product.moisture_content);
+        set('harvest-cleanliness', product.cleanliness);
+        set('harvest-volume', product.volume);
+        set('harvest-volume-unit', product.volume_unit);
+        set('harvest-min-lot', product.min_order_lot);
+        set('harvest-min-unit', product.min_order_unit);
+        set('harvest-pricing', product.pricing_model);
+        set('harvest-price', product.price_per_unit);
+        set('harvest-region', product.origin_region);
+        set('harvest-zone', product.origin_zone);
+        set('harvest-town', product.origin_town);
+        set('harvest-available-from', product.availability_from);
+        set('harvest-available-to', product.availability_to);
+        set('harvest-desc', product.description);
+        const photos = productPhotos(product);
+        if (photos.length) {
+            document.getElementById('harvest-photo-url').value = photos[0];
+        }
+    } else {
+        editingProductId = null;
+        if (title) title.textContent = t('harvest.title');
+        if (submitBtn) submitBtn.textContent = t('harvest.submit');
+    }
+
+    const modal = document.getElementById('harvest-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+    document.body.style.overflow = 'hidden';
+}
+
+function closeListHarvestModal() {
+    const modal = document.getElementById('harvest-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+    document.body.style.overflow = '';
+    editingProductId = null;
+}
+
+function handleHarvestPhotos(event) {
+    const files = Array.from(event.target.files || []);
+    const previews = document.getElementById('harvest-photo-previews');
+    if (!previews) return;
+    files.forEach(function (file) {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const url = e.target.result;
+            const idx = harvestPhotoData.length;
+            harvestPhotoData.push(url);
+            const wrap = document.createElement('div');
+            wrap.className = 'relative';
+            wrap.innerHTML = '<img src="' + url + '" class="w-20 h-20 object-cover rounded-lg border border-slate-200">' +
+                '<button type="button" onclick="removeHarvestPhoto(' + idx + ', this)" class="absolute -top-1.5 -right-1.5 bg-rose-600 text-white w-5 h-5 rounded-full text-xs font-black leading-none">×</button>';
+            previews.appendChild(wrap);
+            previews.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    });
+    event.target.value = '';
+}
+
+function removeHarvestPhoto(idx, btn) {
+    harvestPhotoData[idx] = null;
+    if (btn && btn.parentElement) btn.parentElement.remove();
+    const previews = document.getElementById('harvest-photo-previews');
+    if (previews && previews.children.length === 0) previews.classList.add('hidden');
+}
+
+async function handleListHarvestSubmit(e) {
+    e.preventDefault();
+    if (!currentUser || currentRole !== 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        openAuthModal('seller');
+        return;
+    }
+
+    const val = function (id) {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    };
+
+    const photoUrl = val('harvest-photo-url');
+    const photos = harvestPhotoData.filter(Boolean);
+    if (photoUrl) photos.unshift(photoUrl);
+
+    const payload = {
+        cropType: val('harvest-crop') || 'teff',
+        variety: val('harvest-variety'),
+        grade: val('harvest-grade'),
+        moistureContent: val('harvest-moisture'),
+        cleanliness: val('harvest-cleanliness'),
+        harvestYear: val('harvest-year'),
+        volume: Number(val('harvest-volume')) || 0,
+        volumeUnit: val('harvest-volume-unit') || 'quintal',
+        minOrderLot: Number(val('harvest-min-lot')) || 0,
+        minOrderUnit: val('harvest-min-unit') || 'quintal',
+        pricingModel: val('harvest-pricing') || 'fixed',
+        pricePerUnit: Number(val('harvest-price')) || 0,
+        originRegion: val('harvest-region'),
+        originZone: val('harvest-zone'),
+        originTown: val('harvest-town'),
+        availabilityFrom: val('harvest-available-from'),
+        availabilityTo: val('harvest-available-to'),
+        photos: photos,
+        description: val('harvest-desc')
+    };
+
+    try {
+        if (editingProductId) {
+            await api('/api/products/' + editingProductId, {
+                method: 'PUT',
+                body: JSON.stringify(payload),
+            });
+            showToast(t('toast.productUpdated'));
+        } else {
+            await api('/api/products', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            });
+            showToast(t('toast.productPublished'));
+        }
+        closeListHarvestModal();
+        await fetchMyProducts();
+        fetchMarketplace();
+    } catch (err) {
+        showToast(err.message, true);
+    }
+}
+
+async function editProduct(id) {
+    let p = myProducts.find(function (x) { return String(x.id) === String(id); });
+    if (!p) {
+        try {
+            const data = await api('/api/products/' + id);
+            p = data.product;
+        } catch (err) {
+            showToast(err.message, true);
+            return;
+        }
+    }
+    openListHarvestModal(p);
+}
+
 function init() {
     initTheme();
     applyI18n();
@@ -3044,6 +3862,8 @@ function init() {
             closeTownDropdowns();
             closeProduceDropdown();
             closeShareMenu();
+            closeProductModal();
+            closeListHarvestModal();
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
         }
@@ -3053,6 +3873,8 @@ function init() {
     const reserveModal = document.getElementById('reserve-modal');
     const detailsModal = document.getElementById('details-modal');
     const authModal = document.getElementById('auth-modal');
+    const harvestModal = document.getElementById('harvest-modal');
+    const productModal = document.getElementById('product-modal');
 
     function modalBackdropClick(modal, closer) {
         if (!modal) return;
@@ -3064,6 +3886,8 @@ function init() {
     modalBackdropClick(reserveModal, closeReserveModal);
     modalBackdropClick(detailsModal, closeDetailsModal);
     modalBackdropClick(authModal, closeAuthModal);
+    modalBackdropClick(harvestModal, closeListHarvestModal);
+    modalBackdropClick(productModal, closeProductModal);
     modalBackdropClick(document.getElementById('share-menu'), closeShareMenu);
 
     renderCalculator();
@@ -3081,6 +3905,8 @@ function init() {
     api('/api/auth/me')
         .then(function (data) {
             currentUser = data.user || null;
+            currentRole = (data.user && data.user.role) || localStorage.getItem('nt-role') || 'buyer';
+            if (data.user && data.user.role) localStorage.setItem('nt-role', data.user.role);
         })
         .catch(function () {
             currentUser = null;
@@ -3088,6 +3914,7 @@ function init() {
         .then(function () {
             updateAuthUI();
             fetchPools();
+            fetchMarketplace();
         });
 }
 
