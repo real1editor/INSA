@@ -33,8 +33,9 @@ let reserveState = { pool: null, shares: 1, payment: 'telebirr' };
 let detailsState = { pool: null, comments: [] };
 
 // ---------- Dual-sided marketplace state ----------
-let currentRole = 'buyer';            // authoritative role from the server profile
+let currentRole = localStorage.getItem('nt-role') === 'seller' ? 'seller' : 'buyer';
 let authRole = 'buyer';               // role selected in the auth modal
+let authReady = false;                // true once /api/auth/me has resolved
 let myProducts = [];
 let marketProducts = [];
 let editingProductId = null;
@@ -371,6 +372,17 @@ const I18N = {
         'auth.checkEmail': 'Account created! Check your email to confirm your account, then sign in.',
         'auth.created': 'Account created successfully!',
         'auth.signedIn': 'Signed in successfully!',
+        'gate.badge': 'NuroTewedede Marketplace',
+        'gate.title': 'Join the Direct Sourcing Marketplace',
+        'gate.subtitle': 'Choose how you want to participate — group-buying as a neighborhood or listing your harvest directly to buyers across Ethiopia.',
+        'gate.chipBuy': 'Group Buying', 'gate.chipSell': 'Farmer Supply', 'gate.chipHub': 'Neighborhood Hubs',
+        'gate.popular': 'Most Popular', 'gate.farmers': 'For Farmers & Co-ops',
+        'gate.buyerTitle': 'I am a Buyer', 'gate.buyerText': 'Join neighborhood group-buying pools, lock wholesale prices and reserve shares from your local hub.',
+        'gate.buyerFeat1': '+ Launch a Pool', 'gate.buyerFeat2': 'Crop filters & town hubs', 'gate.buyerFeat3': 'Up to 35% wholesale savings',
+        'gate.sellerTitle': 'I am a Seller', 'gate.sellerText': 'List your harvest with quality grades, volume and pricing — reaching buyers across Ethiopia directly.',
+        'gate.sellerFeat1': '+ List Your Harvest', 'gate.sellerFeat2': 'Quality & volume specs', 'gate.sellerFeat3': 'Manage supply inventory',
+        'gate.cta': 'Continue', 'gate.footNote': 'Already have an account? Sign in to go straight to your portal.',
+        'gate.skip': 'Just browsing — skip',
         'bulk.title': 'Bulk & Institutional Purchase',
         'bulk.prodTeff': 'White Teff (Gojjam)', 'bulk.prodOnions': 'Red Onions (Ziway)', 'bulk.prodCoffee': 'Raw Coffee Beans (Sidama)', 'bulk.prodOil': 'Sunflower Cooking Oil', 'bulk.prodLentils': 'Red Lentils (Misir)',
         'bulk.retailTag': 'retail',
@@ -639,6 +651,17 @@ const I18N = {
         'auth.checkEmail': 'መለያ ተፈጥሯል! መለያዎን ለማረጋገጥ ኢሜይልዎን ይመልከቱ፣ ከዚያ ይግቡ።',
         'auth.created': 'መለያ በተሳካ ሁኔታ ተፈጥሯል!',
         'auth.signedIn': 'በተሳካ ሁኔታ ገብተዋል!',
+        'gate.badge': 'NuroTewedede የገበያ ቦታ',
+        'gate.title': 'የቀጥታ አቅርቦት ገበያውን ይቀላቀሉ',
+        'gate.subtitle': 'እንዴት መሳተፍ እንደሚፈልጉ ይምረጡ — በሰፈር በቡድን መግዛት ወይም ምርትዎን በመላ ኢትዮጵያ ላሉ ገዢዎች በቀጥታ ማቅረብ።',
+        'gate.chipBuy': 'የቡድን ግዢ', 'gate.chipSell': 'የገበሬ አቅርቦት', 'gate.chipHub': 'የሰፈር ማዕከላት',
+        'gate.popular': 'በጣም ተወዳጅ', 'gate.farmers': 'ለገበሬዎች እና ትብብሮች',
+        'gate.buyerTitle': 'እኔ ገዢ ነኝ', 'gate.buyerText': 'የሰፈር የቡድን ግዢዎችን ይቀላቀሉ፣ የጅምላ ዋጋዎችን ይቆልፉ እና ከአካባቢያዊ ማዕከልዎ አክሲዮኖችን ይያዙ።',
+        'gate.buyerFeat1': '+ ግዢ ጀምር', 'gate.buyerFeat2': 'የሰብል ማጣሪያዎች እና የከተማ ማዕከላት', 'gate.buyerFeat3': 'እስከ 35% የጅምላ ቁጠባ',
+        'gate.sellerTitle': 'እኔ ሻጭ ነኝ', 'gate.sellerText': 'ምርትዎን በጥራት ደረጃ፣ መጠን እና ዋጋ ይዘርዝሩ — በመላ ኢትዮጵያ ያሉ ገዢዎችን በቀጥታ ይድረሱ።',
+        'gate.sellerFeat1': '+ ምርትዎን ይዘርዝሩ', 'gate.sellerFeat2': 'የጥራት እና መጠን ዝርዝር', 'gate.sellerFeat3': 'የአቅርቦት ክምችት ያስተዳድሩ',
+        'gate.cta': 'ቀጥል', 'gate.footNote': 'መለያ አለዎት? በቀጥታ ወደ ፖርታልዎ ለመሄድ ይግቡ።',
+        'gate.skip': 'በአጋጣሚ እየተመለከትኩ ነው — ዝለል',
         'bulk.title': 'የጅምላ እና ተቋማዊ ግዢ',
         'bulk.prodTeff': 'ነጭ ጤፍ (ጎጃም)', 'bulk.prodOnions': 'ቀይ ሽንኩርት (ዝዌይ)', 'bulk.prodCoffee': 'ድፍድፍ የቡና ፍሬ (ሲዳማ)', 'bulk.prodOil': 'የሱፍ አበባ የምግብ ዘይት', 'bulk.prodLentils': 'ቀይ ምስር',
         'bulk.retailTag': 'ችርቻሮ',
@@ -907,6 +930,19 @@ const I18N = {
         'auth.checkEmail': 'Hertamaan uumame! Hertama kee mirkaneessuuf imeelii kee ilaali, sana booda seeni.',
         'auth.created': 'Hertamaan milkaa\'inaan uumame!',
         'auth.signedIn': 'Milkaa\'inaan seentee jirta!',
+        'gate.badge': 'Gabaa NuroTewedede',
+        'gate.title': 'Gabaa Dhiyeessaa Qulqullinaa Irratti Hirmaadhu',
+        'gate.subtitle': 'Akkamitti hirmaachuu barbaaddu filadhu — naannoo kee keessatti waliin bituudhaan yookiin midhaan kee gara bituuwwan biyyaatti kallattiin kaasuudhaan.',
+        'gate.chipBuy': 'Bituu Waldaa', 'gate.chipSell': 'Dhiyeessaa Qonnaa', 'gate.chipHub': 'Buufata Naannoo',
+        'gate.popular': 'Baa\'ee Jaalatamaa', 'gate.farmers': 'Qonnaan Bulaa fi Koo-piiveef',
+        'gate.buyerTitle': 'Ani Bituu',
+        'gate.buyerText': 'Bituuwwan waldaa naannoo kee walitti qabi, gatii dhibbaa cufi, kutaa buufata naannoo keetii qabadhu.',
+        'gate.buyerFeat1': '+ Bituu Jalqabi', 'gate.buyerFeat2': 'Ilaalecha midhaanii fi hubs magaalaa', 'gate.buyerFeat3': 'Hanga 35% qusannaa dhibbaa',
+        'gate.sellerTitle': 'Ani Dhi\'ooftuu',
+        'gate.sellerText': 'Midhaan kee sadarkaa qulqullinaa, hangaa fi gatiin galmeessi — gara bituuwwan biyyaatti kallattiin dhaqqabi.',
+        'gate.sellerFeat1': '+ Midhaan Kee Kaayi', 'gate.sellerFeat2': 'Ibsa qulqullinaa fi hangaa', 'gate.sellerFeat3': 'Kuusaa dhiyeessaa bulchi',
+        'gate.cta': 'Itti Fufi', 'gate.footNote': 'Akaawuntii qabdaa? Kallattiin gara portal keetii gahuuf seeni.',
+        'gate.skip': 'Ilaalee jira — darbi',
         'bulk.title': 'Bituu Waldaa fi Dhaabbataa',
         'bulk.prodTeff': 'Xaafii Adii (Gojjam)', 'bulk.prodOnions': 'Shunkurtii Diimaa (Ziway)', 'bulk.prodCoffee': 'Buna Diimaa (Sidaama)', 'bulk.prodOil': 'Zayitaa Suufii', 'bulk.prodLentils': 'Misira Diimaa',
         'bulk.retailTag': 'daldala',
@@ -1199,7 +1235,7 @@ function handleMenuAction(menu) {
     if (menu === 'home') {
         showTab('pools');
     } else if (menu === 'service' || menu === 'about' || menu === 'how') {
-        showTab('pools', true);
+    showTab('pools', true);
         const el = document.getElementById(scrollTargets[menu]);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
@@ -2721,6 +2757,23 @@ function closeAuthModal() {
     }
 }
 
+// Role chosen from the root entry gate. Buyer enters the public portal
+// immediately; seller routes through auth (sellers must be signed in).
+function chooseRole(role) {
+    const isSeller = role === 'seller';
+    localStorage.setItem('nt-role', isSeller ? 'seller' : 'buyer');
+    if (isSeller) {
+        if (currentUser && currentRole === 'seller') {
+            showTab('seller');
+        } else {
+            openAuthModal('seller');
+        }
+    } else {
+        currentRole = 'buyer';
+        showTab('pools');
+    }
+}
+
 function toggleAuthMode(isSignup) {
     authMode = isSignup ? 'signup' : 'signin';
     const title = document.getElementById('auth-modal-title');
@@ -2829,6 +2882,7 @@ async function handleLogout() {
     myProducts = [];
     updateAuthUI();
     fetchPools();
+    if (activeTab === 'seller') showTab('pools');
     showToast(t('toast.signedOut'));
 }
 
@@ -3245,9 +3299,16 @@ function handleSellerEntryPoint() {
 }
 
 function enterSellerPortal() {
+    const hasToken = !!localStorage.getItem('sb-access-token');
+    if (hasToken && !authReady) {
+        // Auth still resolving — the stored token already authorizes the fetch;
+        // me() finalizes routing once it returns.
+        fetchMyProducts();
+        return;
+    }
     if (!currentUser || currentRole !== 'seller') {
         showToast(t('toast.sellerOnly'), true);
-        openAuthModal('seller');
+        showTab('gate');
         return;
     }
     fetchMyProducts();
@@ -3786,7 +3847,10 @@ function init() {
         });
     });
 
-    showTab('pools', true);
+    // Root entry: brand-new visitors land on the role-selection gate;
+    // returning guests (nt-role set) and sellers are routed straight to their portal.
+    const savedRole = localStorage.getItem('nt-role');
+    showTab(!savedRole ? 'gate' : (savedRole === 'seller' ? 'seller' : 'pools'), true);
 
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);
@@ -3912,9 +3976,17 @@ function init() {
             currentUser = null;
         })
         .then(function () {
+            authReady = true;
             updateAuthUI();
             fetchPools();
             fetchMarketplace();
+            if (currentUser) {
+                // Signed in: route straight to the portal for the server-authoritative role.
+                if (activeTab === 'gate') showTab(currentRole === 'seller' ? 'seller' : 'pools');
+            } else if (activeTab === 'seller') {
+                // Signed out seller preference — send back to the role-selection gate.
+                showTab('gate');
+            }
         });
 }
 
@@ -4028,6 +4100,7 @@ function handleBulkSubmit(e) {
 window.toggleTheme = toggleTheme;
 window.showTab = showTab;
 window.toggleMobileMenu = toggleMobileMenu;
+window.chooseRole = chooseRole;
 window.toggleUserMenu = toggleUserMenu;
 window.filterTown = setTown;
 window.setCategory = setCategory;

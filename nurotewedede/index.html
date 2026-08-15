@@ -121,6 +121,76 @@
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
 
+        <!-- ==================== VIEW: ROLE GATE (root entry / auth gate) ==================== -->
+        <section id="view-gate" class="view-section hidden space-y-8">
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                <div class="relative bg-gradient-to-br from-emerald-900 via-emerald-700 to-teal-600 px-6 py-12 md:py-16 text-center text-white overflow-hidden">
+                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+                    <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+                        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-[11px] font-black uppercase tracking-wider px-4 py-1.5 rounded-full" data-i18n="gate.badge">NuroTewedede Marketplace</span>
+                        <h1 class="text-3xl md:text-4xl font-black tracking-tight" data-i18n="gate.title">Join the Direct Sourcing Marketplace</h1>
+                        <p class="text-sm md:text-base text-emerald-100 leading-relaxed" data-i18n="gate.subtitle">Choose how you want to participate — group-buying as a neighborhood or listing your harvest directly to buyers across Ethiopia.</p>
+                        <div class="flex flex-wrap justify-center gap-2 pt-1">
+                            <span class="bg-black/20 border border-white/10 text-[11px] font-bold px-3 py-1 rounded-full">🤝 <span data-i18n="gate.chipBuy">Group Buying</span></span>
+                            <span class="bg-black/20 border border-white/10 text-[11px] font-bold px-3 py-1 rounded-full">🌾 <span data-i18n="gate.chipSell">Farmer Supply</span></span>
+                            <span class="bg-black/20 border border-white/10 text-[11px] font-bold px-3 py-1 rounded-full">🚚 <span data-i18n="gate.chipHub">Neighborhood Hubs</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+                        <!-- Buyer Card -->
+                        <button type="button" onclick="chooseRole('buyer')" class="group text-left bg-white border-2 border-slate-200 rounded-2xl p-6 transition hover:border-emerald-600 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">🛒</span>
+                                <span class="bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full" data-i18n="gate.popular">Most Popular</span>
+                            </div>
+                            <h2 class="text-lg font-black text-slate-900" data-i18n="gate.buyerTitle">I am a Buyer</h2>
+                            <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="gate.buyerText">Join neighborhood group-buying pools, lock wholesale prices and reserve shares from your local hub.</p>
+                            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+                                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> <span data-i18n="gate.buyerFeat1">+ Launch a Pool</span></li>
+                                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> <span data-i18n="gate.buyerFeat2">Crop filters &amp; town hubs</span></li>
+                                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> <span data-i18n="gate.buyerFeat3">Up to 35% wholesale savings</span></li>
+                            </ul>
+                            <div class="mt-5 flex items-center gap-2 text-sm font-bold text-emerald-800 group-hover:text-emerald-700">
+                                <span data-i18n="gate.cta">Continue</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </div>
+                        </button>
+
+                        <!-- Seller Card -->
+                        <button type="button" onclick="chooseRole('seller')" class="group text-left bg-white border-2 border-slate-200 rounded-2xl p-6 transition hover:border-amber-600 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl">🌾</span>
+                                <span class="bg-amber-50 text-amber-700 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full" data-i18n="gate.farmers">For Farmers &amp; Co-ops</span>
+                            </div>
+                            <h2 class="text-lg font-black text-slate-900" data-i18n="gate.sellerTitle">I am a Seller</h2>
+                            <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="gate.sellerText">List your harvest with quality grades, volume and pricing — reaching buyers across Ethiopia directly.</p>
+                            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+                                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> <span data-i18n="gate.sellerFeat1">+ List Your Harvest</span></li>
+                                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> <span data-i18n="gate.sellerFeat2">Quality &amp; volume specs</span></li>
+                                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> <span data-i18n="gate.sellerFeat3">Manage supply inventory</span></li>
+                            </ul>
+                            <div class="mt-5 flex items-center gap-2 text-sm font-bold text-amber-800 group-hover:text-amber-700">
+                                <span data-i18n="gate.cta">Continue</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="mt-8 text-center space-y-3">
+                        <p class="text-xs text-slate-400" data-i18n="gate.footNote">Already have an account? Sign in to go straight to your portal.</p>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <button type="button" onclick="openAuthModal()" class="text-xs font-bold text-emerald-800 hover:text-emerald-600 underline underline-offset-4 transition" data-i18n="auth.signin">Sign In</button>
+                            <span class="text-slate-300">·</span>
+                            <button type="button" onclick="chooseRole('buyer')" class="text-xs font-bold text-slate-400 hover:text-slate-600 underline underline-offset-4 transition" data-i18n="gate.skip">Just browsing — skip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Live Wholesale Price Ticker (populated by JS from pool data) -->
         <section id="ticker" class="bg-slate-900 text-emerald-300 border border-slate-800 rounded-xl px-3 py-2.5 overflow-hidden mb-6 shadow-sm" data-i18n-aria-label="aria.ticker" aria-label="Live wholesale price ticker" data-reveal="up">
             <div class="flex items-center gap-3">
