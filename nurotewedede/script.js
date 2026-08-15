@@ -1589,7 +1589,7 @@ function showTab(tab, noScroll) {
     if (tab === 'calculator') renderCalculator();
     if (tab === 'hubs') renderHubs();
     if (tab === 'myshares') loadMyShares();
-    if (tab === 'marketplace') fetchMarketplace();
+    if (tab === 'marketplace') enterMarketplacePortal();
     if (tab === 'seller') enterSellerPortal();
     if (!noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -2770,6 +2770,7 @@ function chooseRole(role) {
         }
     } else {
         currentRole = 'buyer';
+        updateRoleNav();
         showTab('pools');
     }
 }
@@ -2882,7 +2883,7 @@ async function handleLogout() {
     myProducts = [];
     updateAuthUI();
     fetchPools();
-    if (activeTab === 'seller') showTab('pools');
+    if (activeTab === 'seller' || activeTab === 'marketplace') showTab('pools');
     showToast(t('toast.signedOut'));
 }
 
@@ -2903,6 +2904,9 @@ function updateAuthUI() {
     // The Seller Dashboard entry only appears for signed-in sellers.
     const sellerLink = document.getElementById('user-seller-link');
     if (sellerLink) sellerLink.classList.toggle('hidden', !(currentUser && currentRole === 'seller'));
+
+    // The Marketplace / Seller-listing pages are seller-only.
+    updateRoleNav();
 }
 
 // ---------- Countdown ----------
@@ -3312,6 +3316,29 @@ function enterSellerPortal() {
         return;
     }
     fetchMyProducts();
+}
+
+// Buyer Portal Access Rule: the Marketplace / Seller-listing pages are
+// restricted to sellers. Buyers keep pools, hubs, dashboard and procurement
+// tools but are redirected back to the role gate if they reach Marketplace.
+function enterMarketplacePortal() {
+    const hasToken = !!localStorage.getItem('sb-access-token');
+    if (hasToken && !authReady) return; // me() finalizes routing
+    if (!currentUser || currentRole !== 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        showTab('gate');
+        return;
+    }
+    fetchMarketplace();
+}
+
+// Hide the Marketplace nav entry from everyone except signed-in sellers.
+function updateRoleNav() {
+    const isSeller = !!(currentUser && currentRole === 'seller');
+    document.querySelectorAll('.tab-btn[data-tab="marketplace"], .mobile-tab-btn[data-tab="marketplace"]')
+        .forEach(function (btn) {
+            btn.classList.toggle('hidden', !isSeller);
+        });
 }
 
 // ---------- Public marketplace (browse supply) ----------
@@ -3847,10 +3874,11 @@ function init() {
         });
     });
 
-    // Root entry: brand-new visitors land on the role-selection gate;
-    // returning guests (nt-role set) and sellers are routed straight to their portal.
+    // Root entry: the role-selection gate is the home page for every anonymous
+    // visitor. Only signed-in users (token present) are routed straight to their portal.
     const savedRole = localStorage.getItem('nt-role');
-    showTab(!savedRole ? 'gate' : (savedRole === 'seller' ? 'seller' : 'pools'), true);
+    const hasToken = !!localStorage.getItem('sb-access-token');
+    showTab(!hasToken ? 'gate' : (savedRole === 'seller' ? 'seller' : 'pools'), true);
 
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);
@@ -3979,7 +4007,7 @@ function init() {
             authReady = true;
             updateAuthUI();
             fetchPools();
-            fetchMarketplace();
+            if (currentUser && currentRole === 'seller') fetchMarketplace();
             if (currentUser) {
                 // Signed in: route straight to the portal for the server-authoritative role.
                 if (activeTab === 'gate') showTab(currentRole === 'seller' ? 'seller' : 'pools');
