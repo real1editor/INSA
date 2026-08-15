@@ -105,7 +105,17 @@ const CATEGORY_L10N = {
     'Vegetables': 'cat.vegetables',
     'Coffee & Spices': 'cat.coffee',
     'Oil & Pulses': 'cat.oil',
-    'Fruits': 'cat.fruits'
+    'Fruits': 'cat.fruits',
+    'Groceries': 'cat.groceries'
+};
+
+const PICKUP_L10N = {
+    'This Week': 'pickup.thisWeek',
+    'Next Week': 'pickup.nextWeek',
+    'In 2 Weeks': 'pickup.inTwoWeeks',
+    'End of Month': 'pickup.endOfMonth',
+    'Next Month': 'pickup.nextMonth',
+    'Tomorrow': 'pickup.tomorrow'
 };
 
 const PRODUCE_GROUPS = [
@@ -117,7 +127,9 @@ const PRODUCE_GROUPS = [
             { id: 'wheat', label: { en: 'Wheat', am: 'ስንዴ', om: 'Qamadii' }, keywords: ['wheat', 'ስንዴ', 'qamadii', 'sindee'] },
             { id: 'barley', label: { en: 'Barley', am: 'ገብስ', om: 'Garbuu' }, keywords: ['barley', 'ገብስ', 'garbuu', 'gebs'] },
             { id: 'sorghum', label: { en: 'Sorghum', am: 'ማሽላ', om: 'Bishingaa' }, keywords: ['sorghum', 'ማሽላ', 'bishingaa', 'mashilla'] },
-            { id: 'millet', label: { en: 'Millet', am: 'ደጉሳ', om: 'Daagussa' }, keywords: ['millet', 'ደጉሳ', 'daagussa'] }
+            { id: 'millet', label: { en: 'Millet', am: 'ደጉሳ', om: 'Daagussa' }, keywords: ['millet', 'ደጉሳ', 'daagussa'] },
+            { id: 'maize', label: { en: 'Maize (Corn)', am: 'በቆሎ', om: 'Boqqolloo' }, keywords: ['maize', 'corn', 'በቆሎ', 'boqqolloo', 'bekolo'] },
+            { id: 'oats', label: { en: 'Oats', am: 'አጃ', om: 'Ajaa' }, keywords: ['oats', 'አጃ', 'ajaa'] }
         ]
     },
     {
@@ -127,8 +139,10 @@ const PRODUCE_GROUPS = [
             { id: 'chickpeas', label: { en: 'Chickpeas (Shimbra)', am: 'ሽምብራ', om: 'Shimbraa' }, keywords: ['chickpea', 'shimbra', 'ሽምብራ', 'shimbraa'] },
             { id: 'lentils', label: { en: 'Lentils (Misir)', am: 'ምስር', om: 'Misiraa' }, keywords: ['lentil', 'misir', 'ምስር', 'misiraa'] },
             { id: 'fieldpeas', label: { en: 'Field Peas (Ater)', am: 'አተር', om: 'Ateraa' }, keywords: ['field pea', 'ater', 'አተር', 'ateraa'] },
+            { id: 'greenpeas', label: { en: 'Green Peas (Ater Kik)', am: 'አረንጓዴ አተር', om: 'Ateraa' }, keywords: ['green pea', 'kik', 'አተር', 'arenquade ater', 'ateraa'] },
             { id: 'favabeans', label: { en: 'Fava Beans (Bakela)', am: 'ባቄላ', om: 'Baqeelaa' }, keywords: ['fava', 'faba', 'bakela', 'ባቄላ', 'baqeelaa'] },
-            { id: 'haricotbeans', label: { en: 'Haricot Beans', am: 'ቦሎቄ', om: 'Boqqolloo' }, keywords: ['haricot', 'ቦሎቄ', 'boqqolloo'] }
+            { id: 'haricotbeans', label: { en: 'Haricot Beans', am: 'ቦሎቄ', om: 'Boloqee' }, keywords: ['haricot', 'ቦሎቄ', 'boloqee', 'bolokke'] },
+            { id: 'soybeans', label: { en: 'Soybeans', am: 'አኩሪ አተር', om: 'Sooyaa' }, keywords: ['soybean', 'soya', 'አኩሪ አተር', 'sooyaa'] }
         ]
     },
     {
@@ -139,15 +153,29 @@ const PRODUCE_GROUPS = [
             { id: 'nug', label: { en: 'Niger Seed (Nug)', am: 'ኑግ', om: 'Nuugii' }, keywords: ['niger seed', 'nug', 'ኑግ', 'nuugii'] },
             { id: 'linseed', label: { en: 'Linseed (Telba)', am: 'ተልባ', om: 'Talbaa' }, keywords: ['linseed', 'telba', 'ተልባ', 'talbaa'] },
             { id: 'sunflower', label: { en: 'Sunflower', am: 'ሱፍ አበባ', om: 'Abaaboo Adii' }, keywords: ['sunflower', 'ሱፍ አበባ'] },
-            { id: 'rapeseed', label: { en: 'Rapeseed', am: 'የራፕ ዘር', om: 'Sanyii Rapaa' }, keywords: ['rapeseed', 'የራፕ ዘር'] }
+            { id: 'rapeseed', label: { en: 'Rapeseed', am: 'የራፕ ዘር', om: 'Sanyii Rapaa' }, keywords: ['rapeseed', 'የራፕ ዘር'] },
+            { id: 'groundnut', label: { en: 'Groundnuts (Ocholoni)', am: 'ኦቾሎኒ', om: 'Ocholonii' }, keywords: ['groundnut', 'peanut', 'ocholoni', 'ኦቾሎኒ', 'ocholonii'] }
         ]
     },
     {
         category: 'Coffee & Spices',
-        label: { en: 'Cash Crops & Stimulants', am: 'ቡና እና ቅመማ ቅመም', om: 'Buna fi Urgooftuu' },
+        label: { en: 'Coffee & Tea', am: 'ቡና እና ሻይ', om: 'Buna fi Shaayii' },
         items: [
-            { id: 'coffee', label: { en: 'Coffee', am: 'ቡና', om: 'Bunaa' }, keywords: ['coffee', 'ቡና', 'bunaa', 'buna'] },
-            { id: 'spices', label: { en: 'Spices (Berbere, Korarima, Black Cumin, Fenugreek)', am: 'ቅመማ ቅመም (በርበሬ፣ ኮረሪማ፣ ጥቁር አዝሙድ፣ አብሶ)', om: 'Urgooftuu (Birberee, Korarimaa, Magazia, Huluugee)' }, keywords: ['spice', 'berbere', 'korarima', 'cumin', 'fenugreek', 'ቅመም', 'በርበሬ', 'ኮረሪማ'] }
+            { id: 'coffee', label: { en: 'Coffee', am: 'ቡና', om: 'Buna' }, keywords: ['coffee', 'ቡና', 'buna', 'bunaa'] },
+            { id: 'tea', label: { en: 'Tea', am: 'ሻይ', om: 'Shaayii' }, keywords: ['tea', 'ሻይ', 'shaayii'] }
+        ]
+    },
+    {
+        category: 'Coffee & Spices',
+        label: { en: 'Spices & Herbs', am: 'ቅመማ ቅመም', om: 'Urgooftuu' },
+        items: [
+            { id: 'berbere', label: { en: 'Berbere (Red Chili Powder)', am: 'በርበሬ', om: 'Birberee' }, keywords: ['berbere', 'በርበሬ', 'birberee', 'chili powder', 'spice', 'ቅመም'] },
+            { id: 'korarima', label: { en: 'Korarima (Ethiopian Cardamom)', am: 'ኮረሪማ', om: 'Korarimaa' }, keywords: ['korarima', 'cardamom', 'ኮረሪማ', 'korarimaa', 'spice', 'ቅመም'] },
+            { id: 'blackcumin', label: { en: 'Black Cumin (Azmud)', am: 'ጥቁር አዝሙድ', om: 'Magazia' }, keywords: ['black cumin', 'azmud', 'ጥቁር አዝሙድ', 'magazia', 'spice', 'ቅመም'] },
+            { id: 'fenugreek', label: { en: 'Fenugreek (Abish)', am: 'አብሶ', om: 'Huluugee' }, keywords: ['fenugreek', 'abish', 'አብሶ', 'huluugee', 'spice', 'ቅመም'] },
+            { id: 'turmeric', label: { en: 'Turmeric (Erd)', am: 'ኤርድ', om: 'Erdii' }, keywords: ['turmeric', 'erd', 'ኤርድ', 'erdii', 'spice', 'ቅመም'] },
+            { id: 'ginger', label: { en: 'Ginger', am: 'ዝንጅብል', om: 'Zinjibila' }, keywords: ['ginger', 'ዝንጅብል', 'zinjibila', 'spice', 'ቅመም'] },
+            { id: 'cumin', label: { en: 'Cumin (Kamun)', am: 'ካሙን', om: 'Kamuunii' }, keywords: ['cumin', 'kamun', 'ካሙን', 'kamuunii', 'spice', 'ቅመም'] }
         ]
     },
     {
@@ -158,7 +186,32 @@ const PRODUCE_GROUPS = [
             { id: 'garlic', label: { en: 'Garlic', am: 'ነጭ ሽንኩርት', om: 'Qullubbii Adii' }, keywords: ['garlic', 'ነጭ ሽንኩርት'] },
             { id: 'potatoes', label: { en: 'Potatoes', am: 'ድንች', om: 'Dinchii' }, keywords: ['potato', 'ድንች', 'dinchii'] },
             { id: 'tomatoes', label: { en: 'Tomatoes', am: 'ቲማቲም', om: 'Timatimii' }, keywords: ['tomato', 'ቲማቲም', 'timatimii'] },
-            { id: 'cabbage', label: { en: 'Cabbage', am: 'ጎመን', om: 'Goomeen' }, keywords: ['cabbage', 'ጎመን', 'goomeen'] }
+            { id: 'cabbage', label: { en: 'Cabbage', am: 'ጎመን', om: 'Goomeen' }, keywords: ['cabbage', 'ጎመን', 'goomeen'] },
+            { id: 'carrots', label: { en: 'Carrots', am: 'ካሮት', om: 'Kaarotii' }, keywords: ['carrot', 'ካሮት', 'kaarotii'] },
+            { id: 'beets', label: { en: 'Beets (Key Sir)', am: 'ቀይ ስር', om: 'Hundee Diimaa' }, keywords: ['beet', 'beetroot', 'ቀይ ስር', 'hundee diimaa', 'key sir'] },
+            { id: 'kale', label: { en: 'Kale (Kosta)', am: 'ቆስጣ', om: 'Qoostaa' }, keywords: ['kale', 'ቆስጣ', 'qoostaa', 'kosta'] },
+            { id: 'lettuce', label: { en: 'Lettuce', am: 'ሰላጣ', om: 'Raafuu' }, keywords: ['lettuce', 'ሰላጣ', 'raafuu', 'salata'] },
+            { id: 'spinach', label: { en: 'Spinach', am: 'ስፒናች', om: 'Sipaanaachii' }, keywords: ['spinach', 'ስፒናች', 'sipaanaachii'] },
+            { id: 'sweetpotatoes', label: { en: 'Sweet Potatoes (Injori)', am: 'ስኳር ድንች', om: 'Dinchii Sukkaaraa' }, keywords: ['sweet potato', 'injori', 'ስኳር ድንች', 'እንጆሪ', 'dinchii sukkaaraa'] },
+            { id: 'pumpkin', label: { en: 'Pumpkin', am: 'ዱባ', om: 'Duba' }, keywords: ['pumpkin', 'ዱባ', 'duba'] },
+            { id: 'chilis', label: { en: 'Green Chilis (Kariya)', am: 'ቃሪያ', om: 'Qaariyaa' }, keywords: ['chili', 'chilli', 'green pepper', 'ቃሪያ', 'qaariyaa', 'kariya'] },
+            { id: 'cauliflower', label: { en: 'Cauliflower', am: 'አበባ ጎመን', om: 'Abeba Goomeen' }, keywords: ['cauliflower', 'አበባ ጎመን'] },
+            { id: 'okra', label: { en: 'Okra (Bamiya)', am: 'ባሚያ', om: 'Bamyaa' }, keywords: ['okra', 'bamiya', 'ባሚያ', 'bamyaa'] }
+        ]
+    },
+    {
+        category: 'Fruits',
+        label: { en: 'Fresh Fruits', am: 'ትኩስ ፍራፍሬ', om: 'Fuduraa' },
+        items: [
+            { id: 'banana', label: { en: 'Bananas', am: 'ሙዝ', om: 'Muuzii' }, keywords: ['banana', 'ሙዝ', 'muuzii'] },
+            { id: 'avocado', label: { en: 'Avocados', am: 'አቮካዶ', om: 'Abukaadoo' }, keywords: ['avocado', 'አቮካዶ', 'abukaadoo'] },
+            { id: 'mango', label: { en: 'Mangoes', am: 'ማንጎ', om: 'Maangoo' }, keywords: ['mango', 'ማንጎ', 'maangoo'] },
+            { id: 'papaya', label: { en: 'Papaya', am: 'ፓፓያ', om: 'Paappayyaa' }, keywords: ['papaya', 'ፓፓያ', 'paappayyaa'] },
+            { id: 'orange', label: { en: 'Oranges', am: 'ብርቱካን', om: 'Burtukaana' }, keywords: ['orange', 'ብርቱካን', 'burtukaana'] },
+            { id: 'lemon', label: { en: 'Lemons & Limes', am: 'ሎሚ', om: 'Loomii' }, keywords: ['lemon', 'lime', 'ሎሚ', 'loomii'] },
+            { id: 'tangerine', label: { en: 'Tangerines (Mandarina)', am: 'መንደሪን', om: 'Mandariina' }, keywords: ['tangerine', 'mandarin', 'መንደሪን', 'mandariina'] },
+            { id: 'apple', label: { en: 'Apples', am: 'ፖም', om: 'Appilii' }, keywords: ['apple', 'ፖም', 'appilii'] },
+            { id: 'pineapple', label: { en: 'Pineapple', am: 'አናናስ', om: 'Anaanaasii' }, keywords: ['pineapple', 'አናናስ', 'anaanaasii'] }
         ]
     },
     {
@@ -242,6 +295,7 @@ const I18N = {
         'badge.locked': 'Pool Locked', 'badge.active': 'Active Pool',
         'cat.all': 'All', 'cat.grains': 'Grains & Teff', 'cat.vegetables': 'Vegetables',
         'cat.coffee': 'Coffee & Spices', 'cat.oil': 'Oil & Pulses', 'cat.fruits': 'Fruits',
+        'cat.groceries': 'Groceries',
         'calc.badge': 'Interactive Inflation Fighter', 'calc.title': 'Neighborhood Family Savings Calculator',
         'calc.subtitle': 'Compare local retail market prices with NuroTewedede direct woreda wholesale group rates.',
         'calc.family': 'Family Size:', 'calc.people2': '2 People', 'calc.people4': '4 People',
@@ -372,8 +426,10 @@ const I18N = {
         'toast.poolCreateError': 'Error creating pool', 'toast.signedOut': 'Signed out successfully.',
         'pool.fallbackTitle': 'Community Buying Pool', 'pool.fallbackWoreda': 'Regional Woreda',
         'pool.fallbackUnit': '1 Share', 'pool.fallbackOrganizer': 'Neighborhood Group Coordinator',
-        'pool.fallbackPickup': 'This Week', 'pool.fallbackCategory': 'Groceries',
         'pool.fallbackHubSuffix': 'Neighborhood Distribution Hub', 'pool.fallbackGroupPool': 'Group Pool',
+        'pickup.thisWeek': 'This Week', 'pickup.nextWeek': 'Next Week',
+        'pickup.inTwoWeeks': 'In 2 Weeks', 'pickup.endOfMonth': 'End of Month',
+        'pickup.nextMonth': 'Next Month', 'pickup.tomorrow': 'Tomorrow',
         'pool.fallbackBag': '50 kg Bag',
         'details.neighborBuyer': 'Neighbor Buyer', 'details.title': 'Community Discussion & Details',
         'myshares.signinBtn': 'Sign In', 'myshares.emptyTitle': 'You haven\'t reserved any pool shares yet.',
@@ -450,6 +506,7 @@ const I18N = {
         'badge.locked': 'ግዢ ተቆልፏል', 'badge.active': 'ንቁ ግዢ',
         'cat.all': 'ሁሉም', 'cat.grains': 'እህል እና ጤፍ', 'cat.vegetables': 'አትክልቶች',
         'cat.coffee': 'ቡና እና ቅመማ ቅመም', 'cat.oil': 'ዘይት እና ጥራጥሬ', 'cat.fruits': 'ፍራፍሬ',
+        'cat.groceries': 'ግሮሰሪ',
         'calc.badge': 'በይነተገናኝ የዋጋ ንረት ተዋጊ', 'calc.title': 'የሰፈር ቤተሰብ ቁጠባ ካልኩሌተር',
         'calc.subtitle': 'የአካባቢውን የችርቻሮ ዋጋ ከNuroTewedede ቀጥተኛ የወረዳ የጅምላ ቡድን ዋጋ ጋር ያወዳድሩ።',
         'calc.family': 'የቤተሰብ ብዛት:', 'calc.people2': '2 ሰዎች', 'calc.people4': '4 ሰዎች',
@@ -580,8 +637,10 @@ const I18N = {
         'toast.poolCreateError': 'ግዢ ሲፈጠር ስህተት ተከሰተ', 'toast.signedOut': 'በተሳካ ሁኔታ ወጥተዋል።',
         'pool.fallbackTitle': 'የማህበረሰብ ግዢ', 'pool.fallbackWoreda': 'የክልል ወረዳ',
         'pool.fallbackUnit': '1 አክሲዮን', 'pool.fallbackOrganizer': 'የሰፈር ቡድን አስተባባሪ',
-        'pool.fallbackPickup': 'በዚህ ሳምንት', 'pool.fallbackCategory': 'ግሮሰሪ',
         'pool.fallbackHubSuffix': 'የሰፈር ስርጭት ማዕከል', 'pool.fallbackGroupPool': 'የቡድን ግዢ',
+        'pickup.thisWeek': 'በዚህ ሳምንት', 'pickup.nextWeek': 'በሚቀጥለው ሳምንት',
+        'pickup.inTwoWeeks': 'በ2 ሳምንታት ውስጥ', 'pickup.endOfMonth': 'በወር መጨረሻ',
+        'pickup.nextMonth': 'በሚቀጥለው ወር', 'pickup.tomorrow': 'ነገ',
         'pool.fallbackBag': '50ኪግ ቦርሳ',
         'details.neighborBuyer': 'ጎረቤት ገዢ', 'details.title': 'የማህበረሰብ ውይይት እና ዝርዝሮች',
         'myshares.signinBtn': 'ግባ', 'myshares.emptyTitle': 'እስካሁን የቡድን ግዢ አክሲዮን አላስያዙም።',
@@ -657,7 +716,8 @@ const I18N = {
         'badge.ready': 'Fudhachuuf Qophii', 'badge.transit': 'Daandii Geejjibaa Irra',
         'badge.locked': 'Bituun Cufame', 'badge.active': 'Bituu Ijoo',
         'cat.all': 'Hunda', 'cat.grains': 'Midhaanii fi Xaafii', 'cat.vegetables': 'Kuduraa',
-        'cat.coffee': 'Buna fi Urgooftuu', 'cat.oil': 'Zayitaa fi Huubuu', 'cat.fruits': 'Muduraa',
+        'cat.coffee': 'Buna fi Urgooftuu', 'cat.oil': 'Zayitaa fi Huubuu', 'cat.fruits': 'Fuduraa',
+        'cat.groceries': 'Meelaa',
         'calc.badge': 'Lola Gubbattii Tarmata', 'calc.title': 'Herrega Qusannaa Maatii Naannoo',
         'calc.subtitle': 'Gatii gabaa daldalaa NuroTewedede qulqullinaa wajjin wal bira qaba.',
         'calc.family': 'Hamma Maatii:', 'calc.people2': 'Namoota 2', 'calc.people4': 'Namoota 4',
@@ -788,8 +848,10 @@ const I18N = {
         'toast.poolCreateError': 'Bituu uumuudhaan dogoggora', 'toast.signedOut': 'Milkaa\'inaan ba\'aniiru.',
         'pool.fallbackTitle': 'Bituu Hawaasaa', 'pool.fallbackWoreda': 'Aanaa Naannoo',
         'pool.fallbackUnit': 'Qooda 1', 'pool.fallbackOrganizer': 'Koordinaatorii Garee Naannoo',
-        'pool.fallbackPickup': 'Torban kana', 'pool.fallbackCategory': 'Meelaa',
         'pool.fallbackHubSuffix': 'Buufata Raabsaa Naannoo', 'pool.fallbackGroupPool': 'Bituu Waldaa',
+        'pickup.thisWeek': 'Torban kana', 'pickup.nextWeek': 'Torban itti aanu',
+        'pickup.inTwoWeeks': 'Torban 2 keessatti', 'pickup.endOfMonth': 'Xumura ji\'aa',
+        'pickup.nextMonth': 'Ji\'a itti aanu', 'pickup.tomorrow': 'Bori',
         'pool.fallbackBag': 'Korojoo 50kg',
         'details.neighborBuyer': 'Bituuftuu Gaaressa', 'details.title': 'Marii fi Ibsa Hawaasaa',
         'myshares.signinBtn': 'Seeni', 'myshares.emptyTitle': 'Amma yoomuu qooda bituu hin buufanne.',
@@ -827,7 +889,13 @@ function localizeCategory(cat) {
     return key ? t(key) : cat;
 }
 
+function localizePickup(d) {
+    const key = PICKUP_L10N[d];
+    return key ? t(key) : d;
+}
+
 const LANG_NAMES = { en: 'English', am: 'Amharic', om: 'Afaan Oromoo' };
+const LANG_NATIVE = { en: 'English', am: 'አማርኛ', om: 'Afaan Oromoo' };
 
 function updateLangButtons() {
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
@@ -1092,8 +1160,8 @@ function normalizePool(p) {
         imageUrl: p.image_url || p.imageUrl || DEFAULT_IMAGE,
         organizer: p.organizer || t('pool.fallbackOrganizer'),
         commentsCount: p.comments_count ?? p.commentsCount ?? 0,
-        pickupDate: p.pickup_date || p.pickupDate || t('pool.fallbackPickup'),
-        category: p.category || t('pool.fallbackCategory'),
+        pickupDate: p.pickup_date || p.pickupDate || 'This Week',
+        category: p.category || 'Groceries',
         status: p.status || (locked ? 'locked' : 'active')
     };
 }
@@ -1469,7 +1537,7 @@ function renderPools() {
                 '<div class="p-5 space-y-4">' +
                     '<div>' +
                         '<div class="flex items-center justify-between text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">' +
-                            '<span>' + esc(tt('card.hub', localizeTown(pool.town))) + '</span><span>' + esc(tt('card.pickup', pool.pickupDate)) + '</span>' +
+                            '<span>' + esc(tt('card.hub', localizeTown(pool.town))) + '</span><span>' + esc(tt('card.pickup', localizePickup(pool.pickupDate))) + '</span>' +
                         '</div>' +
                         '<h3 class="text-base font-extrabold text-slate-900 truncate">' + esc(pool.title) + '</h3>' +
                         '<p class="text-xs text-slate-500 font-medium">' + esc(tt('card.unit', pool.unit)) + '</p>' +
@@ -1618,7 +1686,7 @@ function renderReserveForm() {
                 '<div class="grid grid-cols-3 gap-2">' + methodButtons + '</div>' +
             '</div>' +
             '<div class="bg-slate-100 p-3 rounded-xl text-xs text-slate-600">' +
-                esc(tt('reserve.notice', currentUser && currentUser.email ? currentUser.email : 'Guest Buyer', pool.hubLocation, pool.pickupDate)) +
+                esc(tt('reserve.notice', currentUser && currentUser.email ? currentUser.email : 'Guest Buyer', pool.hubLocation, localizePickup(pool.pickupDate))) +
             '</div>' +
             '<div class="flex justify-end gap-2 pt-2">' +
                 '<button type="button" onclick="closeReserveModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">' + esc(t('common.cancel')) + '</button>' +
@@ -1696,7 +1764,7 @@ function buildVoucherHTML(reservation, pool, closeFn) {
     const qty = reservation.shares || 1;
     const unit = pool.unit || t('pool.fallbackUnit');
     const hub = pool.hubLocation || pool.hub_location || (pool.town || 'Addis Ababa') + ' ' + t('pool.fallbackHubSuffix');
-    const date = pool.pickupDate || pool.pickup_date || t('pool.fallbackPickup');
+    const date = localizePickup(pool.pickupDate || pool.pickup_date) || t('pickup.thisWeek');
     const customer = currentUser && currentUser.email ? currentUser.email : '—';
 
     return '' +
@@ -2284,7 +2352,7 @@ async function loadMyShares() {
         const badge = getStatusBadge(status);
         const method = (res.payment_method || res.paymentMethod || 'telebirr').toUpperCase();
         const created = res.created_at ? new Date(res.created_at).toLocaleDateString() : t('time.today');
-        const pickup = res.pickup_date || res.pickupDate || '—';
+        const pickup = localizePickup(res.pickup_date || res.pickupDate) || '—';
         return '<div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">' +
             '<div class="w-20 h-20 bg-white p-2 rounded-xl border border-slate-200 flex items-center justify-center flex-shrink-0">' +
                 '<img src="' + esc('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(code)) + '" alt="' + esc(t('voucher.qrAlt')) + '" class="w-full h-full object-contain">' +
@@ -2652,7 +2720,7 @@ function downloadPickupReminder(poolId) {
         'DTSTART:' + fmtIcs(base),
         'DTEND:' + fmtIcs(end),
         'SUMMARY:' + esc(t('success.title')) + ' — ' + pool.title,
-        'DESCRIPTION:' + tt('card.pickup', pool.pickupDate) + ' • ' + (pool.hubLocation || '') + ' • ' + fmt(pool.price) + ' ' + currencyUnit(),
+        'DESCRIPTION:' + tt('card.pickup', localizePickup(pool.pickupDate)) + ' • ' + (pool.hubLocation || '') + ' • ' + fmt(pool.price) + ' ' + currencyUnit(),
         'LOCATION:' + (pool.hubLocation || localizeTown(pool.town)),
         'END:VEVENT',
         'END:VCALENDAR'
