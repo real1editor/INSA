@@ -562,11 +562,6 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 0.625rem;
     padding: 0.4rem 0.75rem;
     white-space: nowrap;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-.ticker-item-card:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
 }
 #ticker > div > span.shrink-0 {
     position: relative;
@@ -1218,24 +1213,6 @@ button:disabled {
     opacity: 1;
 }
 
-/* ===== Live ticker polish: edge fade + LIVE glow ===== */
-.ticker-viewport {
-    mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-}
-#ticker > div > span.shrink-0 {
-    position: relative;
-    animation: live-pulse 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-@keyframes live-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
-    70% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-.ticker-track {
-    animation-duration: 40s;
-}
-
 /* ===== Calculator: custom sliders + live feedback ===== */
 #calc-items input[type="range"] {
     -webkit-appearance: none;
@@ -1359,6 +1336,108 @@ button:disabled {
     color: #e2e8f0;
 }
 
+/* ===== Staggered grid children for JS-rendered cards ===== */
+#pools-grid > div,
+#market-grid > div,
+#seller-grid > div {
+    animation: card-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+#pools-grid > div:nth-child(1),
+#market-grid > div:nth-child(1),
+#seller-grid > div:nth-child(1) { animation-delay: 0ms; }
+#pools-grid > div:nth-child(2),
+#market-grid > div:nth-child(2),
+#seller-grid > div:nth-child(2) { animation-delay: 60ms; }
+#pools-grid > div:nth-child(3),
+#market-grid > div:nth-child(3),
+#seller-grid > div:nth-child(3) { animation-delay: 120ms; }
+#pools-grid > div:nth-child(4),
+#market-grid > div:nth-child(4),
+#seller-grid > div:nth-child(4) { animation-delay: 180ms; }
+#pools-grid > div:nth-child(5),
+#market-grid > div:nth-child(5),
+#seller-grid > div:nth-child(5) { animation-delay: 240ms; }
+#pools-grid > div:nth-child(6),
+#market-grid > div:nth-child(6),
+#seller-grid > div:nth-child(6) { animation-delay: 300ms; }
+#pools-grid > div:nth-child(7),
+#market-grid > div:nth-child(7),
+#seller-grid > div:nth-child(7) { animation-delay: 340ms; }
+#pools-grid > div:nth-child(8),
+#market-grid > div:nth-child(8),
+#seller-grid > div:nth-child(8) { animation-delay: 380ms; }
+
+/* ===== Unified card micro-interaction system ===== */
+.card-lift {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease;
+}
+.card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 45px -14px rgba(2, 44, 34, 0.28),
+                0 4px 12px rgba(2, 44, 34, 0.08);
+}
+.card-lift:active {
+    transform: translateY(-2px) scale(0.985);
+    transition-duration: 0.1s;
+}
+
+/* ===== Button press feedback ===== */
+.btn-press {
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.15s ease,
+                background-color 0.15s ease;
+}
+.btn-press:not(:disabled):active {
+    transform: scale(0.96);
+}
+
+/* ===== Modal & overlay backdrops ===== */
+.glass {
+    animation: modal-rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+@keyframes modal-rise {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ===== GPU acceleration utility ===== */
+.gpu {
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Live ticker item hover expansion ===== */
+.ticker-item-card {
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ticker-item-card:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
+}
+
+/* ===== Pulse dot for live indicators ===== */
+.live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+    animation: live-dot-pulse 2s infinite;
+}
+@keyframes live-dot-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
 /* ===== Respect reduced-motion preferences ===== */
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -1379,5 +1458,8 @@ button:disabled {
     #scroll-progress,
     .hero-float {
         display: none;
+    }
+    .ticker-track {
+        animation: none !important;
     }
 }

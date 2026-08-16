@@ -2027,7 +2027,7 @@ function renderPools() {
         const isReservable = !pool.locked && pool.currentShares < pool.targetShares;
 
         const card = document.createElement('div');
-        card.className = "card-enter bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group";
+        card.className = "card-enter card-lift bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group";
         card.style.animationDelay = (idx % 12) * 55 + 'ms';
         card.innerHTML =
             '<div>' +
@@ -2077,7 +2077,7 @@ function renderPools() {
                     '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
                     '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
                 '</button>' +
-                '<button onclick="openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
+                '<button onclick="openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="btn-press flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
                     (isReservable ? esc(t('card.reserve')) : esc(t('card.fullyReserved'))) +
                 '</button>' +
             '</div>';
@@ -4031,7 +4031,7 @@ function productCardHtml(p) {
     const available = availabilityText(p);
 
     return '' +
-        '<div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">' +
+        '<div class="card-enter card-lift bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">' +
             '<button onclick="openProductModal(\'' + esc(String(p.id)) + '\')" class="text-left">' + img + '</button>' +
             '<div class="p-4 space-y-2 flex flex-col flex-1">' +
                 '<div class="flex items-start justify-between gap-2">' +
@@ -4196,7 +4196,7 @@ function sellerProductCardHtml(p) {
             : 'bg-rose-100 text-rose-700';
 
     return '' +
-        '<div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">' +
+        '<div class="card-enter card-lift bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col">' +
             img +
             '<div class="p-4 space-y-2 flex flex-col flex-1">' +
                 '<div class="flex items-start justify-between gap-2">' +
