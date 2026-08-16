@@ -411,6 +411,21 @@ const I18N = {
         'ai.chip3': 'When is peak harvest season for Gojjam White Teff and price trends?',
         'ai.chip4': 'Suggest a bulk grocery supply list for a 30-person holiday feast',
         'ai.welcome': 'Hello! I am **NuroTewedede AI**, your direct agricultural sourcing and group-buying advisor for Ethiopian neighborhood hubs.\n\nI can assist you with:\n- **Bulk Supply Estimates:** Calculating Teff, Onions, Coffee, Oil, or Pulse quantities for 5 to 50 families.\n- **Harvest & Price Seasonality:** Finding peak harvest months in Gojjam, Sidama, Ziway, Arsi, and Jimma.\n- **Produce Storage Guidelines:** Keeping bulk 50kg bags fresh without spoilage.\n- **Holiday Feast Planning:** Scaling bulk grocery orders for community celebrations (Enkutatash, Genna, Timkat, Eid).\n\nSelect a quick topic below or type your question!',
+        'ai.swelcome': 'Hello! I am **NuroTewedede AI**, your agricultural marketing and wholesale pricing advisor for sellers on NuroTewedede.\n\nI can help you with:\n- **Pricing your harvest:** Setting fair ETB prices per quintal, kg, or ton for Teff, Onions, Coffee, Pulses and more.\n- **Quality & grading:** Understanding how moisture content and cleanliness affect your grade and price.\n- **Strong listings:** Writing marketplace listings that attract serious wholesale buyers.\n- **Demand & timing:** Knowing when and where wholesale prices peak across Ethiopia.\n- **Inventory management:** Keeping bulk stock fresh, updating volumes, and closing sales.\n\nSelect a quick topic below or type your question!',
+        'ai.schip1': 'Pricing my Teff', 'ai.sprompt1': 'How should I price my Teff harvest this season in ETB?',
+        'ai.schip2': 'Grades & quality', 'ai.sprompt2': 'How do moisture content and cleanliness affect my produce grade and price?',
+        'ai.schip3': 'Strong listing', 'ai.sprompt3': 'Write a strong marketplace listing for my 20 quintal Gojjam White Teff harvest.',
+        'ai.schip4': 'Best time to sell', 'ai.sprompt4': 'When is peak demand and the best time to sell red onions in Addis Ababa?',
+        'ai.actionConfirm': 'Confirm', 'ai.actionCancel': 'Cancel', 'ai.actionWorking': 'Working\u2026',
+        'ai.actionDone': 'Done', 'ai.actionFailed': 'Failed',
+        'ai.actionReserveTitle': 'Confirm Reservation', 'ai.actionReserveSummary': 'Reserve {0} share(s) in "{1}" for {2} ETB via {3}.',
+        'ai.actionSoldTitle': 'Confirm \u2014 Mark Sold', 'ai.actionSoldSummary': 'Mark "{0}" ({1} {2}) as sold.',
+        'ai.actionUpdateTitle': 'Confirm Update', 'ai.actionUpdateSummary': 'Update listing "{0}".',
+        'ai.actionCreateTitle': 'Confirm New Listing', 'ai.actionCreateSummary': 'Open the listing form pre-filled with your details \u2014 review before submitting.',
+        'ai.actionReserved': '\u2705 Reserved {0} share(s) in "{1}". Voucher: {2}',
+        'ai.actionSold': '\u2705 "{0}" was marked as sold.',
+        'ai.actionUpdated': '\u2705 Listing "{0}" was updated.',
+        'ai.actionPrefilled': '\u2705 The listing form has been pre-filled for you \u2014 review and submit when ready.',
         'footer.tagline': '© 2026 NuroTewedede Direct Sourcing Platform • Neighborhood Group Buying Network',
         'toast.copied': 'Voucher code copied!',
         'toast.reserved': 'Successfully reserved {0} share(s)! Digital pickup voucher generated.',
@@ -711,6 +726,21 @@ const I18N = {
         'ai.chip3': 'የጎጃም ነጭ ጤፍ ከፍተኛ የመኸር ወቅት እና የዋጋ አዝማሚያዎች መቼ ናቸው?',
         'ai.chip4': 'ለ30 ሰው የበዓል ግብዣ የጅምላ ግሮሰሪ ዝርዝር ጠቁሙ',
         'ai.welcome': 'ሰላም! እኔ **NuroTewedede AI** ነኝ፣ ለኢትዮጵያ የሰፈር ማዕከላት የግብርና አቅርቦት እና የቡድን ግዢ አማካሪዎ ነኝ።\n\nሊረዳዎት የሚችለው:\n- **የጅምላ አቅርቦት ግምቶች:** ለ5 እስከ 50 ቤተሰቦች የጤፍ፣ ሽንኩርት፣ ቡና፣ ዘይት ወይም ጥራጥሬ መጠኖችን ማስላት።\n- **የመኸር እና የዋጋ ወቅታዊነት:** በጎጃም፣ ሲዳማ፣ ዝዌይ፣ አርሲ እና ጅማ ከፍተኛ የመኸር ወራትን ማግኘት።\n- **የምርት ማከማቻ መመሪያዎች:** የጅምላ 50ኪግ ቦርሳዎችን ያለ ብስባሽነት እንዴት እንደሚጠብቁ።\n- **የበዓል ግብዣ እቅድ:** ለማህበረሰብ ክብረ በዓላት (እንቁጣጣሽ፣ ገና፣ ጥምቀት፣ ኢድ) የጅምላ ግሮሰሪ ትዕዛዞችን ማስተካከል።\n\nከታች የፈጣን ርዕስ ይምረጡ ወይም ጥያቄዎን ይፃፉ!',
+        'ai.swelcome': 'ሰላም! እኔ **NuroTewedede AI** ነኝ፣ በNuroTewedede ላይ ለሻጮች የግብርና ግብይት እና የጅምላ ዋጋ አማካሪዎ ነኝ።\n\nሊረዳዎት የሚችለው:\n- **ምርትዎን ማዋጠር:** ለጤፍ፣ ሽንኩርት፣ ቡና፣ ጥራጥሬ እና ሌሎች በኩንታል፣ ኪሎግራም ወይም ቶን ፍትሃዊ የብር ዋጋ ማውጣት።\n- **ጥራት እና ደረጃ:** የእርጥበት መጠን እና ንጽህና ደረጃን እና ዋጋን እንዴት እንደሚነኩ መረዳት።\n- **ጠንካራ ዝርዝሮች:** ከባድ ገዢዎችን የሚስቡ የገበያ ዝርዝሮችን መጻፍ።\n- **ፍላጎት እና ጊዜ:** በመላ ኢትዮጵያ የጅምላ ዋጋ መቼ እና የት ከፍ እንደሚል ማወቅ።\n- **የክምችት አስተዳደር:** የጅምላ ምርትን ትኩስ ማድረግ፣ መጠኖችን ማዘመን እና ሽያጮችን መዝጋት።\n\nከታች የፈጣን ርዕስ ይምረጡ ወይም ጥያቄዎን ይፃፉ!',
+        'ai.schip1': 'ጤፍን ማዋጠር', 'ai.sprompt1': 'የጤፍ ምርቴን በዚህ የመኸር ወቅት በብር እንዴት ማዋጠር አለብኝ?',
+        'ai.schip2': 'ደረጃ እና ጥራት', 'ai.sprompt2': 'የእርጥበት መጠን እና ንጽህና የምርቴን የጥራት ደረጃ እና ዋጋ እንዴት ይጎዳሉ?',
+        'ai.schip3': 'ጠንካራ ዝርዝር', 'ai.sprompt3': 'ለ20 ኩንታል የጎጃም ነጭ ጤፍ ምርቴ ጠንካራ የገበያ ዝርዝር ጻፍ።',
+        'ai.schip4': 'ለመሸጥ ጊዜ', 'ai.sprompt4': 'በአዲስ አበባ ቀይ ሽንኩርት ለመሸጥ ከፍተኛ የፍላጎት ጊዜ እና ምርጥ ጊዜ መቼ ነው?',
+        'ai.actionConfirm': 'አረጋግጥ', 'ai.actionCancel': 'ሰርዝ', 'ai.actionWorking': 'በሂደት ላይ…',
+        'ai.actionDone': 'ተጠናቋል', 'ai.actionFailed': 'አልተሳካም',
+        'ai.actionReserveTitle': 'ቦታ ማስያዝ አረጋግጥ', 'ai.actionReserveSummary': 'በ"{1}" ውስጥ {0} አክሲዮን በ{2} ብር በ{3} ይያዝ።',
+        'ai.actionSoldTitle': 'የተሸጠ መሆኑን አረጋግጥ', 'ai.actionSoldSummary': '"{0}" ({1} {2}) እንደተሸጠ ምልክት ያድርጉ።',
+        'ai.actionUpdateTitle': 'ማዘመን አረጋግጥ', 'ai.actionUpdateSummary': 'ዝርዝር "{0}" ያዘምኑ።',
+        'ai.actionCreateTitle': 'አዲስ ዝርዝር አረጋግጥ', 'ai.actionCreateSummary': 'በዝርዝሮችዎ የተሞላ የዝርዝር ቅጽ ይከፈታል — ከማስገባትዎ በፊት ይገምግሙ።',
+        'ai.actionReserved': '✅ "{1}" ውስጥ {0} አክሲዮኖች ተይዘዋል። ቫውቸር: {2}',
+        'ai.actionSold': '✅ "{0}" እንደተሸጠ ምልክት ተደርጓል።',
+        'ai.actionUpdated': '✅ ዝርዝር "{0}" ተዘምኗል።',
+        'ai.actionPrefilled': '✅ የዝርዝሩ ቅጽ ለእርስዎ ተሞልቷል — ተገምግሞ ሲዘጋጅ ያስገቡ።',
         'footer.tagline': '© 2026 NuroTewedede ቀጥተኛ አቅርቦት መድረክ • የሰፈር ቡድን ግዢ መረብ',
         'toast.copied': 'የቫውቸር ኮድ ተቀድቷል!',
         'toast.reserved': '{0} አክሲዮን(ኦች) በተሳካ ሁኔታ ተይዘዋል! ዲጂታል የመቀበያ ቫውቸር ተዘጋጅቷል።',
@@ -1013,6 +1043,21 @@ const I18N = {
         'ai.chip3': 'Yeroo midhaan Xaafii adii Gojjam fi amala gatii yoom?',
         'ai.chip4': 'Irbaata ayyaana nama 30f tarree dhiyeessaa waldaa akeekkachiisi',
         'ai.welcome': 'Akkam! Ani **AI NuroTewedede**, gorsaa dhiyeessaa qonnaa fi bituu waldaa buufata naannoo Itoophiyaati.\n\nWaan si gargaaruu danda\'u:\n- **Tilmaama Dhiyeessaa Waldaa:** Baay\'ina Xaafii, Shunkurtii, Buna, Zayitaa yookiin Huubuu maatiilee 5 hanga 50 tiif herreguu.\n- **Yeroo Midhaanii fi Amala Gatii:** Ji\'oota midhaan guddaa Gojjam, Sidama, Ziway, Arsi fi Jimma keessatti argachuu.\n- **Qajeelfama Kuusannaa Oomishaa:** Korojoo 50kg baqqaana tokko malee akkamitti qabachuu.\n- **Karoorfama Irbaata Ayyaanaa:** Ayyaana hawaasaa (Inqut\'ataash, Gennaa, Timkat, Idd) irbaataaf ajaja waldaa guddisuu.\n\nJalatti mata duree filadhu yookiin gaaffii kee barreessi!',
+        'ai.swelcome': 'Akkam! Ani **AI NuroTewedede**, gorsaa gurgurtaa qonnaa fi gatii dhibbaa dhi\'ooftuuwwan NuroTewedede irratti.\n\nWaan si gargaaruu danda\'u:\n- **Gatii midhaan keetii:** Xaafii, Shunkurtii, Buna, Huubuu fi kan biroof gatii haqaa ETB kutaalaa, kiloogiraamaa yookiin tonaan akeekuu.\n- **Qulqullinaa fi sadarkaa:** Hanga jiidhinaa fi qulqullinni sadarkaa fi gatii midhaan keetii akkamitti jijjiru hubachuu.\n- **Galmee cimaa:** Bituuwwan cimaa harkisu galmee gabaa barreessuu.\n- **Fedhii fi yeroo:** Gatii dhibbaa yoom fi eessa Itoophiyaatti ol ka\'u beekuu.\n- **Ittigaafa kuusaa:** Oomisha dhibbaa haaruu qabachuu, hanga haaromsuu, fi gurgurtaa xumuruu.\n\nJalatti mata duree filadhu yookiin gaaffii kee barreessi!',
+        'ai.schip1': 'Gatii Xaafii', 'ai.sprompt1': 'Midhaan Xaafii koo yeroo kana ETB tiin akkamitti gatiisa?',
+        'ai.schip2': 'Sadarkaa fi qulqullinaa', 'ai.sprompt2': 'Hanga jiidhinaa fi qulqullinni sadarkaa fi gatii oomisha koo akkamitti jijjiru?',
+        'ai.schip3': 'Galmee cimaa', 'ai.sprompt3': 'Galmee gabaa cimaa midhaan Xaafii Adii Gojjam kuuntaala 20tti barreessi.',
+        'ai.schip4': 'Yeroo gurgurtaa', 'ai.sprompt4': 'Shunkurtii diimaa Addis Ababatti gurguruuf yoom fedhii fi yeroo baay\'ee gaarii?',
+        'ai.actionConfirm': 'Mirkaneessi', 'ai.actionCancel': 'Haqi', 'ai.actionWorking': 'Hojii irraa…',
+        'ai.actionDone': 'Xumurame', 'ai.actionFailed': 'Hin milkoofne',
+        'ai.actionReserveTitle': 'Qabannaa mirkaneessi', 'ai.actionReserveSummary': 'Kutaa {0} " {1} " keessatti {2} ETB {3} dhaan qabadhu.',
+        'ai.actionSoldTitle': 'Gurgurame mirkaneessi', 'ai.actionSoldSummary': '"{0}" ({1} {2}) gurgurame godhi.',
+        'ai.actionUpdateTitle': 'Haaromsuu mirkaneessi', 'ai.actionUpdateSummary': 'Galmee "{0}" haaromsi.',
+        'ai.actionCreateTitle': 'Galmee haaraa mirkaneessi', 'ai.actionCreateSummary': 'Foomii galmee odeeffannoo keetiin guutame ni banama — itti galmessi dura ilaali.',
+        'ai.actionReserved': '✅ Kutaa {0} " {1} " keessatti qabame. Voucher: {2}',
+        'ai.actionSold': '✅ "{0}" gurgurame godhame.',
+        'ai.actionUpdated': '✅ Galmee "{0}" haaromfame.',
+        'ai.actionPrefilled': '✅ Foomiin galmee siif guutame — ilaaliitii yeroo qophaatee galmeessi.',
         'footer.tagline': '© 2026 NuroTewedede Platform Dhiyeessaa Qulqullinaa • Network Bituu Waldaa Naannoo',
         'toast.copied': 'Koodiin vaawwarchaa galateeffame!',
         'toast.reserved': 'Qooda(wwan) {0} milkaa\'inaan bakka buufame! Vaawwarcha fudhachaa digitaalaa qophaa\'e.',
@@ -1344,7 +1389,7 @@ function setLang(lang) {
     renderHubs();
     renderAiChips();
     renderTicker();
-    if (aiMessages[0] && aiMessages[0].id === 'welcome') aiMessages[0].text = t('ai.welcome');
+    if (aiMessages[0] && aiMessages[0].id === 'welcome') aiMessages[0].text = t(aiWelcomeKey());
     renderAiMessages();
     renderBulkCatalog(document.getElementById('bulk-catalog'));
     updateBulkSummary();
@@ -1448,12 +1493,27 @@ function localizeHub(hub) {
     return { name: l.name[lang], address: l.address[lang], woredas: woredas };
 }
 
-const AI_QUICK_PROMPTS = [
+const AI_BUYER_PROMPTS = [
     { labelKey: 'ai.chip1', promptKey: 'ai.prompt1' },
     { labelKey: 'ai.chip2', promptKey: 'ai.prompt2' },
     { labelKey: 'ai.chip3', promptKey: 'ai.prompt3' },
     { labelKey: 'ai.chip4', promptKey: 'ai.prompt4' }
 ];
+
+const AI_SELLER_PROMPTS = [
+    { labelKey: 'ai.schip1', promptKey: 'ai.sprompt1' },
+    { labelKey: 'ai.schip2', promptKey: 'ai.sprompt2' },
+    { labelKey: 'ai.schip3', promptKey: 'ai.sprompt3' },
+    { labelKey: 'ai.schip4', promptKey: 'ai.sprompt4' }
+];
+
+function getAiQuickPrompts() {
+    return currentRole === 'seller' ? AI_SELLER_PROMPTS : AI_BUYER_PROMPTS;
+}
+
+function aiWelcomeKey() {
+    return currentRole === 'seller' ? 'ai.swelcome' : 'ai.welcome';
+}
 
 let aiMessages = [
     { id: 'welcome', sender: 'assistant', text: t('ai.welcome'), timestamp: t('time.justNow') }
@@ -2575,6 +2635,7 @@ function renderAiMessages() {
             '</div>' +
             '<div class="max-w-[85%] rounded-3xl p-4 text-xs sm:text-sm leading-relaxed ' + (isUser ? 'bg-emerald-800 text-white rounded-tr-none' : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-tl-none') + '">' +
                 '<div class="whitespace-pre-wrap font-sans">' + renderMarkdown(msg.text) + '</div>' +
+                (isUser ? '' : aiActionCardHtml(msg)) +
                 '<p class="text-[10px] font-medium text-right mt-1 ' + (isUser ? 'text-emerald-200/80' : 'text-slate-400') + '">' + esc(msg.timestamp) + '</p>' +
             '</div>' +
         '</div>';
@@ -2596,7 +2657,7 @@ function renderAiMessages() {
 function renderAiChips() {
     const chips = document.getElementById('ai-chips');
     if (!chips) return;
-    chips.innerHTML = AI_QUICK_PROMPTS.map(function (qp, i) {
+    chips.innerHTML = getAiQuickPrompts().map(function (qp, i) {
         const label = t(qp.labelKey);
         const prompt = t(qp.promptKey);
         return '<button onclick="sendQuickPrompt(this)"' + (aiLoading ? ' disabled' : '') + ' data-prompt="' + esc(prompt) + '" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 text-xs font-semibold whitespace-nowrap transition border border-slate-200 disabled:opacity-50">💡 ' + esc(label) + '</button>';
@@ -2620,15 +2681,32 @@ async function sendAiMessage(textToSend) {
     renderAiChips();
 
     try {
+        const payload = { prompt: prompt, role: currentRole };
+        if (currentRole === 'seller' && myProducts.length) {
+            payload.context = JSON.stringify(myProducts.map(function (p) {
+                return {
+                    crop: p.crop_type || '',
+                    variety: p.variety || '',
+                    grade: p.grade || '',
+                    volume: (p.volume || 0) + ' ' + (p.volume_unit || 'quintal'),
+                    price: (p.price_per_unit || 0) + ' ' + (p.currency || 'ETB') + '/' + (p.min_order_unit || 'quintal'),
+                    pricing: p.pricing_model || 'fixed',
+                    origin: [p.origin_region, p.origin_zone, p.origin_town].filter(Boolean).join(', '),
+                    status: p.status || 'active'
+                };
+            }));
+        }
         const data = await api('/api/ai-assistant', {
             method: 'POST',
-            body: JSON.stringify({ prompt: prompt })
+            body: JSON.stringify(payload)
         });
         aiMessages.push({
             id: 'ai-' + Date.now(),
             sender: 'assistant',
             text: data.reply || t('ai.noResponse'),
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            action: data.action || null,
+            actionState: data.action ? 'pending' : null
         });
     } catch (err) {
         aiMessages.push({
@@ -3452,6 +3530,12 @@ function updateRoleNav() {
     document.querySelectorAll('[data-nav]').forEach(function (btn) {
         btn.classList.toggle('hidden', !(currentUser && currentRole === btn.dataset.nav));
     });
+
+    // Re-tune the NuroAI persona to the current portal (buyer vs seller).
+    if (aiMessages[0] && aiMessages[0].id === 'welcome') aiMessages[0].text = t(aiWelcomeKey());
+    renderAiChips();
+    const aiPanel = document.getElementById('ai-fab-panel');
+    if (aiPanel && !aiPanel.classList.contains('hidden')) renderAiMessages();
 }
 
 // ---------- Public marketplace (browse supply) ----------

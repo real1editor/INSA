@@ -833,11 +833,33 @@ app.get('/api/reservations/mine', requireAuth, async (req, res) => {
   res.json({ reservations: enriched });
 });
 
-// ==================== GEMINI AI ASSISTANT ====================
+// ==================== GEMINI AI ASSISTANT (action-aware) ====================
+
+// Resolve the signed-in user (optional) so the assistant can act on their behalf.
+async function resolveAiUser(req) {
+  try {
+    const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
+    if (!token) return null;
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) return null;
+    let profile = {};
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('name, username, role')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (data) profile = data;
+    } catch (_) { /* profiles table may not exist yet */ }
+    return { id: user.id, email: user.email, name: profile.name || '', username: profile.username || '', role: profile.role || 'buyer' };
+  } catch (_) {
+    return null;
+  }
+}
 
 app.post('/api/ai-assistant', async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const { prompt, role, context } = req.body;
     if (!prompt || typeof prompt !== 'string') {
       return res.status(400).json({ error: 'Prompt is required' });
     }
@@ -861,7 +883,126 @@ app.post('/api/ai-assistant', async (req, res) => {
       httpOptions: { headers: { 'User-Agent': 'aistudio-build' } }
     });
 
-    const systemInstruction = `You are "NuroTewedede AI", an expert agricultural supply planner, group-buying coordinator, and food inflation advisor in Ethiopia.
+    // --- Trusted live context (never trust the model for ids / numbers) ---
+    const user = await resolveAiUser(req);
+    const roleHint = (role === 'seller') ? 'seller' : 'buyer';
+    const effectiveRole = user ? user.role : roleHint;
+
+    let pools = [];
+    let products = [];
+    let reservations = [];
+    let myListings = [];
+
+    try {
+      const { data } = await supabase.from('pools').select('*').order('created_at', { ascending: false }).limit(8);
+      pools = data || [];
+    } catch (_) { /* pools may be unavailable */ }
+
+    try {
+      const { data } = await supabase.from('products').select('*').eq('status', 'active').order('created_at', { ascending: false }).limit(10);
+      products = data || [];
+    } catch (_) { /* products table may not exist yet */ }
+
+    if (user) {
+      try {
+        const { data } = await supabase.from('reservations').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(8);
+        reservations = data || [];
+      } catch (_) { /* reservations may be unavailable */ }
+      if (effectiveRole === 'seller') {
+        try {
+          const { data } = await supabase.from('products').select('*').eq('seller_id', user.id).order('created_at', { ascending: false }).limit(10);
+          myListings = data || [];
+        } catch (_) { /* products table may not exist yet */ }
+      }
+    }
+
+    const compactPools = pools.map(p => ({
+      id: p.id,
+      title: p.title || 'Untitled pool',
+      category: p.category || '',
+      town: p.town || '',
+      unit: p.unit || 'bag',
+      price: p.price ?? 0,
+      retailPrice: p.retail_price ?? 0,
+      currentShares: p.current_shares ?? 0,
+      targetShares: p.target_shares ?? 0,
+      status: p.status || 'active'
+    }));
+
+    const compactProducts = products.map(p => ({
+      id: p.id,
+      seller: p.seller_name || 'Seller',
+      crop: p.crop_type || '',
+      variety: p.variety || '',
+      grade: p.grade || '',
+      volume: p.volume ?? 0,
+      volumeUnit: p.volume_unit || 'quintal',
+      pricePerUnit: p.price_per_unit ?? 0,
+      minOrderUnit: p.min_order_unit || p.volume_unit || 'quintal',
+      pricing: p.pricing_model || 'fixed',
+      origin: [p.origin_region, p.origin_zone, p.origin_town].filter(Boolean).join(', ')
+    }));
+
+    const compactReservations = reservations.map(r => ({
+      poolId: r.pool_id,
+      shares: r.shares ?? 1,
+      paymentMethod: r.payment_method || 'telebirr',
+      status: r.status || 'active',
+      voucher: r.voucher_code || ''
+    }));
+
+    const compactMyListings = myListings.map(p => ({
+      id: p.id,
+      crop: p.crop_type || '',
+      variety: p.variety || '',
+      grade: p.grade || '',
+      volume: p.volume ?? 0,
+      volumeUnit: p.volume_unit || 'quintal',
+      pricePerUnit: p.price_per_unit ?? 0,
+      minOrderUnit: p.min_order_unit || 'quintal',
+      pricing: p.pricing_model || 'fixed',
+      status: p.status || 'active',
+      origin: [p.origin_region, p.origin_zone, p.origin_town].filter(Boolean).join(', ')
+    }));
+
+    const clientListingContext = (effectiveRole === 'seller' && context && typeof context === 'string')
+      ? `\n\nAdditional listing details provided by the client for this session:\n${context}`
+      : '';
+
+    const contextBlock = `\n\n===== LIVE SITE DATA (trust only these ids and numbers) =====
+Signed-in user: ${user ? (user.name || user.username || user.email) + ' (role: ' + user.role + ')' : 'none (not signed in)'}
+Requested role lens: ${effectiveRole}
+
+Active community pools:
+${compactPools.length ? JSON.stringify(compactPools) : '(none available right now)'}
+
+Marketplace listings from sellers (buyable):
+${compactProducts.length ? JSON.stringify(compactProducts) : '(none available right now)'}
+
+${user ? 'My reservations:\n' + (compactReservations.length ? JSON.stringify(compactReservations) : '(none yet)') + '\n' : ''}
+${user && effectiveRole === 'seller' ? 'My marketplace listings:\n' + (compactMyListings.length ? JSON.stringify(compactMyListings) : '(none yet)') + '\n' : ''}
+${clientListingContext}
+===== END OF LIVE DATA =====`;
+
+    const ACTION_SCHEMA = `You may also help the user actually DO things. Always answer in English unless the user writes in another language (then match it).
+If the user asks to place an order, reserve shares, mark a listing sold, update a listing, or create a listing, and the data to do it is in the LIVE SITE DATA above, you MUST respond with a structured action instead of just advice.
+Valid action types:
+- "reserve_shares": { poolId, shares, paymentMethod } — buyer reserves {shares} in an existing pool (use only a pool id from the LIVE DATA). paymentMethod must be one of: "telebirr", "cbe", "cash". Requires a signed-in user.
+- "create_listing_draft": { cropType, variety, grade, volume, volumeUnit, minOrderLot, minOrderUnit, pricingModel, pricePerUnit, originRegion, originZone, originTown, harvestYear, description } — seller wants to list new supply. volumeUnit/minOrderUnit must be one of: "quintal", "kg", "mt". pricingModel must be "fixed" or "negotiable". pricePerUnit is ETB per minOrderUnit. Requires a signed-in seller.
+- "update_listing": { productId, ...only the fields the user wants changed, using the create_listing_draft field names } — seller edits one of their OWN listings (id from LIVE DATA "My marketplace listings"). Requires a signed-in seller.
+- "mark_sold": { productId } — seller marks one of their OWN listings as sold. Requires a signed-in seller.
+
+Rules:
+1. NEVER invent pool ids, product ids, prices, or volumes. Only use values present in LIVE SITE DATA.
+2. If the user is not signed in and tries an action, set action to null and gently tell them to sign in first in your reply.
+3. If the data needed for the action is missing (e.g. no matching pool), set action to null and explain in your reply.
+4. For pure questions/advice, set action to null.
+5. For sellers, prefer advice and actions based on their OWN listings ("My marketplace listings") when relevant.
+6. Convert share/order totals to ETB in the reply (e.g. pool price x shares).`;
+
+    const isSeller = effectiveRole === 'seller';
+
+    const BUYER_INSTRUCTION = `You are "NuroTewedede AI", an expert agricultural supply planner, group-buying coordinator, and food inflation advisor in Ethiopia.
 Your mission is to help community leaders, families, and neighborhood hubs organize direct bulk purchasing from farming woredas (e.g. Gojjam, Sidama, Ziway, Arsi, Jimma).
 Give practical, warm, well-structured, and helpful advice on:
 1. Bulk produce quantities & cost estimates in ETB (Ethiopian Birr).
@@ -869,8 +1010,24 @@ Give practical, warm, well-structured, and helpful advice on:
 3. Harvest timing and seasonal price trends in Ethiopian markets.
 4. Recipe scaling for community feasts or holiday celebrations (Enkutatash, Meskel, Genna, Timkat, Eid).
 5. Neighborhood pool logistics & fair cost sharing.
+When a pool or marketplace listing from the LIVE SITE DATA matches the user's request, reference it by name and help them reserve/order it.
 
 Keep formatting clean with bullet points and bold highlights. Always be encouraging, practical, and culturally authentic.`;
+
+    const SELLER_INSTRUCTION = `You are "NuroTewedede AI", an expert agricultural marketing and wholesale pricing advisor for smallholder farmers and sellers in Ethiopia.
+Your mission is to help farmers and sellers earn fair prices by listing quality-graded supply on the NuroTewedede marketplace and reaching buyers in urban hubs (Addis Ababa, Bahir Dar, Hawassa, Dire Dawa, Jimma, Mekelle).
+Give practical, warm, well-structured, and helpful advice on:
+1. Pricing guidance in ETB: how to set fixed vs negotiable prices per quintal, kg, or metric ton for crops like Teff, Wheat, Maize, Onions, Coffee, and Pulses.
+2. Quality & grading: how moisture content and cleanliness percentage affect grade and price, and what grades wholesale buyers expect.
+3. Listing best practices: writing a strong marketplace listing (volume, min order lot, harvest year, origin region/zone/town, photos, description) that attracts serious buyers.
+4. Market demand & timing: when wholesale demand and prices peak for common crops across Ethiopia, and seasonal sell recommendations.
+5. Inventory & post-harvest management: storing bulk stock, keeping quality, updating available volumes, and marking listings sold.
+6. Fair trade: comparing offers, avoiding exploitative middlemen, and keeping sales records.
+When the seller mentions their own listings, reference the LIVE SITE DATA "My marketplace listings" and tailor advice to them.
+
+Keep formatting clean with bullet points and bold highlights. Always be encouraging, practical, and culturally authentic.`;
+
+    const systemInstruction = (isSeller ? SELLER_INSTRUCTION : BUYER_INSTRUCTION) + contextBlock + '\n\n' + ACTION_SCHEMA;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.6-flash',
@@ -878,11 +1035,49 @@ Keep formatting clean with bullet points and bold highlights. Always be encourag
       config: {
         systemInstruction: systemInstruction,
         temperature: 0.7,
+        responseMimeType: 'application/json'
       }
     });
 
-    const replyText = response.text || 'I apologize, but I could not generate a response at this time. Please try asking again!';
-    res.json({ reply: replyText });
+    const rawText = response.text || '';
+
+    // Parse the model's JSON envelope: { reply, action }
+    let replyText = rawText;
+    let action = null;
+    try {
+      const parsed = JSON.parse(rawText);
+      if (parsed && typeof parsed.reply === 'string') {
+        replyText = parsed.reply;
+      }
+      if (parsed && parsed.action && typeof parsed.action === 'object' && parsed.action.type) {
+        action = parsed.action;
+      }
+    } catch (_) {
+      // Not JSON — treat the raw text as a plain advice reply.
+    }
+
+    // Safety: never pass an action that requires identity when the user is signed out.
+    const AUTH_ACTION_TYPES = ['reserve_shares', 'create_listing_draft', 'update_listing', 'mark_sold'];
+    if (action && AUTH_ACTION_TYPES.includes(action.type) && !user) {
+      action = null;
+      replyText = replyText || 'You need to sign in before I can place orders, reserve shares, or manage listings for you.';
+    }
+
+    // Safety: sellers can only act on their OWN listings.
+    if (action && (action.type === 'update_listing' || action.type === 'mark_sold')) {
+      const ok = myListings.some(p => String(p.id) === String(action.productId));
+      if (!ok) action = null;
+    }
+    if (action && action.type === 'create_listing_draft' && (!user || user.role !== 'seller')) {
+      action = null;
+      replyText = replyText || 'You need to be signed in as a Seller to list new harvest. Choose "Continue as Seller" to get started.';
+    }
+
+    if (!replyText || !replyText.trim()) {
+      replyText = 'I apologize, but I could not generate a response at this time. Please try asking again!';
+    }
+
+    res.json({ reply: replyText, action: action });
   } catch (err) {
     console.error('Gemini AI assistant error:', err.message);
     res.status(500).json({ error: err.message || 'Failed to generate AI response' });
