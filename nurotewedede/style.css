@@ -519,6 +519,25 @@ input[type="range"]::-webkit-slider-thumb {
     color: #d1fae5;
 }
 
+/* Seller portal accent for the auth modal (opened via "Continue as Seller") */
+#auth-modal.auth-seller .auth-role-btn[data-selected="true"] {
+    border-color: #d97706;
+    background-color: #fffbeb;
+    color: #92400e;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
+[data-theme="dark"] #auth-modal.auth-seller .auth-role-btn[data-selected="true"] {
+    border-color: #f59e0b;
+    background-color: #451a03;
+    color: #fef3c7;
+}
+#auth-modal.auth-seller #auth-submit-btn {
+    background-color: #d97706;
+}
+#auth-modal.auth-seller #auth-submit-btn:hover {
+    background-color: #b45309;
+}
+
 /* ===== Live price ticker marquee ===== */
 @keyframes ticker-scroll {
     from {

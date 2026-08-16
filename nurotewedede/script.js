@@ -781,6 +781,28 @@ const I18N = {
         'seller.statusActive': 'ንቁ', 'seller.statusSold': 'የተሸጠ', 'seller.statusDraft': 'ረቂቅ', 'seller.statusInactive': 'የማይሰራ',
         'seller.edit': 'አርትዕ', 'seller.delete': 'ሰርዝ', 'seller.view': 'ይመልከቱ',
         'seller.available': 'ይገኛል', 'seller.volume': 'መጠን',
+        'seller.heroTitle': 'ምርትዎን ወደ ገቢ ይቀይሩ',
+        'seller.heroSub': 'በጥራት የተመደበ ምርት ይዘርዝሩ፣ ዋጋዎን ይወስኑ እና በመላ ኢትዮጵያ ያሉ የሰፈር ገዢዎችን ይድረሱ።',
+        'seller.heroChip1': 'ፍትሃዊ ዋጋ', 'seller.heroChip2': 'በቀጥታ ለገዢዎች', 'seller.heroChip3': 'የክምችት ቁጥጥር',
+        'seller.howBadge': 'ለሻጮች እንዴት ይሰራል',
+        'seller.howTitle': 'ከምርት ወደ ገቢ በሶስት ደረጃዎች',
+        'seller.howStep1Title': 'ምርትዎን ይዘርዝሩ',
+        'seller.howStep1Text': 'ሰብልዎን በጥራት ደረጃ፣ መጠን፣ የመኸር ዓመት እና ፎቶዎች ያትሙ።',
+        'seller.howStep2Title': 'ዋጋዎን ይወስኑ',
+        'seller.howStep2Text': 'ለከባድ ገዢዎች ቋሚ ወይም ተደራዳሪ ዋጋ እና ዝቅተኛ የትዕዛዝ ብዛት ይምረጡ።',
+        'seller.howStep3Title': 'ገዢዎችን ይድረሱ እና ሽያጮችን ያስተዳድሩ',
+        'seller.howStep3Text': 'ገዢዎች አቅርቦትዎን ያገኛሉ፤ ክምችትን ያስተዳድሩ እና የተሸጡ ምርቶችን ያመልክቱ።',
+        'seller.benefitTitle': 'በNuroTewedede ለምን ይሸጣሉ',
+        'seller.benefit1Title': 'ፍትሃዊ የእርሻ ዋጋ',
+        'seller.benefit1Text': 'ያለ ጠላፊ ደላሎች — ምርትዎ በጅምላ ዋጋ ገዢዎችን ይደርሳል።',
+        'seller.benefit2Title': 'ቀጥተኛ የገበያ ተደራሽነት',
+        'seller.benefit2Text': 'በመላ ኢትዮጵያ ከሚገኙ የሰፈር ማዕከላት እና የቡድን ገዢዎች ጋር ይገናኙ።',
+        'seller.benefit3Title': 'ቀላል የክምችት ቁጥጥር',
+        'seller.benefit3Text': 'መጠኖችን ያዘምኑ፣ ዝርዝሮችን ያርትዑ እና በአንድ ቦታ እንደተሸጡ ያመልክቱ።',
+        'auth.buyerSignin': 'የገዢ መግቢያ', 'auth.buyerSignup': 'የገዢ መለያ ይፍጠሩ',
+        'auth.sellerSignin': 'የሻጭ መግቢያ', 'auth.sellerSignup': 'የሻጭ መለያ ይፍጠሩ',
+        'auth.roleHintBuyer': 'የገዢ ፖርታልዎን ይጠቀሙ፡ ግዢዎችን ይቀላቀሉ፣ አክሲዮኖችን ይያዙ እና ከማዕከላት ይግዙ።',
+        'auth.roleHintSeller': 'የሻጭ ፖርታልዎን ይጠቀሙ፡ ምርት ይዘርዝሩ፣ የአቅርቦት ክምችት ያስተዳድሩ እና ገዢዎችን ይድረሱ።',
         'seller.published': 'የታተመ', 'seller.listedOn': 'የተዘረዘረው በ',
         'harvest.title': 'ምርትዎን ይዘርዝሩ', 'harvest.editTitle': 'ዝርዝሩን አርትዕ',
         'harvest.subtitle': 'የአቅርቦት ዝርዝርዎን ያትሙ — ጥራት፣ መጠን፣ ዋጋ እና አመጣጥ። ገዢዎች በገበያው ውስጥ ወዲያውኑ ያዩታል።',
@@ -1061,6 +1083,28 @@ const I18N = {
         'seller.statusActive': 'Ijoo', 'seller.statusSold': 'Gurgurame', 'seller.statusDraft': 'Rawwaafamaa', 'seller.statusInactive': 'Hojii irraa bu\'e',
         'seller.edit': 'Sirreessi', 'seller.delete': 'Haqi', 'seller.view': 'Ilaali',
         'seller.available': 'Argama', 'seller.volume': 'Hanga',
+        'seller.heroTitle': 'Midhaan Kee Galii Taasi',
+        'seller.heroSub': 'Midhaan sadarkaa qulqullinaa galmeessi, gatii of keetii murteessi, bituuwwan naannoo biyyaatti dhaqqabi.',
+        'seller.heroChip1': 'Gatii Haqa Qabeessa', 'seller.heroChip2': 'Kallattiin Bituuwwanitti', 'seller.heroChip3': 'Ittigaafa Kuusaa',
+        'seller.howBadge': 'Dhi\'ooftuuf akkamitti hojjata',
+        'seller.howTitle': 'Midhaan irraa hanga galii, tarkaanfii sadii',
+        'seller.howStep1Title': 'Midhaan kee kaayi',
+        'seller.howStep1Text': 'Midhaan kee sadarkaa qulqullinaa, hangaa, waggaa midhaanii fi suuraan maxxansi.',
+        'seller.howStep2Title': 'Gatii kee murteessi',
+        'seller.howStep2Text': 'Gatii sirrii yookiin itti dubbii fi xiqqaataa ajaja bituuwwan cimaniif filadhu.',
+        'seller.howStep3Title': 'Bituuwwan dhaqqabi, gurgurtaa bulchi',
+        'seller.howStep3Text': 'Bituuwwan dhiyeessaa kee argaatu; kuusaa bulchi, gurgurame godhi.',
+        'seller.benefitTitle': 'Maaliif NuroTewedede irratti gurgurta',
+        'seller.benefit1Title': 'Gatii qonnaa haqa qabeessa',
+        'seller.benefit1Text': 'Warshaa jaalatamaan ala — midhaan kee gatii dhibbaa bituuwwan ga\'a.',
+        'seller.benefit2Title': 'Dhaqqabamaa gabaa kallattii',
+        'seller.benefit2Text': 'Buufata naannoo fi bituuwwan waldaa biyyaatti wal quunnamsiisi.',
+        'seller.benefit3Title': 'Ittigaafa kuusaa salphaa',
+        'seller.benefit3Text': 'Hangaa haaromsi, galmee tarkaa\'i, itti yaadaa bakka tokkoo gurgurame godhi.',
+        'auth.buyerSignin': 'Seensa Bituu', 'auth.buyerSignup': 'Hertamaa Bituu Uumi',
+        'auth.sellerSignin': 'Seensa Dhi\'ooftuu', 'auth.sellerSignup': 'Hertamaa Dhi\'ooftuu Uumi',
+        'auth.roleHintBuyer': 'Portal bituu kee itti fayyadami: bituuwwan walitti qabi, kutaa qabadhu, buufata irraa bitu.',
+        'auth.roleHintSeller': 'Portal dhi\'ooftuu kee itti fayyadami: midhaan kaayi, kuusaa bulchi, bituuwwan dhaqqabi.',
         'seller.published': 'Maxxanfame', 'seller.listedOn': 'Kaayame:',
         'harvest.title': 'Midhaan Kee Kaayi', 'harvest.editTitle': 'Galmee Sirreessi',
         'harvest.subtitle': 'Galmee dhiyeessaa kee maxxansi — qulqullina, hanga, gatii fi sabaata. Bituuwwan gabaa keessatti yeroo sanumaa isa argatu.',
@@ -1282,6 +1326,7 @@ function applyI18n() {
     applyCurrencyUnits();
     updateLangButtons();
     syncAuthFields();
+    updateAuthModalCopy();
     staggerHeroTitle();
 }
 
@@ -2748,6 +2793,32 @@ async function handleCreatePool(e) {
 
 // ---------- Auth ----------
 
+function styleAuthTabs() {
+    const isSignup = authMode === 'signup';
+    const accent = authRole === 'seller' ? 'border-amber-500 text-amber-800' : 'border-emerald-600 text-emerald-800';
+    const tabSignin = document.getElementById('auth-tab-signin');
+    const tabSignup = document.getElementById('auth-tab-signup');
+    if (tabSignin) {
+        tabSignin.className = 'flex-1 pb-2 text-center text-sm font-' + (isSignup ? 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800' : 'bold border-b-2 ' + accent);
+    }
+    if (tabSignup) {
+        tabSignup.className = 'flex-1 pb-2 text-center text-sm font-' + (isSignup ? 'bold border-b-2 ' + accent : 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800');
+    }
+}
+
+function updateAuthModalCopy() {
+    const modal = document.getElementById('auth-modal');
+    if (!modal || modal.classList.contains('hidden')) return;
+    const title = document.getElementById('auth-modal-title');
+    const hint = document.getElementById('auth-role-hint');
+    const isSeller = authRole === 'seller';
+    const titleKey = isSeller
+        ? (authMode === 'signup' ? 'auth.sellerSignup' : 'auth.sellerSignin')
+        : (authMode === 'signup' ? 'auth.buyerSignup' : 'auth.buyerSignin');
+    if (title) title.textContent = t(titleKey);
+    if (hint) hint.textContent = t(isSeller ? 'auth.roleHintSeller' : 'auth.roleHintBuyer');
+}
+
 function selectAuthRole(role) {
     authRole = (role === 'seller') ? 'seller' : 'buyer';
     const hidden = document.getElementById('auth-role');
@@ -2757,6 +2828,10 @@ function selectAuthRole(role) {
         btn.dataset.selected = String(isSel);
         btn.setAttribute('aria-checked', String(isSel));
     });
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.toggle('auth-seller', authRole === 'seller');
+    styleAuthTabs();
+    updateAuthModalCopy();
 }
 
 function openAuthModal(role) {
@@ -2766,6 +2841,7 @@ function openAuthModal(role) {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
     }
+    updateAuthModalCopy();
 }
 
 function closeAuthModal() {
@@ -2800,26 +2876,18 @@ function chooseRole(role) {
 
 function toggleAuthMode(isSignup) {
     authMode = isSignup ? 'signup' : 'signin';
-    const title = document.getElementById('auth-modal-title');
     const submitBtn = document.getElementById('auth-submit-btn');
-    const tabSignin = document.getElementById('auth-tab-signin');
-    const tabSignup = document.getElementById('auth-tab-signup');
     const message = document.getElementById('auth-message');
     const nameField = document.getElementById('auth-name-field');
     const usernameField = document.getElementById('auth-username-field');
 
     if (message) { message.classList.add('hidden'); message.textContent = ''; }
-    if (title) title.textContent = t(isSignup ? 'auth.signup' : 'auth.signin');
     if (submitBtn) submitBtn.textContent = t(isSignup ? 'auth.signup' : 'auth.signin');
     if (nameField) nameField.classList.toggle('hidden', !isSignup);
     if (usernameField) usernameField.classList.toggle('hidden', !isSignup);
     syncAuthFields();
-    if (tabSignin) {
-        tabSignin.className = 'flex-1 pb-2 text-center text-sm font-' + (isSignup ? 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800' : 'bold border-b-2 border-emerald-600 text-emerald-800');
-    }
-    if (tabSignup) {
-        tabSignup.className = 'flex-1 pb-2 text-center text-sm font-' + (isSignup ? 'bold border-b-2 border-emerald-600 text-emerald-800' : 'medium border-b-2 border-transparent text-slate-500 hover:text-slate-800');
-    }
+    styleAuthTabs();
+    updateAuthModalCopy();
 }
 
 function syncAuthFields() {
@@ -3355,22 +3423,34 @@ function enterMarketplacePortal() {
     fetchMarketplace();
 }
 
-// Gate the navigation by role:
+// Gate the navigation by portal:
 //  - Signed-out users see no app navigation (they stay on the role gate).
-//  - Authenticated users get the buyer portal tabs (pools, calculator, hubs,
-//    my shares) plus the landing menu items.
-//  - The Marketplace / Seller-listing tabs are restricted to sellers only.
+//  - Buyers get the buyer portal tabs (pools, calculator, hubs, my shares).
+//  - Sellers get the seller portal tabs (Seller Dashboard, Marketplace).
+//  - Landing menu items are available to any signed-in user.
 function updateRoleNav() {
     const isAuth = !!currentUser;
+    const isBuyer = !!(currentUser && currentRole === 'buyer');
     const isSeller = !!(currentUser && currentRole === 'seller');
-    const SELLER_TABS = ['marketplace'];
+    const BUYER_TABS = ['pools', 'calculator', 'hubs', 'myshares'];
+    const SELLER_TABS = ['marketplace', 'seller'];
 
     document.querySelectorAll('.tab-btn, .mobile-tab-btn, .menu-item').forEach(function (btn) {
-        let visible = isAuth;
-        if (visible && btn.dataset.tab && SELLER_TABS.indexOf(btn.dataset.tab) !== -1) {
-            visible = isSeller;
+        let visible = false;
+        if (isAuth) {
+            if (btn.dataset.menu) {
+                visible = true;
+            } else if (btn.dataset.tab) {
+                if (BUYER_TABS.indexOf(btn.dataset.tab) !== -1) visible = isBuyer;
+                else if (SELLER_TABS.indexOf(btn.dataset.tab) !== -1) visible = isSeller;
+            }
         }
         btn.classList.toggle('hidden', !visible);
+    });
+
+    // Role-scoped auxiliary actions (e.g. the Bulk portal is a buyer feature).
+    document.querySelectorAll('[data-nav]').forEach(function (btn) {
+        btn.classList.toggle('hidden', !(currentUser && currentRole === btn.dataset.nav));
     });
 }
 
