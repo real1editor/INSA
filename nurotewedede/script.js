@@ -298,6 +298,17 @@ const I18N = {
         'card.reservation': 'Pool Reservation', 'card.shares': '{0} / {1} shares ({2}%)',
         'card.daysLeft': '{0} days left', 'card.lockingToday': 'Locking today', 'card.organizer': 'Organizer: {0}',
         'card.reserve': 'Reserve Share', 'card.fullyReserved': 'Pool Fully Reserved',
+        'sourcing.title': 'Sourcing Specs & Farm Traceability', 'sourcing.verifiedBadge': '✓ Verified Direct Cooperative Sourcing (0% Broker Markups)',
+        'sourcing.route': 'Direct Farm Gate ➔ Cooperative Freight ➔ Neighborhood Hub',
+        'sourcing.cooperative': 'Cooperative Union', 'sourcing.woreda': 'Origin Woreda & Altitude',
+        'sourcing.harvestSeason': 'Harvest Season', 'sourcing.lotId': 'Lot / Batch ID',
+        'sourcing.delivery': 'Estimated Hub Delivery', 'sourcing.qualityTitle': 'Quality & Laboratory Standards',
+        'sourcing.moisture': 'Moisture Level', 'sourcing.purity': 'Purity Metric', 'sourcing.grade': 'Quality Grade',
+        'sourcing.priceTitle': 'Direct Price Transparency', 'sourcing.farmPrice': 'Farm-Gate Direct Price',
+        'sourcing.retailPrice': 'Open Market Retail Price', 'sourcing.groupPrice': 'NuroTewedede Group Price',
+        'sourcing.netSavings': 'Net Family Group Savings', 'sourcing.storage': 'Handling & Storage Advice',
+        'sourcing.hubAddress': 'Designated Neighborhood Pickup Hub', 'sourcing.reserveBtn': 'Reserve My Share',
+        'sourcing.shareBtn': 'Share', 'sourcing.safeStorage': 'Safe Long-term Storage',
         'card.share': 'Share Pool', 'card.shareTitle': 'Share via', 'card.shareTelegram': 'Telegram',
         'card.shareWhatsapp': 'WhatsApp', 'card.copyLink': 'Copy Link', 'card.shareToast': 'Pool link copied to clipboard!',
         'card.countdownEnds': 'Ends in {0}', 'card.endsToday': 'Ends today',
@@ -620,6 +631,17 @@ const I18N = {
         'card.reservation': 'የግዢ ቅድመ ትዕዛዝ', 'card.shares': '{0} / {1} አክሲዮኖች ({2}%)',
         'card.daysLeft': '{0} ቀናት ቀርተዋል', 'card.lockingToday': 'ዛሬ ይቆለፋል', 'card.organizer': 'አዘጋጅ: {0}',
         'card.reserve': 'ቦታ ያዙ', 'card.fullyReserved': 'ግዢው ሙሉ በሙሉ ተይዟል',
+        'sourcing.title': 'ጥራት እና መነሻ ማረጋገጫ', 'sourcing.verifiedBadge': '✓ የተረጋገጠ ቀጥታ የመተባበሪያ ህብረት ምንጭ (0% የተለዋዋጭ ጭማሪ)',
+        'sourcing.route': 'ቀጥታ የግብርና በር ወደ መተባበሪያ ድርጅት ወደ አካባቢ ማዕከል',
+        'sourcing.cooperative': 'የመተባበሪያ ህብረት ስም', 'sourcing.woreda': 'የመነሻ ወረዳ እና ከፍታ',
+        'sourcing.harvestSeason': 'የመኸር ወቅት', 'sourcing.lotId': 'የሎት / በች መለያ',
+        'sourcing.delivery': 'የማዕከል የማድረስ ጊዜ', 'sourcing.qualityTitle': 'የጥራት እና የምርት ማረጋገጫ መስፈርቶች',
+        'sourcing.moisture': 'የእርጥበት መጠን', 'sourcing.purity': 'የንጽህና መስፈርት', 'sourcing.grade': 'የጥራት ደረጃ',
+        'sourcing.priceTitle': 'የቀጥታ ዋጋ ንረት', 'sourcing.farmPrice': 'የግብርና በር ቀጥታ ዋጋ',
+        'sourcing.retailPrice': 'የገበያ ችርቻሮ ዋጋ', 'sourcing.groupPrice': 'የኔሮቴዌደዴ ቡድን ዋጋ',
+        'sourcing.netSavings': 'የቤተሰብ ቡድን ቅናሽ', 'sourcing.storage': 'የአስቀማጥነት እና ማከማቻ ምክሮች',
+        'sourcing.hubAddress': 'የተመረጠ የአካባቢ ማዕከል', 'sourcing.reserveBtn': 'አክሲዮንዎን ያዙ',
+        'sourcing.shareBtn': 'ያጋሩ', 'sourcing.safeStorage': 'ለጊዜው ማከማቻ ደህንነት',
         'card.share': 'ግዢ ያጋሩ', 'card.shareTitle': 'በዚህ ያጋሩ', 'card.shareTelegram': 'ቴሌግራም',
         'card.shareWhatsapp': 'ዋትስአፕ', 'card.copyLink': 'ሊንክ ይቅዱ', 'card.shareToast': 'የግዢ ሊንክ በቅንብር ቦርድ ተቀድቷል!',
         'card.countdownEnds': 'የሚያበቃው በ{0}', 'card.endsToday': 'ዛሬ ያበቃል',
@@ -942,6 +964,17 @@ const I18N = {
         'card.reservation': 'Ajaja Bakka Bituu', 'card.shares': 'qooda {0} / {1} ({2}%)',
         'card.daysLeft': '{0} guyyaa hafe', 'card.lockingToday': 'Har\'a cufama', 'card.organizer': 'Qindeessaa: {0}',
         'card.reserve': 'Bakka Fudhadhu', 'card.fullyReserved': 'Bituun guutumaan bakka buufame',
+        'sourcing.title': 'Madaallii Itti Fayyadamuu fi Madaallii Galmeen', 'sourcing.verifiedBadge': '✓ Madaallii Dhiyeessaa Waldaa (0% Dabalee Daldalaa)',
+        'sourcing.route': 'Bara Baraa ➔ Dhiyeessaa Waldaa ➔ Buufata Magaalaa',
+        'sourcing.cooperative': 'Maqaa Waldaa Dhiyeessaa', 'sourcing.woreda': 'Bakka Itti Galmeen fi Ol Ka\'i',
+        'sourcing.harvestSeason': 'Yeroon Midhaanii', 'sourcing.lotId': 'Lakk. Lotii / Baachuu',
+        'sourcing.delivery': 'Yeroo Buufata Ga\'u', 'sourcing.qualityTitle': 'Tarkaanfiiwwan Qulqullina & Laboratory',
+        'sourcing.moisture': 'Bokkaa Bishaan', 'sourcing.purity': 'Qulqullina', 'sourcing.grade': 'Sadarkaa Qulqullina',
+        'sourcing.priceTitle': 'Gatii Ifaatti Muldhatan', 'sourcing.farmPrice': 'Gatii Bara Baraa (Farm Gate)',
+        'sourcing.retailPrice': 'Gatii Daldalaa Gabaa', 'sourcing.groupPrice': 'Gatii Waldaa NuroTewedede',
+        'sourcing.netSavings': 'Qusannaa Maatii Waldaa', 'sourcing.storage': 'Gorsa Kuusaa & Qorachuu',
+        'sourcing.hubAddress': 'Buufata Magaalaa Filatame', 'sourcing.reserveBtn': 'Qooda Koo Fudhadhu',
+        'sourcing.shareBtn': 'Qooda', 'sourcing.safeStorage': 'Kuusaa Yeroo Dheeraa Namaa',
         'card.share': 'Bituu Qooddhaa', 'card.shareTitle': 'Waliin qooddhaa', 'card.shareTelegram': 'Telegraamii',
         'card.shareWhatsapp': 'Waats-App', 'card.copyLink': 'Limmoo Galeessi', 'card.shareToast': 'Limmoon bituu gara galmee quxxumaa garagaltee!',
         'card.countdownEnds': 'Dhuma: {0}', 'card.endsToday': 'Har\'a dhuma',
@@ -1585,8 +1618,25 @@ function fmt(n) {
     catch (e) { return Number(n || 0).toLocaleString(); }
 }
 
+function fmtCurrency(amount) {
+    const formatted = fmt(amount);
+    const unit = appLang === 'am' ? 'ብር' : 'ETB';
+    return formatted + ' ' + unit;
+}
+
 function currencyUnit() {
     return appLang === 'am' ? 'ብር' : 'ETB';
+}
+
+function triggerCheckMorph(el) {
+    if (!el || !el.classList) return;
+    el.classList.remove('check-morph');
+    void el.offsetWidth;
+    el.classList.add('check-morph');
+    el.addEventListener('animationend', function handler() {
+        el.classList.remove('check-morph');
+        el.removeEventListener('animationend', handler);
+    }, { once: true });
 }
 
 function debounce(fn, ms) {
@@ -1638,7 +1688,18 @@ function normalizePool(p) {
         commentsCount: p.comments_count ?? p.commentsCount ?? 0,
         pickupDate: p.pickup_date || p.pickupDate || 'This Week',
         category: p.category || 'Groceries',
-        status: p.status || (locked ? 'locked' : 'active')
+        status: p.status || (locked ? 'locked' : 'active'),
+        cooperative: p.cooperative || '',
+        elevation: p.elevation || '',
+        harvest_season: p.harvest_season || '',
+        lot_number: p.lot_number || '',
+        moisture: p.moisture != null ? Number(p.moisture) : null,
+        purity: p.purity != null ? Number(p.purity) : null,
+        grade: p.grade || '',
+        farm_price: p.farm_price != null ? Number(p.farm_price) : null,
+        hub_address: p.hub_address || '',
+        delivery_date: p.delivery_date || '',
+        description: p.description || ''
     };
 }
 
@@ -2041,6 +2102,7 @@ function renderPools() {
                     '<div class="absolute bottom-3 left-3 right-3 text-white">' +
                         '<span class="inline-block bg-white/20 backdrop-blur-md border border-white/30 text-[10px] font-bold px-2 py-0.5 rounded-md mb-1">' + esc(localizeCategory(pool.category)) + '</span>' +
                         '<div class="flex items-center gap-1 text-[11px] text-slate-200 font-medium truncate">' + PIN_ICON + '<span>' + esc(tt('card.origin', pool.woreda)) + '</span></div>' +
+                        (pool.lot_number ? '<span class="trust-badge trust-badge--direct" data-tooltip="Verified lot: ' + esc(pool.lot_number) + '" style="margin-top:4px">' + esc(pool.lot_number) + '</span>' : '') +
                     '</div>' +
                 '</div>' +
                 '<div class="p-5 space-y-4">' +
@@ -2076,6 +2138,10 @@ function renderPools() {
                 '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="' + esc(t('details.title')) + '">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
                     '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
+                '</button>' +
+                '<button onclick="openSourcingModal(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1 text-[11px] font-bold" title="' + esc(t('sourcing.title')) + '">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>' +
+                    '<span class="hidden sm:inline">' + esc(t('sourcing.title')) + '</span>' +
                 '</button>' +
                 '<button onclick="openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="btn-press flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
                     (isReservable ? esc(t('card.reserve')) : esc(t('card.fullyReserved'))) +
@@ -2203,6 +2269,153 @@ function startTickerAnimation() {
     viewport.addEventListener('mouseleave', function() { tickerState.paused = false; });
 
     tickerState.rafId = requestAnimationFrame(step);
+}
+
+// ---------- Sourcing Specs Modal ----------
+
+function openSourcingModal(id) {
+    const pool = pools.find(function (p) { return p.id === String(id); });
+    if (!pool) return;
+    renderSourcingModal(pool);
+    const modal = document.getElementById('sourcing-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeSourcingModal() {
+    const modal = document.getElementById('sourcing-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+}
+
+function renderSourcingModal(pool) {
+    const card = document.getElementById('sourcing-modal-card');
+    if (!card) return;
+
+    const savingsAmount = pool.retailPrice - pool.price;
+    const savingsPercent = pool.retailPrice > 0 ? Math.round((savingsAmount / pool.retailPrice) * 100) : 0;
+    const isReservable = !pool.locked && pool.currentShares < pool.targetShares;
+
+    const cooperative = esc(pool.cooperative || t('pool.fallbackOrganizer'));
+    const woreda = esc(pool.woreda || t('pool.fallbackWoreda'));
+    const elevation = esc(pool.elevation || '');
+    const harvestSeason = esc(pool.harvest_season || '');
+    const lotNumber = esc(pool.lot_number || '');
+    const delivery = esc(pool.delivery_date || (pool.daysRemaining + ' ' + t('card.daysLeft').replace('{0}', '').trim()));
+    const hubAddress = esc(pool.hub_address || pool.hubLocation || '');
+    const storage = esc(pool.description || t('sourcing.safeStorage'));
+
+    const moisture = pool.moisture != null ? pool.moisture.toFixed(1) + '%' : '—';
+    const purity = pool.purity != null ? pool.purity.toFixed(1) + '%' : '—';
+    const grade = esc(pool.grade || '—');
+    const farmPrice = pool.farm_price != null ? fmt(pool.farm_price) + ' ' + currencyUnit() : '—';
+
+    card.innerHTML = '' +
+        '<div class="flex items-center justify-between mb-4">' +
+            '<h3 class="text-lg font-extrabold text-slate-900" data-i18n="sourcing.title">' + t('sourcing.title') + '</h3>' +
+            '<button onclick="closeSourcingModal()" class="text-slate-400 hover:text-slate-600 transition" data-i18n-aria-label="aria.closeModal" aria-label="Close modal">' +
+                '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>' +
+            '</button>' +
+        '</div>' +
+
+        // Verified banner
+        '<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 mb-4 flex items-center gap-2">' +
+            '<span class="trust-badge trust-badge--direct" data-tooltip="0% broker markups — direct from cooperative">' + t('sourcing.verifiedBadge') + '</span>' +
+        '</div>' +
+        '<p class="text-[11px] text-emerald-800 font-bold mb-4" data-i18n="sourcing.route">' + t('sourcing.route') + '</p>' +
+
+        // Provenance grid
+        '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">' +
+            '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="sourcing.cooperative">' + t('sourcing.cooperative') + '</p>' +
+                '<p class="text-sm font-extrabold text-slate-800 mt-0.5">' + cooperative + '</p>' +
+            '</div>' +
+            '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="sourcing.woreda">' + t('sourcing.woreda') + '</p>' +
+                '<p class="text-sm font-extrabold text-slate-800 mt-0.5">' + woreda + (elevation ? ' - ' + elevation : '') + '</p>' +
+            '</div>' +
+            '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="sourcing.harvestSeason">' + t('sourcing.harvestSeason') + '</p>' +
+                '<p class="text-sm font-extrabold text-slate-800 mt-0.5">' + harvestSeason + '</p>' +
+            '</div>' +
+            '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="sourcing.lotId">' + t('sourcing.lotId') + '</p>' +
+                '<p class="text-sm font-extrabold text-slate-800 mt-0.5 font-mono">' + lotNumber + '</p>' +
+            '</div>' +
+            '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3 sm:col-span-2">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="sourcing.delivery">' + t('sourcing.delivery') + '</p>' +
+                '<p class="text-sm font-extrabold text-slate-800 mt-0.5">' + delivery + '</p>' +
+            '</div>' +
+        '</div>' +
+
+        // Quality standards
+        '<h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2" data-i18n="sourcing.qualityTitle">' + t('sourcing.qualityTitle') + '</h4>' +
+        '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">' +
+            '<div class="bg-white border border-slate-200 rounded-xl p-3 text-center">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="sourcing.moisture">' + t('sourcing.moisture') + '</p>' +
+                '<p class="text-lg font-black text-emerald-800 mt-1">' + moisture + '</p>' +
+                '<span class="trust-badge trust-badge--moisture" data-tooltip="Safe long-term storage below 12% moisture">' + t('sourcing.safeStorage') + '</span>' +
+            '</div>' +
+            '<div class="bg-white border border-slate-200 rounded-xl p-3 text-center">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="sourcing.purity">' + t('sourcing.purity') + '</p>' +
+                '<p class="text-lg font-black text-emerald-800 mt-1">' + purity + '</p>' +
+                '<span class="trust-badge trust-badge--purity" data-tooltip="Machine de-stoned and cleaned">Machine De-stoned / Cleaned</span>' +
+            '</div>' +
+            '<div class="bg-white border border-slate-200 rounded-xl p-3 text-center">' +
+                '<p class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="sourcing.grade">' + t('sourcing.grade') + '</p>' +
+                '<p class="text-lg font-black text-emerald-800 mt-1">' + grade + '</p>' +
+                '<span class="trust-badge trust-badge--grade" data-tooltip="Export-quality standard verified">Export-Quality Standard</span>' +
+            '</div>' +
+        '</div>' +
+
+        // Price breakdown
+        '<h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2" data-i18n="sourcing.priceTitle">' + t('sourcing.priceTitle') + '</h4>' +
+        '<div class="bg-slate-900 text-white rounded-xl p-4 mb-4 space-y-2">' +
+            '<div class="flex justify-between text-xs">' +
+                '<span class="text-slate-300" data-i18n="sourcing.farmPrice">' + t('sourcing.farmPrice') + '</span>' +
+                '<span class="font-bold">' + farmPrice + '</span>' +
+            '</div>' +
+            '<div class="flex justify-between text-xs">' +
+                '<span class="text-slate-400 line-through" data-i18n="sourcing.retailPrice">' + t('sourcing.retailPrice') + '</span>' +
+                '<span class="font-semibold text-slate-400 line-through">' + fmt(pool.retailPrice) + ' ' + currencyUnit() + '</span>' +
+            '</div>' +
+            '<div class="flex justify-between text-sm border-t border-slate-700 pt-2">' +
+                '<span class="text-emerald-300 font-bold" data-i18n="sourcing.groupPrice">' + t('sourcing.groupPrice') + '</span>' +
+                '<span class="text-emerald-300 font-black">' + fmt(pool.price) + ' ' + currencyUnit() + '</span>' +
+            '</div>' +
+            '<div class="flex justify-between text-xs bg-emerald-500/10 rounded-lg px-3 py-2">' +
+                '<span class="text-amber-300 font-bold" data-i18n="sourcing.netSavings">' + t('sourcing.netSavings') + '</span>' +
+                '<span class="text-amber-300 font-black">' + fmt(savingsAmount) + ' ' + currencyUnit() + ' (' + savingsPercent + '% OFF)</span>' +
+            '</div>' +
+        '</div>' +
+
+        // Storage advice
+        '<div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">' +
+            '<p class="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-1" data-i18n="sourcing.storage">' + t('sourcing.storage') + '</p>' +
+            '<p class="text-xs text-amber-900 leading-relaxed">' + storage + '</p>' +
+        '</div>' +
+
+        // Hub address
+        '<div class="bg-slate-50 border border-slate-200 rounded-xl p-3 mb-4">' +
+            '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="sourcing.hubAddress">' + t('sourcing.hubAddress') + '</p>' +
+            '<p class="text-sm font-extrabold text-slate-800">' + hubAddress + '</p>' +
+        '</div>' +
+
+        // Actions
+        '<div class="flex gap-2">' +
+            '<button onclick="closeSourcingModal(); openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="btn-press flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
+                (isReservable ? t('sourcing.reserveBtn') : t('card.fullyReserved')) +
+            '</button>' +
+            '<button onclick="sharePool(\'' + pool.id + '\', event)" class="btn-press px-4 py-2.5 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition text-xs font-bold flex items-center gap-1">' +
+                t('sourcing.shareBtn') +
+            '</button>' +
+        '</div>';
 }
 
 // ---------- Reserve Modal ----------
@@ -4568,6 +4781,7 @@ function init() {
             closeShareMenu();
             closeProductModal();
             closeListHarvestModal();
+            closeSourcingModal();
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
         }
@@ -4579,6 +4793,7 @@ function init() {
     const authModal = document.getElementById('auth-modal');
     const harvestModal = document.getElementById('harvest-modal');
     const productModal = document.getElementById('product-modal');
+    const sourcingModal = document.getElementById('sourcing-modal');
 
     function modalBackdropClick(modal, closer) {
         if (!modal) return;
@@ -4592,6 +4807,7 @@ function init() {
     modalBackdropClick(authModal, closeAuthModal);
     modalBackdropClick(harvestModal, closeListHarvestModal);
     modalBackdropClick(productModal, closeProductModal);
+    modalBackdropClick(sourcingModal, closeSourcingModal);
     modalBackdropClick(document.getElementById('share-menu'), closeShareMenu);
 
     renderCalculator();
