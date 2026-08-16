@@ -382,7 +382,6 @@ const I18N = {
         'gate.sellerTitle': 'I am a Seller', 'gate.sellerText': 'List your harvest with quality grades, volume and pricing — reaching buyers across Ethiopia directly.',
         'gate.sellerFeat1': '+ List Your Harvest', 'gate.sellerFeat2': 'Quality & volume specs', 'gate.sellerFeat3': 'Manage supply inventory',
         'gate.cta': 'Continue', 'gate.footNote': 'Already have an account? Sign in to go straight to your portal.',
-        'gate.skip': 'Just browsing — skip',
         'bulk.title': 'Bulk & Institutional Purchase',
         'bulk.prodTeff': 'White Teff (Gojjam)', 'bulk.prodOnions': 'Red Onions (Ziway)', 'bulk.prodCoffee': 'Raw Coffee Beans (Sidama)', 'bulk.prodOil': 'Sunflower Cooking Oil', 'bulk.prodLentils': 'Red Lentils (Misir)',
         'bulk.retailTag': 'retail',
@@ -482,6 +481,28 @@ const I18N = {
         'seller.statusActive': 'Active', 'seller.statusSold': 'Sold', 'seller.statusDraft': 'Draft', 'seller.statusInactive': 'Inactive',
         'seller.edit': 'Edit', 'seller.delete': 'Delete', 'seller.view': 'View',
         'seller.available': 'Available', 'seller.volume': 'Volume',
+        'seller.heroTitle': 'Turn Your Harvest Into Income',
+        'seller.heroSub': 'List quality-graded supply, set your own pricing and reach neighborhood buyers across Ethiopia.',
+        'seller.heroChip1': 'Fair Pricing', 'seller.heroChip2': 'Direct to Buyers', 'seller.heroChip3': 'Inventory Control',
+        'seller.howBadge': 'How it works for sellers',
+        'seller.howTitle': 'From harvest to income in three steps',
+        'seller.howStep1Title': 'List your harvest',
+        'seller.howStep1Text': 'Publish your crop with quality grades, volume, harvest year and photos.',
+        'seller.howStep2Title': 'Set your pricing',
+        'seller.howStep2Text': 'Choose fixed or negotiable pricing and minimum order lots for serious buyers.',
+        'seller.howStep3Title': 'Reach buyers & manage sales',
+        'seller.howStep3Text': 'Buyers discover your supply; manage inventory and mark listings sold.',
+        'seller.benefitTitle': 'Why sell on NuroTewedede',
+        'seller.benefit1Title': 'Fair farm-gate prices',
+        'seller.benefit1Text': 'No exploitative middlemen — your produce reaches buyers at wholesale value.',
+        'seller.benefit2Title': 'Direct market reach',
+        'seller.benefit2Text': 'Connect with neighborhood hubs and group buyers across Ethiopia.',
+        'seller.benefit3Title': 'Simple inventory control',
+        'seller.benefit3Text': 'Update volumes, edit listings and mark sold in one place.',
+        'auth.buyerSignin': 'Buyer Sign In', 'auth.buyerSignup': 'Create Buyer Account',
+        'auth.sellerSignin': 'Seller Sign In', 'auth.sellerSignup': 'Create Seller Account',
+        'auth.roleHintBuyer': 'Access your Buyer Portal: join pools, reserve shares and buy from hubs.',
+        'auth.roleHintSeller': 'Access your Seller Portal: list harvest, manage supply inventory and reach buyers.',
         'seller.published': 'Published', 'seller.listedOn': 'Listed on',
         'harvest.title': 'List Your Harvest', 'harvest.editTitle': 'Edit Listing',
         'harvest.subtitle': 'Publish your supply listing — quality, volume, pricing and origin. Buyers in the marketplace will see it instantly.',
@@ -661,7 +682,6 @@ const I18N = {
         'gate.sellerTitle': 'እኔ ሻጭ ነኝ', 'gate.sellerText': 'ምርትዎን በጥራት ደረጃ፣ መጠን እና ዋጋ ይዘርዝሩ — በመላ ኢትዮጵያ ያሉ ገዢዎችን በቀጥታ ይድረሱ።',
         'gate.sellerFeat1': '+ ምርትዎን ይዘርዝሩ', 'gate.sellerFeat2': 'የጥራት እና መጠን ዝርዝር', 'gate.sellerFeat3': 'የአቅርቦት ክምችት ያስተዳድሩ',
         'gate.cta': 'ቀጥል', 'gate.footNote': 'መለያ አለዎት? በቀጥታ ወደ ፖርታልዎ ለመሄድ ይግቡ።',
-        'gate.skip': 'በአጋጣሚ እየተመለከትኩ ነው — ዝለል',
         'bulk.title': 'የጅምላ እና ተቋማዊ ግዢ',
         'bulk.prodTeff': 'ነጭ ጤፍ (ጎጃም)', 'bulk.prodOnions': 'ቀይ ሽንኩርት (ዝዌይ)', 'bulk.prodCoffee': 'ድፍድፍ የቡና ፍሬ (ሲዳማ)', 'bulk.prodOil': 'የሱፍ አበባ የምግብ ዘይት', 'bulk.prodLentils': 'ቀይ ምስር',
         'bulk.retailTag': 'ችርቻሮ',
@@ -942,7 +962,6 @@ const I18N = {
         'gate.sellerText': 'Midhaan kee sadarkaa qulqullinaa, hangaa fi gatiin galmeessi — gara bituuwwan biyyaatti kallattiin dhaqqabi.',
         'gate.sellerFeat1': '+ Midhaan Kee Kaayi', 'gate.sellerFeat2': 'Ibsa qulqullinaa fi hangaa', 'gate.sellerFeat3': 'Kuusaa dhiyeessaa bulchi',
         'gate.cta': 'Itti Fufi', 'gate.footNote': 'Akaawuntii qabdaa? Kallattiin gara portal keetii gahuuf seeni.',
-        'gate.skip': 'Ilaalee jira — darbi',
         'bulk.title': 'Bituu Waldaa fi Dhaabbataa',
         'bulk.prodTeff': 'Xaafii Adii (Gojjam)', 'bulk.prodOnions': 'Shunkurtii Diimaa (Ziway)', 'bulk.prodCoffee': 'Buna Diimaa (Sidaama)', 'bulk.prodOil': 'Zayitaa Suufii', 'bulk.prodLentils': 'Misira Diimaa',
         'bulk.retailTag': 'daldala',
@@ -2757,8 +2776,8 @@ function closeAuthModal() {
     }
 }
 
-// Role chosen from the root entry gate. Buyer enters the public portal
-// immediately; seller routes through auth (sellers must be signed in).
+// Role chosen from the root entry gate. Both paths route through the auth
+// modal when the user is not yet signed in — the nav stays hidden until login.
 function chooseRole(role) {
     const isSeller = role === 'seller';
     localStorage.setItem('nt-role', isSeller ? 'seller' : 'buyer');
@@ -2771,7 +2790,11 @@ function chooseRole(role) {
     } else {
         currentRole = 'buyer';
         updateRoleNav();
-        showTab('pools');
+        if (currentUser) {
+            showTab('pools');
+        } else {
+            openAuthModal('buyer');
+        }
     }
 }
 
@@ -2883,7 +2906,7 @@ async function handleLogout() {
     myProducts = [];
     updateAuthUI();
     fetchPools();
-    if (activeTab === 'seller' || activeTab === 'marketplace') showTab('pools');
+    showTab('gate');
     showToast(t('toast.signedOut'));
 }
 
@@ -3332,13 +3355,23 @@ function enterMarketplacePortal() {
     fetchMarketplace();
 }
 
-// Hide the Marketplace nav entry from everyone except signed-in sellers.
+// Gate the navigation by role:
+//  - Signed-out users see no app navigation (they stay on the role gate).
+//  - Authenticated users get the buyer portal tabs (pools, calculator, hubs,
+//    my shares) plus the landing menu items.
+//  - The Marketplace / Seller-listing tabs are restricted to sellers only.
 function updateRoleNav() {
+    const isAuth = !!currentUser;
     const isSeller = !!(currentUser && currentRole === 'seller');
-    document.querySelectorAll('.tab-btn[data-tab="marketplace"], .mobile-tab-btn[data-tab="marketplace"]')
-        .forEach(function (btn) {
-            btn.classList.toggle('hidden', !isSeller);
-        });
+    const SELLER_TABS = ['marketplace'];
+
+    document.querySelectorAll('.tab-btn, .mobile-tab-btn, .menu-item').forEach(function (btn) {
+        let visible = isAuth;
+        if (visible && btn.dataset.tab && SELLER_TABS.indexOf(btn.dataset.tab) !== -1) {
+            visible = isSeller;
+        }
+        btn.classList.toggle('hidden', !visible);
+    });
 }
 
 // ---------- Public marketplace (browse supply) ----------

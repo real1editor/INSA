@@ -48,6 +48,7 @@
             <nav id="desktop-nav" class="hidden md:flex items-center gap-1">
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="pools" data-i18n="nav.pools">Active Pools</button>
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="marketplace" data-i18n="nav.marketplace">Marketplace</button>
+                <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap hidden" data-tab="seller" data-i18n="nav.sellerDashboard">Seller Dashboard</button>
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="calculator" data-i18n="nav.calculator">Savings Calculator</button>
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="hubs" data-i18n="nav.hubs">Hub Map</button>
             </nav>
@@ -106,7 +107,8 @@
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="calculator" data-i18n="nav.calculator">Savings Calculator</button>
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="hubs" data-i18n="nav.hubs">Hub Map</button>
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="myshares" data-i18n="nav.myshares">My Reserved Shares</button>
-                <button onclick="openBulkModal()" class="w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition text-emerald-200" data-i18n="nav.bulk">Bulk &amp; Institutional</button>
+                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition hidden" data-tab="seller" data-i18n="nav.sellerDashboard">Seller Dashboard</button>
+                <button onclick="openBulkModal()" data-nav="buyer" class="w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition text-emerald-200 hidden" data-i18n="nav.bulk">Bulk &amp; Institutional</button>
             </div>
             <div class="px-4 py-3 border-t border-emerald-700/60 flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center bg-emerald-900/60 border border-emerald-700 rounded-xl p-0.5 text-xs font-bold w-full sm:w-auto justify-center">
@@ -179,12 +181,10 @@
                         </button>
                     </div>
 
-                    <div class="mt-8 text-center space-y-3">
+                    <div class="mt-8 text-center">
                         <p class="text-xs text-slate-400" data-i18n="gate.footNote">Already have an account? Sign in to go straight to your portal.</p>
-                        <div class="flex flex-wrap justify-center gap-2">
+                        <div class="mt-3 flex justify-center">
                             <button type="button" onclick="openAuthModal()" class="text-xs font-bold text-emerald-800 hover:text-emerald-600 underline underline-offset-4 transition" data-i18n="auth.signin">Sign In</button>
-                            <span class="text-slate-300">·</span>
-                            <button type="button" onclick="chooseRole('buyer')" class="text-xs font-bold text-slate-400 hover:text-slate-600 underline underline-offset-4 transition" data-i18n="gate.skip">Just browsing — skip</button>
                         </div>
                     </div>
                 </div>
@@ -683,14 +683,29 @@
 
         <!-- ==================== VIEW: SELLER DASHBOARD ==================== -->
         <section id="view-seller" class="view-section hidden space-y-8">
-            <div class="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+            <!-- Seller Portal hero -->
+            <div class="relative bg-gradient-to-br from-amber-900 via-amber-700 to-orange-600 px-6 py-12 md:py-14 text-center text-white overflow-hidden rounded-3xl shadow-sm">
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+                <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+                    <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-[11px] font-black uppercase tracking-wider px-4 py-1.5 rounded-full" data-i18n="seller.badge">Seller Portal</span>
+                    <h2 class="text-3xl md:text-4xl font-black tracking-tight" data-i18n="seller.heroTitle">Turn Your Harvest Into Income</h2>
+                    <p class="text-sm md:text-base text-amber-100 leading-relaxed" data-i18n="seller.heroSub">List quality-graded supply, set your own pricing and reach neighborhood buyers across Ethiopia.</p>
+                    <div class="flex flex-wrap justify-center gap-2 pt-1">
+                        <span class="bg-black/20 border border-white/10 text-[11px] font-bold px-3 py-1 rounded-full">💰 <span data-i18n="seller.heroChip1">Fair Pricing</span></span>
+                        <span class="bg-black/20 border border-white/10 text-[11px] font-bold px-3 py-1 rounded-full">🤝 <span data-i18n="seller.heroChip2">Direct to Buyers</span></span>
+                        <span class="bg-black/20 border border-white/10 text-[11px] font-bold px-3 py-1 rounded-full">📦 <span data-i18n="seller.heroChip3">Inventory Control</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supply dashboard -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 md:p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
                     <div>
-                        <span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-2" data-i18n="seller.badge">Seller Portal</span>
                         <h2 class="text-2xl font-extrabold text-slate-900" data-i18n="seller.title">Your Harvest, Your Marketplace</h2>
                         <p class="text-xs text-slate-500 mt-0.5" data-i18n="seller.subtitle">Publish quality-graded supply listings and connect directly with neighborhood buyers.</p>
                     </div>
-                    <button onclick="openListHarvestModal()" class="bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow whitespace-nowrap" data-i18n="seller.listCta">
+                    <button onclick="openListHarvestModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow whitespace-nowrap" data-i18n="seller.listCta">
                         + List Your Harvest
                     </button>
                 </div>
@@ -700,9 +715,56 @@
                 <div id="seller-empty" class="hidden text-center py-12 text-slate-400 space-y-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-slate-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9h.5M8 11h2v2H8z"/></svg>
                     <p class="text-sm font-semibold" data-i18n="seller.empty">You haven't listed any harvest yet.</p>
-                    <button onclick="openListHarvestModal()" class="bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-emerald-700 transition" data-i18n="seller.emptyCta">List your first harvest</button>
+                    <button onclick="openListHarvestModal()" class="bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-amber-500 transition" data-i18n="seller.emptyCta">List your first harvest</button>
                 </div>
                 <div id="seller-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- How it works for sellers -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 md:p-8">
+                <div class="text-center mb-6">
+                    <span class="inline-block bg-amber-100 text-amber-800 text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full" data-i18n="seller.howBadge">How it works for sellers</span>
+                    <h3 class="text-2xl font-extrabold text-slate-900 mt-2" data-i18n="seller.howTitle">From harvest to income in three steps</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="text-center p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-amber-600 text-white text-lg font-black grid place-items-center mb-3">1</div>
+                        <h4 class="text-sm font-extrabold text-slate-900" data-i18n="seller.howStep1Title">List your harvest</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="seller.howStep1Text">Publish your crop with quality grades, volume, harvest year and photos.</p>
+                    </div>
+                    <div class="text-center p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-amber-600 text-white text-lg font-black grid place-items-center mb-3">2</div>
+                        <h4 class="text-sm font-extrabold text-slate-900" data-i18n="seller.howStep2Title">Set your pricing</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="seller.howStep2Text">Choose fixed or negotiable pricing and minimum order lots for serious buyers.</p>
+                    </div>
+                    <div class="text-center p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-amber-600 text-white text-lg font-black grid place-items-center mb-3">3</div>
+                        <h4 class="text-sm font-extrabold text-slate-900" data-i18n="seller.howStep3Title">Reach buyers &amp; manage sales</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="seller.howStep3Text">Buyers discover your supply; manage inventory and mark listings sold.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seller benefits -->
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm p-6 md:p-8">
+                <h3 class="text-2xl font-extrabold text-slate-900 text-center mb-6" data-i18n="seller.benefitTitle">Why sell on NuroTewedede</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="rounded-2xl border border-slate-200 p-5 text-center">
+                        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-800 grid place-items-center text-xl mb-3">💸</div>
+                        <h4 class="text-sm font-extrabold text-slate-900" data-i18n="seller.benefit1Title">Fair farm-gate prices</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="seller.benefit1Text">No exploitative middlemen — your produce reaches buyers at wholesale value.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 p-5 text-center">
+                        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-800 grid place-items-center text-xl mb-3">🤝</div>
+                        <h4 class="text-sm font-extrabold text-slate-900" data-i18n="seller.benefit2Title">Direct market reach</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="seller.benefit2Text">Connect with neighborhood hubs and group buyers across Ethiopia.</p>
+                    </div>
+                    <div class="rounded-2xl border border-slate-200 p-5 text-center">
+                        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-100 text-amber-800 grid place-items-center text-xl mb-3">📦</div>
+                        <h4 class="text-sm font-extrabold text-slate-900" data-i18n="seller.benefit3Title">Simple inventory control</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1" data-i18n="seller.benefit3Text">Update volumes, edit listings and mark sold in one place.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -1015,10 +1077,13 @@
     </div>
 
     <!-- Auth Modal Container -->
-    <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative glass">
             <div class="flex justify-between items-center mb-4">
-                <h3 id="auth-modal-title" class="text-xl font-bold text-slate-800" data-i18n="auth.signin">Sign In</h3>
+                <div>
+                    <h3 id="auth-modal-title" class="text-xl font-bold text-slate-800">Buyer Sign In</h3>
+                    <p id="auth-role-hint" class="text-[11px] font-medium text-slate-500 leading-relaxed mt-0.5">Access your Buyer Portal: join pools, reserve shares and buy from hubs.</p>
+                </div>
                 <button id="close-auth-modal" class="text-slate-400 hover:text-slate-600 transition" data-i18n-aria-label="aria.closeModal" aria-label="Close modal">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
