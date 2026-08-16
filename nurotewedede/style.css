@@ -604,50 +604,63 @@ input[type="range"]::-webkit-slider-thumb {
     bottom: 1.5rem;
     right: 1.5rem;
     z-index: 50;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    width: 3.5rem;
-    height: 3.5rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 9999px;
-    background-color: #065f46;
+    background: linear-gradient(135deg, #059669, #0d9488);
     color: #ffffff;
-    box-shadow: 0 10px 30px rgba(4, 120, 87, 0.45);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(4, 120, 87, 0.45), 0 0 20px rgba(16, 185, 129, 0.25);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    cursor: pointer;
 }
 .ai-fab:hover {
-    transform: scale(1.06);
-    box-shadow: 0 12px 36px rgba(4, 120, 87, 0.55);
+    transform: scale(1.08);
+    box-shadow: 0 14px 48px rgba(4, 120, 87, 0.55), 0 0 30px rgba(16, 185, 129, 0.4);
 }
-.ai-fab-label {
-    font-size: 0.65rem;
+.ai-fab:active {
+    transform: scale(0.96);
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ai-fab-text {
+    font-size: 0.8rem;
     font-weight: 800;
-    background-color: rgba(255, 255, 255, 0.15);
-    padding: 0.25rem 0.5rem;
-    border-radius: 9999px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg, #ffffff, #a7f3d0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 .ai-fab-pulse {
     position: absolute;
-    inset: 0;
+    inset: -4px;
     border-radius: 9999px;
-    border: 2px solid rgba(16, 185, 129, 0.7);
+    border: 2px solid rgba(52, 211, 153, 0.6);
     animation: ai-fab-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    pointer-events: none;
 }
 @keyframes ai-fab-ping {
     0% {
         transform: scale(1);
-        opacity: 0.8;
+        opacity: 0.7;
     }
     75%, 100% {
-        transform: scale(1.55);
+        transform: scale(1.45);
         opacity: 0;
     }
 }
 [data-theme="dark"] .ai-fab {
-    background-color: #059669;
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
+    background: linear-gradient(135deg, #059669, #0f766e);
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.35), 0 0 24px rgba(52, 211, 153, 0.2);
+}
+[data-theme="dark"] .ai-fab:hover {
+    box-shadow: 0 14px 48px rgba(16, 185, 129, 0.45), 0 0 36px rgba(52, 211, 153, 0.3);
 }
 
 /* ===== Voucher printing ===== */
@@ -1077,10 +1090,10 @@ button:disabled {
 
 /* ===== Floating widgets (NuroAI FAB + back-to-top) glass ===== */
 .ai-fab {
-    background-color: rgba(6, 95, 70, 0.85) !important;
-    backdrop-filter: blur(10px) saturate(140%);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
-    border: 1px solid rgba(16, 185, 129, 0.35);
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.92), rgba(13, 148, 136, 0.92)) !important;
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 .back-to-top {
     background-color: rgba(6, 78, 59, 0.85) !important;

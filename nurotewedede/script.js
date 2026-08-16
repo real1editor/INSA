@@ -514,6 +514,10 @@ const I18N = {
         'seller.listCta': '+ List Your Harvest',
         'seller.empty': 'You haven\'t listed any harvest yet.',
         'seller.emptyCta': 'List your first harvest',
+        'seller.demandTitle': 'Live Buyer Demand',
+        'seller.demandSubtitle': 'Active neighborhood pools looking for supply like yours.',
+        'seller.viewAllPools': 'View all pools →',
+        'seller.demandCta': 'Fulfill this demand',
         'seller.statsListings': 'Total Listings', 'seller.statsVolume': 'Total Volume', 'seller.statsActive': 'Active Listings',
         'seller.statusActive': 'Active', 'seller.statusSold': 'Sold', 'seller.statusDraft': 'Draft', 'seller.statusInactive': 'Inactive',
         'seller.edit': 'Edit', 'seller.delete': 'Delete', 'seller.view': 'View',
@@ -849,6 +853,10 @@ const I18N = {
         'seller.listCta': '+ ምርትዎን ይዘርዝሩ',
         'seller.empty': 'እስካሁን ምርት አልዘረዘሩም።',
         'seller.emptyCta': 'የመጀመሪያ ምርትዎን ይዘርዝሩ',
+        'seller.demandTitle': 'የገዢ ድርላይ ፍላጎት',
+        'seller.demandSubtitle': 'ንቁ የሰፈር ግዢዎች እንደ እርስዎ ያለ አቅርቦት ይፈልጋሉ።',
+        'seller.viewAllPools': 'ሁሉንም ግዢዎች ይመልከቱ →',
+        'seller.demandCta': 'ይህን ፍላጎት ይሙሉ',
         'seller.statsListings': 'ጠቅላላ ዝርዝሮች', 'seller.statsVolume': 'ጠቅላላ መጠን', 'seller.statsActive': 'ንቁ ዝርዝሮች',
         'seller.statusActive': 'ንቁ', 'seller.statusSold': 'የተሸጠ', 'seller.statusDraft': 'ረቂቅ', 'seller.statusInactive': 'የማይሰራ',
         'seller.edit': 'አርትዕ', 'seller.delete': 'ሰርዝ', 'seller.view': 'ይመልከቱ',
@@ -1186,6 +1194,10 @@ const I18N = {
         'seller.listCta': '+ Midhaan Kee Kaayi',
         'seller.empty': 'Amma hunda midhaan hin galmeessine.',
         'seller.emptyCta': 'Midhaan jalqabaa kee galmeessi',
+        'seller.demandTitle': 'Fedhii Bittii Bultii',
+        'seller.demandSubtitle': 'Pooliin naannoo bultii kanneen akka keetitti dhiyeessii barbaadu.',
+        'seller.viewAllPools': 'Pooli hunda ilaali →',
+        'seller.demandCta': 'Fedhii kana guuti',
         'seller.statsListings': 'Galmee Waliigalaa', 'seller.statsVolume': 'Hanga Waliigalaa', 'seller.statsActive': 'Galmee Ijoo',
         'seller.statusActive': 'Ijoo', 'seller.statusSold': 'Gurgurame', 'seller.statusDraft': 'Rawwaafamaa', 'seller.statusInactive': 'Hojii irraa bu\'e',
         'seller.edit': 'Sirreessi', 'seller.delete': 'Haqi', 'seller.view': 'Ilaali',
@@ -1950,6 +1962,7 @@ async function fetchPools() {
     } catch (e) { /* category pills are optional */ }
     renderPools();
     renderTicker();
+    renderSellerDemand();
 }
 
 function countUp(el, target, suffix, duration) {
@@ -4399,6 +4412,73 @@ function renderSellerDashboard() {
     if (empty) empty.classList.toggle('hidden', myProducts.length > 0);
     grid.innerHTML = myProducts.map(sellerProductCardHtml).join('') ||
         '<p class="text-xs text-slate-400 col-span-full text-center py-8">' + esc(t('seller.empty')) + '</p>';
+
+    renderSellerDemand();
+}
+
+function renderSellerDemand() {
+    const demandGrid = document.getElementById('seller-demand-grid');
+    const demandEmpty = document.getElementById('seller-demand-section');
+    if (!demandGrid || !demandEmpty) return;
+
+    const activePools = pools.filter(function (p) { return !p.locked && p.currentShares < p.targetShares; });
+    const maxShow = 6;
+    const shown = activePools.slice(0, maxShow);
+
+    if (shown.length === 0) {
+        demandGrid.innerHTML = '';
+        if (demandEmpty) demandEmpty.classList.add('hidden');
+        return;
+    }
+
+    if (demandEmpty) demandEmpty.classList.remove('hidden');
+
+    demandGrid.innerHTML = shown.map(function (pool) {
+        const percentage = Math.min(100, Math.round((pool.currentShares / pool.targetShares) * 100));
+        const entry = produceEntry(pool.category || '');
+        const name = entry ? produceLabel(entry) : (pool.title || '');
+        const savingsAmount = pool.retailPrice - pool.price;
+        const savingsPercent = pool.retailPrice > 0 ? Math.round((savingsAmount / pool.retailPrice) * 100) : 0;
+
+        return '' +
+            '<div class="card-enter card-lift bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col gap-3">' +
+                '<div class="flex items-start justify-between gap-2">' +
+                    '<div>' +
+                        '<h4 class="text-sm font-extrabold text-slate-900 leading-tight">' + esc(name) + '</h4>' +
+                        '<p class="text-[10px] text-slate-400 mt-0.5">' + esc(localizeTown(pool.town)) + ' • ' + esc(pool.woreda) + '</p>' +
+                    '</div>' +
+                    '<span class="shrink-0 bg-amber-400 text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">-' + savingsPercent + '%</span>' +
+                '</div>' +
+                '<div class="flex items-end justify-between">' +
+                    '<div>' +
+                        '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">' + esc(t('card.groupPrice')) + '</p>' +
+                        '<p class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ' + currencyUnit() + '</p>' +
+                    '</div>' +
+                    '<div class="text-right">' +
+                        '<p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">' + esc(t('card.reservation')) + '</p>' +
+                        '<p class="text-xs font-bold text-slate-700">' + esc(pool.currentShares + '/' + pool.targetShares) + '</p>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">' +
+                    '<div class="h-full rounded-full bg-emerald-600 transition-all duration-500" style="width: ' + percentage + '%"></div>' +
+                '</div>' +
+                '<button onclick="openReserveModalFromDemand(\'' + pool.id + '\')" class="btn-press w-full bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold py-2 rounded-xl transition shadow-sm">' + esc(t('seller.demandCta')) + '</button>' +
+            '</div>';
+    }).join('');
+}
+
+function openReserveModalFromDemand(id) {
+    if (!currentUser) {
+        showToast(t('toast.signinReserve'));
+        openAuthModal();
+        return;
+    }
+    if (currentRole === 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        showTab('seller');
+        return;
+    }
+    openReserveModal(id);
 }
 
 function sellerProductCardHtml(p) {

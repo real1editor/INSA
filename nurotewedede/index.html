@@ -50,7 +50,6 @@
             <!-- Desktop Navigation: core links inline -->
             <nav id="desktop-nav" class="hidden md:flex items-center gap-1">
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="pools" data-i18n="nav.pools">Active Pools</button>
-                <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="marketplace" data-i18n="nav.marketplace">Marketplace</button>
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap hidden" data-tab="seller" data-i18n="nav.sellerDashboard">Seller Dashboard</button>
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="calculator" data-i18n="nav.calculator">Savings Calculator</button>
                 <button class="nav-link tab-btn px-3 py-2 text-sm font-semibold rounded-xl transition whitespace-nowrap" data-tab="hubs" data-i18n="nav.hubs">Hub Map</button>
@@ -106,7 +105,6 @@
                 <button class="menu-item mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-menu="about" data-i18n="nav.about">About Us</button>
                 <button class="menu-item mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-menu="how" data-i18n="nav.how">How it works</button>
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="pools" data-i18n="nav.pools">Active Pools</button>
-                <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="marketplace" data-i18n="nav.marketplace">Marketplace</button>
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="calculator" data-i18n="nav.calculator">Savings Calculator</button>
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="hubs" data-i18n="nav.hubs">Hub Map</button>
                 <button class="mobile-tab-btn w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition" data-tab="myshares" data-i18n="nav.myshares">My Reserved Shares</button>
@@ -548,11 +546,8 @@
 
         <!-- ==================== NUROAI ASSISTANT FLOATING WIDGET ==================== -->
         <section id="ai-fab-panel" class="hidden fixed bottom-24 right-4 sm:right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[70vh] max-h-[560px] glass-card rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-            <div class="flex items-center gap-3 p-4 bg-emerald-800">
-                <div class="bg-white/10 p-2 rounded-xl shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between p-4 bg-emerald-800">
+                <div class="min-w-0">
                     <h2 class="text-base font-black text-white flex items-center gap-2"><span data-i18n="ai.title">NuroAI Assistant</span>
                         <span class="inline-flex items-center gap-1 bg-white/15 text-emerald-100 text-[10px] font-bold px-2 py-0.5 rounded-full" data-i18n="ai.modelBadge">Gemini 3.6 Flash</span>
                     </h2>
@@ -707,19 +702,60 @@
                         <h2 class="text-2xl font-extrabold text-slate-900" data-i18n="seller.title">Your Harvest, Your Marketplace</h2>
                         <p class="text-xs text-slate-500 mt-0.5" data-i18n="seller.subtitle">Publish quality-graded supply listings and connect directly with neighborhood buyers.</p>
                     </div>
-                    <button onclick="openListHarvestModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow whitespace-nowrap" data-i18n="seller.listCta">
-                        + List Your Harvest
+                    <div class="flex items-center gap-2">
+                        <button onclick="openListHarvestModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow whitespace-nowrap" data-i18n="seller.listCta">
+                            + List Your Harvest
+                        </button>
+                        <button onclick="openCollectiveModal()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl font-bold text-sm transition shadow whitespace-nowrap border border-emerald-500" data-i18n="seller.collectiveCta">
+                            ⚡ Pool & Sell Together
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seller workflow tabs -->
+                <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl w-fit">
+                    <button onclick="setSellerWorkflow('direct')" id="seller-tab-direct" class="seller-workflow-tab px-4 py-2 rounded-lg text-xs font-bold transition bg-white text-slate-900 shadow-sm" data-i18n="seller.workflowDirect">
+                        🛍️ Direct Selling
+                    </button>
+                    <button onclick="setSellerWorkflow('collective')" id="seller-tab-collective" class="seller-workflow-tab px-4 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900" data-i18n="seller.workflowCollective">
+                        🤝 Collective Pools
                     </button>
                 </div>
 
-                <div id="seller-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+                <!-- Direct selling content -->
+                <div id="seller-direct-panel" class="space-y-4">
+                    <div id="seller-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+                    <div id="seller-empty" class="hidden text-center py-12 text-slate-400 space-y-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-slate-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9h.5M8 11h2v2H8z"/></svg>
+                        <p class="text-sm font-semibold" data-i18n="seller.empty">You haven't listed any harvest yet.</p>
+                        <button onclick="openListHarvestModal()" class="bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-amber-500 transition" data-i18n="seller.emptyCta">List your first harvest</button>
+                    </div>
+                    <div id="seller-direct-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-                <div id="seller-empty" class="hidden text-center py-12 text-slate-400 space-y-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-slate-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9h.5M8 11h2v2H8z"/></svg>
-                    <p class="text-sm font-semibold" data-i18n="seller.empty">You haven't listed any harvest yet.</p>
-                    <button onclick="openListHarvestModal()" class="bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-amber-500 transition" data-i18n="seller.emptyCta">List your first harvest</button>
+                    <!-- Contextual buyer demand / marketplace opportunities -->
+                    <div id="seller-demand-section" class="mt-6 pt-6 border-t border-slate-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider" data-i18n="seller.demandTitle">Live Buyer Demand</h3>
+                                <p class="text-xs text-slate-500 mt-0.5" data-i18n="seller.demandSubtitle">Active neighborhood pools looking for supply like yours.</p>
+                            </div>
+                            <button onclick="showTab('pools')" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 transition" data-i18n="seller.viewAllPools">View all pools →</button>
+                        </div>
+                        <div id="seller-demand-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                        <div id="seller-demand-empty" class="hidden text-center py-8 text-slate-400 text-xs">No active buyer pools at the moment.</div>
+                    </div>
                 </div>
-                <div id="seller-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+                <!-- Collective pools content -->
+                <div id="seller-collective-panel" class="hidden space-y-4">
+                    <div id="collective-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+                    <div id="collective-empty" class="hidden text-center py-12 text-slate-400 space-y-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-slate-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <p class="text-sm font-semibold" data-i18n="seller.collectiveEmpty">No collective pools yet.</p>
+                        <button onclick="openCollectiveModal()" class="bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-emerald-600 transition" data-i18n="seller.collectiveEmptyCta">Create your first collective pool</button>
+                    </div>
+                    <div id="seller-collective-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
             </div>
 
             <!-- How it works for sellers -->
@@ -831,6 +867,81 @@
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 text-slate-600 text-sm font-semibold hover:bg-slate-100 rounded-lg transition" data-i18n="common.cancel">Cancel</button>
                     <button type="submit" class="bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-800 transition shadow" data-i18n="create.submit">Create Pool</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Collective Pool Modal -->
+    <div id="collective-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="glass-card rounded-2xl max-w-lg w-full p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-800" data-i18n="collective.title">Create Collective Pool</h3>
+                <button onclick="closeCollectiveModal()" class="text-slate-400 hover:text-slate-600 transition" data-i18n-aria-label="aria.closeModal" aria-label="Close modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4" data-i18n="collective.subtitle">Pool harvest quantities with neighboring micro-producers to reach bulk wholesale targets and maximize income.</p>
+            <form id="collective-form" onsubmit="handleCollectiveSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.poolName">Pool Name</label>
+                    <input type="text" id="collective-name" required placeholder="e.g. Gojjam Teff Collective" data-i18n-placeholder="collective.poolNamePh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.crop">Crop / Produce</label>
+                        <select id="collective-crop" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.hub">Hub / Town</label>
+                        <select id="collective-town" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none"></select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.targetQty">Target Quantity</label>
+                        <input type="number" id="collective-target" required min="1" step="1" placeholder="e.g. 100" data-i18n-placeholder="collective.targetQtyPh" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.unit">Unit</label>
+                        <select id="collective-unit" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            <option value="quintal" data-i18n="unit.quintal">Quintal</option>
+                            <option value="kg" data-i18n="unit.kg">Kg</option>
+                            <option value="mt" data-i18n="unit.mt">Metric Ton</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.contributions">Contributor Breakdown</label>
+                    <div id="collective-contributors" class="space-y-2">
+                        <div class="flex gap-2 items-center contributor-row">
+                            <input type="text" placeholder="Producer name" class="flex-1 border border-slate-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-emerald-600 outline-none contributor-name" required>
+                            <input type="number" placeholder="%" min="0" max="100" class="w-20 border border-slate-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-emerald-600 outline-none contributor-pct" required>
+                            <button type="button" onclick="removeContributorRow(this)" class="text-rose-500 hover:text-rose-700 text-xs font-bold px-2">✕</button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addContributorRow()" class="mt-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 transition" data-i18n="collective.addContributor">+ Add Contributor</button>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.priceUnit">Price per Unit (ETB)</label>
+                        <input type="number" id="collective-price" required min="0" step="1" placeholder="e.g. 4500" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.pricing">Pricing Model</label>
+                        <select id="collective-pricing" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+                            <option value="fixed" data-i18n="harvest.pricingFixed">Fixed Price (ETB)</option>
+                            <option value="negotiable" data-i18n="harvest.pricingNegotiable">Negotiable</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="collective.desc">Description (optional)</label>
+                    <textarea id="collective-desc" rows="2" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-600 outline-none" data-i18n-placeholder="collective.descPh"></textarea>
+                </div>
+                <div class="flex justify-end gap-3 mt-4">
+                    <button type="button" onclick="closeCollectiveModal()" class="px-4 py-2 text-slate-600 text-sm font-semibold hover:bg-slate-100 rounded-lg transition" data-i18n="common.cancel">Cancel</button>
+                    <button type="submit" class="bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-800 transition shadow" data-i18n="collective.submit">Create Collective Pool</button>
                 </div>
             </form>
         </div>
@@ -1149,8 +1260,7 @@
     <!-- Floating NuroAI Assistant Launcher -->
     <button id="ai-fab" onclick="toggleAiFab()" data-i18n-aria-label="aria.openAi" aria-label="Open NuroAI Assistant" class="ai-fab">
         <span class="ai-fab-pulse"></span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        <span class="ai-fab-label">NuroAI</span>
+        <span class="ai-fab-text">NuroAI</span>
     </button>
 
     <!-- Footer -->
