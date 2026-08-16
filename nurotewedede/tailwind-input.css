@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Build-time content sources: every Tailwind utility class lives in
+   index.html (static markup) and script.js (JS-generated templates).
+   Custom classes are defined separately in style.css. */
+@source "./index.html";
+@source "./script.js";

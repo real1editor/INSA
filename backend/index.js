@@ -7,6 +7,10 @@ const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+// Behind TLS-terminating reverse proxies (Render, Railway, Fly, Nginx).
+if (IS_PROD) app.set('trust proxy', 1);
 
 // Serve the frontend site from the sibling 'nurotewedede' folder
 const FRONTEND_DIR = path.join(__dirname, '..', 'nurotewedede');
@@ -24,9 +28,64 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Middleware
-app.use(cors({ origin: true, credentials: true }));
+// CORS: lock the allowed origin(s) in production via FRONTEND_ORIGIN
+// (comma-separated). Local dev keeps the permissive `origin: true` so the
+// Live-Server / localhost:5000 workflows keep working.
+const allowedOrigins = String(process.env.FRONTEND_ORIGIN || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+app.use(cors({
+  origin: IS_PROD
+    ? function (origin, cb) {
+        if (!origin) return cb(null, true); // same-origin / curl requests
+        if (allowedOrigins.includes(origin)) return cb(null, true);
+        return cb(new Error('Origin not allowed by CORS'));
+      }
+    : true,
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
+
+// Redirect plain-HTTP traffic to HTTPS in production.
+if (IS_PROD) {
+  app.use((req, res, next) => {
+    const proto = req.headers['x-forwarded-proto'] || req.protocol;
+    if (proto === 'http') return res.redirect(301, 'https://' + req.headers.host + req.originalUrl);
+    next();
+  });
+}
+
+// Minimal request logging (method, path, status, duration).
+app.use((req, res, next) => {
+  const started = Date.now();
+  res.on('finish', () => {
+    if (req.path.startsWith('/api/')) {
+      console.log(`${req.method} ${req.path} ${res.statusCode} ${Date.now() - started}ms`);
+    }
+  });
+  next();
+});
+
+// Rate limiting — protect auth and the AI endpoint from abuse.
+const rateLimit = require('express-rate-limit');
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please try again in a few minutes.' }
+});
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 12,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many AI requests. Please slow down and try again shortly.' }
+});
+app.use('/api/auth', authLimiter);
+app.use('/api/ai-assistant', aiLimiter);
 
 // Helper middleware to verify Supabase session token from cookies or headers
 async function requireAuth(req, res, next) {
@@ -149,7 +208,8 @@ app.post('/api/auth/signup', async (req, res) => {
   if (data.session) {
     res.cookie('sb-access-token', data.session.access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: IS_PROD,
+      sameSite: IS_PROD ? 'lax' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
   }
@@ -216,23 +276,18 @@ app.post('/api/auth/login', async (req, res) => {
       .maybeSingle();
     if (prof) profile = prof;
 
-    // The user picked a portal at sign-in ("Continue as Buyer/Seller").
-    // Honor that choice by updating their stored role so routing is consistent
-    // across sessions and devices.
-    const selectedRole = ['buyer', 'seller'].includes(role) ? role : null;
-    if (selectedRole && profile && profile.role !== selectedRole) {
-      await supabase
-        .from('profiles')
-        .update({ role: selectedRole })
-        .eq('id', data.user.id);
-      profile.role = selectedRole;
-    }
+    // NOTE: we intentionally do NOT mutate the stored role on login. An account's
+    // role is fixed at signup; honoring a "portal choice" from the login modal here
+    // would silently promote/demote existing accounts (a seller signing in via the
+    // plain "Sign In" button would be demoted to buyer server-side). The client
+    // routes using the server-authoritative role from the profile.
   }
 
   // Set secure cookie for session
   res.cookie('sb-access-token', data.session.access_token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: IS_PROD,
+    sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 
@@ -1092,13 +1147,35 @@ app.use((req, res, next) => {
   next();
 });
 
+// Unknown /api routes -> 404 JSON (never fall through to the SPA)
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
 // Central error handler: return JSON for any unhandled error (Express 5 forwards async rejections here)
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err.message);
-  res.status(err.status || 500).json({ error: err.message || 'Internal server error' });
+  if (IS_PROD) console.error('Unhandled error:', err.message);
+  else console.error('Unhandled error:', err.stack || err.message);
+  if (res.headersSent) return next(err);
+  if (err.message === 'Origin not allowed by CORS') {
+    return res.status(403).json({ error: 'Origin not allowed by CORS' });
+  }
+  res.status(err.status || 500).json({ error: IS_PROD ? 'Internal server error' : (err.message || 'Internal server error') });
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`NuroTewedede backend running on http://localhost:${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`NuroTewedede backend running on http://localhost:${PORT} (${IS_PROD ? 'production' : 'development'})`);
+});
+
+// Graceful shutdown + crash logging
+const shutdown = () => {
+  console.log('Shutting down gracefully...');
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 5000).unref();
+};
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection:', reason);
 });

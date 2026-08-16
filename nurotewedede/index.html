@@ -11,8 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="icon.svg">
-    <!-- Tailwind CSS v4 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Precompiled Tailwind CSS (built via `npm run build:css`; no runtime CDN dependency) -->
+    <link rel="stylesheet" href="tailwind.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
@@ -29,7 +29,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.05 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <button onclick="showTab('pools')" class="text-left group focus:outline-none">
+                <button onclick="goHome()" class="text-left group focus:outline-none">
                     <h1 class="text-xl font-bold tracking-tight leading-tight">NuroTewedede</h1>
                     <p class="text-[10px] text-emerald-100 leading-tight" data-i18n="brand.tagline">Neighborhood Group Buying Platform</p>
                 </button>
@@ -71,7 +71,7 @@
                     </button>
                     <div id="lang-dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50" role="listbox">
                         <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="en" onclick="setLang('en')" role="option" aria-label="English">🇬🇧 English</button>
-                        <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="am" onclick="setLang('am')" role="option" aria-label="Amharic">🇪🇹 አማርኛ</button>
+                        <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="am" onclick="setLang('am')" role="option" aria-label="አማርኛ">🇪🇹 አማርኛ</button>
                         <button class="lang-option w-full flex items-center gap-2 px-3 py-2 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50 transition" data-lang="om" onclick="setLang('om')" role="option" aria-label="Afaan Oromoo">🇪🇹 Afaan Oromoo</button>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                         </button>
                         <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-xl py-2 z-50">
                             <button id="user-seller-link" onclick="showTab('seller')" class="hidden w-full text-left px-3 py-2 text-xs text-emerald-300 hover:bg-slate-800 transition" data-i18n="nav.sellerDashboard">Seller Dashboard</button>
-                            <button onclick="showTab('myshares')" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 transition" data-i18n="nav.myshares">My Reserved Shares</button>
+                            <button onclick="showTab('myshares')" data-nav="buyer" class="w-full text-left px-3 py-2 text-xs text-slate-200 hover:bg-slate-800 transition" data-i18n="nav.myshares">My Reserved Shares</button>
                             <button onclick="handleLogout()" class="w-full text-left px-3 py-2 text-xs text-rose-400 hover:bg-slate-800 transition" data-i18n="nav.signout">Sign Out</button>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
         </section>
 
         <!-- ==================== VIEW: POOLS ==================== -->
-        <section id="view-pools" class="view-section space-y-8">
+        <section id="view-pools" class="view-section hidden space-y-8">
 
             <!-- Hero Section -->
             <section id="home" class="hero-glow relative isolate overflow-hidden bg-gradient-to-r from-emerald-800 to-teal-700 rounded-2xl p-6 md:p-8 text-white shadow-lg" data-reveal="zoom">
@@ -216,7 +216,7 @@
 
                 <!-- Bulk CTA -->
                 <div class="mt-6 flex flex-wrap items-center gap-3">
-                    <button onclick="openBulkModal()" class="bg-amber-400 hover:bg-amber-300 text-emerald-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition" data-i18n="bulk.cta">
+                    <button onclick="openBulkModal()" data-nav="buyer" class="bg-amber-400 hover:bg-amber-300 text-emerald-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition" data-i18n="bulk.cta">
                         🏭 Bulk &amp; Institutional Orders
                     </button>
                     <span class="text-[11px] text-emerald-100/90 font-medium" data-i18n="hero.bulkHint">Cafés, schools, hotels &amp; co-ops — 100+ kg monthly</span>
@@ -552,7 +552,7 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <h2 class="text-base font-black text-white flex items-center gap-2"><span data-i18n="ai.title">NuroAI Assistant</span>
-                        <span class="inline-flex items-center gap-1 bg-white/15 text-emerald-100 text-[10px] font-bold px-2 py-0.5 rounded-full">Gemini 3.6 Flash</span>
+                        <span class="inline-flex items-center gap-1 bg-white/15 text-emerald-100 text-[10px] font-bold px-2 py-0.5 rounded-full" data-i18n="ai.modelBadge">Gemini 3.6 Flash</span>
                     </h2>
                     <p class="text-[11px] text-emerald-100 truncate" data-i18n="ai.subtitle">Direct Woreda Sourcing, Storage Guidelines, &amp; Group Buying Calculations</p>
                 </div>
@@ -1098,7 +1098,7 @@
 
             <div class="mb-4">
                 <label class="block text-xs font-bold uppercase text-slate-600 mb-2" data-i18n="auth.roleLabel">Continue as</label>
-                <div class="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Account type">
+                <div class="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Account type" data-i18n-aria-label="auth.accountType">
                     <button type="button" id="auth-role-buyer" onclick="selectAuthRole('buyer')" class="auth-role-btn flex flex-col items-center gap-1 rounded-xl border-2 p-3 text-center transition" data-selected="true">
                         <span class="text-2xl leading-none">🛒</span>
                         <span class="text-xs font-extrabold" data-i18n="auth.roleBuyer">Buyer</span>

@@ -5,6 +5,15 @@
   "description": "NuroTewedede - neighborhood group-buying platform",
   "scripts": {
     "start": "node backend/index.js",
-    "dev": "node backend/index.js"
+    "dev": "node backend/index.js",
+    "build:css": "tailwindcss -i nurotewedede/tailwind-input.css -o nurotewedede/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
   }
 }

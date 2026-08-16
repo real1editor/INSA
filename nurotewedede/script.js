@@ -40,6 +40,8 @@ let myProducts = [];
 let marketProducts = [];
 let editingProductId = null;
 let harvestPhotoData = [];            // uploaded/base64 photos pending submit
+let sessionSeq = 0;                   // incremented on login/logout to cancel stale in-flight renders
+let poolsError = false;               // true when the pools fetch failed (distinct from empty)
 
 let calcQuantities = {};
 let calcFamilySize = 4;
@@ -288,6 +290,8 @@ const I18N = {
         'pools.sortPriceAsc': 'Price: Low to High', 'pools.sortPriceDesc': 'Price: High to Low',
         'pools.sortProgress': 'Funding Progress',
         'pools.showingCount': 'Showing {0} pool(s)', 'pools.searchResults': 'Showing {0} result(s) for "{1}"',
+        'pools.loadError': 'We couldn\'t load group pools. Check your connection and try again.',
+        'pools.retry': 'Try Again',
         'card.origin': 'Origin: {0}', 'card.pickup': 'Pickup: {0}', 'card.unit': 'Unit: {0}',
         'card.hub': '{0} Hub', 'card.groupPrice': 'Group Price', 'card.marketRetail': 'Market Retail',
         'card.saveUnit': 'Save {0} ETB / unit', 'card.savePct': 'Save {0}%',
@@ -442,6 +446,7 @@ const I18N = {
         'hubs.live': 'Live Corridor Tracking: Ethiopia', 'hubs.hubLabel': 'Hub:',
         'hubs.sourcingUnions': 'Primary Sourcing Unions:', 'hubs.address': 'Hub Address:', 'hubs.directLinks': 'Direct Woreda Links:',
         'ai.title': 'NuroAI Assistant', 'ai.badgeYou': 'YOU', 'ai.badgeAi': 'AI',
+        'ai.modelBadge': 'Gemini 3.6 Flash',
         'ai.noResponse': 'No response received.', 'ai.error': 'Unable to connect to Gemini AI Assistant',
         'ai.prompt1': 'How do we plan a 20-family Teff & Spice group order for Addis Ababa?',
         'ai.prompt2': 'What are the best storage tips for 50kg red onions to prevent rotting?',
@@ -449,6 +454,8 @@ const I18N = {
         'ai.prompt4': 'Suggest a bulk grocery supply list for a 30-person holiday feast',
         'time.justNow': 'Just now', 'time.today': 'Today', 'time.d': 'd', 'time.h': 'h',
         'err.serverUnreachable': 'Cannot reach the server. Make sure the backend is running (npm start in the project folder).',
+        'err.serverTimeout': 'The server took too long to respond. Check your connection and try again.',
+        'err.unexpected': 'Something went wrong on this page. Please reload and try again.',
         'err.htmlInsteadJson': 'Server answered with HTML instead of JSON', 'err.requestFailed': 'Request failed',
         'toast.signinReserve': 'Please sign in first to reserve a share.',
         'toast.poolFullyReserved': 'This pool is already fully reserved.',
@@ -467,11 +474,13 @@ const I18N = {
         'pool.fallbackBag': '50 kg Bag',
         'details.neighborBuyer': 'Neighbor Buyer', 'details.title': 'Community Discussion & Details',
         'myshares.signinBtn': 'Sign In', 'myshares.emptyTitle': 'You haven\'t reserved any pool shares yet.',
+        'myshares.loadError': 'We couldn\'t load your reserved shares. Please try again.',
         'myshares.viewVoucher': 'View Voucher',
         'bulk.notesPh': 'e.g. Special delivery instructions, quality preferences, or preferred contact time.',
         'voucher.qrAlt': 'QR voucher',
         'nav.marketplace': 'Marketplace', 'nav.sellerDashboard': 'Seller Dashboard',
         'auth.roleLabel': 'Continue as',
+        'auth.accountType': 'Account type',
         'auth.roleBuyer': 'Buyer', 'auth.roleBuyerSub': 'Join pools & reserve shares',
         'auth.roleSeller': 'Seller', 'auth.roleSellerSub': 'List your harvest',
         'unit.quintal': 'Quintal (100 kg)', 'unit.kg': 'Kilograms (kg)', 'unit.mt': 'Metric Ton (1000 kg)',
@@ -603,6 +612,8 @@ const I18N = {
         'pools.sortPriceAsc': 'ዋጋ: ዝቅተኛ ወደ ከፍተኛ', 'pools.sortPriceDesc': 'ዋጋ: ከፍተኛ ወደ ዝቅተኛ',
         'pools.sortProgress': 'የገንዘብ እድገት',
         'pools.showingCount': '{0} ግዢ(ዎች) በማሳየት ላይ', 'pools.searchResults': 'ለ"{1}" {0} ውጤት(ቶች) በማሳየት ላይ',
+        'pools.loadError': 'የቡድን ግዢ መጫን አልተቻለም። ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።',
+        'pools.retry': 'እንደገና ሞክር',
         'card.origin': 'መነሻ: {0}', 'card.pickup': 'መቀበያ: {0}', 'card.unit': 'ክፍል: {0}',
         'card.hub': '{0} ማዕከል', 'card.groupPrice': 'የቡድን ዋጋ', 'card.marketRetail': 'የገበያ ችርቻሮ',
         'card.saveUnit': '{0} ብር / ክፍል ይቆጥቡ', 'card.savePct': '{0}% ይቆጥቡ',
@@ -757,6 +768,7 @@ const I18N = {
         'hubs.live': 'የቀጥታ የኮሪደር ክትትል: ኢትዮጵያ', 'hubs.hubLabel': 'ማዕከል:',
         'hubs.sourcingUnions': 'ዋና የአቅርቦት ህብረት ስራዎች:', 'hubs.address': 'የማዕከል አድራሻ:', 'hubs.directLinks': 'ቀጥተኛ የወረዳ አገናኞች:',
         'ai.title': 'NuroAI ረዳት', 'ai.badgeYou': 'እርስዎ', 'ai.badgeAi': 'AI',
+        'ai.modelBadge': 'Gemini 3.6 Flash',
         'ai.noResponse': 'ምንም ምላሽ አልተቀበለም።', 'ai.error': 'ከGemini AI ረዳት ጋር መገናኘት አልተቻለም',
         'ai.prompt1': 'የ20 ቤተሰብ ጤፍ እና ቅመማ ቅመም የቡድን ትዕዛዝ ለአዲስ አበባ እንዴት እናቅዳለን?',
         'ai.prompt2': 'የ50ኪግ ቀይ ሽንኩርት መበስበስን ለመከላከል ምን የማከማቻ ምክሮች አሉ?',
@@ -764,6 +776,8 @@ const I18N = {
         'ai.prompt4': 'ለ30 ሰው የበዓል ግብዣ የጅምላ ግሮሰሪ አቅርቦት ዝርዝር ጠቁም',
         'time.justNow': 'አሁን ብቻ', 'time.today': 'ዛሬ', 'time.d': 'ቀ', 'time.h': 'ሰ',
         'err.serverUnreachable': 'አገልጋዩ ላይ መድረስ አልተቻለም። የኋላ ማዕከሉ እየሰራ መሆኑን ያረጋግጡ (npm start በፕሮጀክት አቃፊው)።',
+        'err.serverTimeout': 'አገልጋዩ ምላሽ ለመስጠት ጊዜ ወስዷል። ግንኙነትዎን ያረጋግጡና እንደገና ይሞክሩ።',
+        'err.unexpected': 'በዚህ ገጽ ላይ ያልተጠበቀ ስህተት ተከስቷል። እባክዎ ያድሱና እንደገና ይሞክሩ።',
         'err.htmlInsteadJson': 'አገልጋዩ ከJSON ይልቅ በHTML መልሷል', 'err.requestFailed': 'ጥያቄው አልተሳካም',
         'toast.signinReserve': 'አክሲዮን ለማስያዝ እባክዎ መጀመሪያ ይግቡ።',
         'toast.poolFullyReserved': 'ይህ ግዢ ሙሉ በሙሉ ተይዟል።',
@@ -782,11 +796,13 @@ const I18N = {
         'pool.fallbackBag': '50ኪግ ቦርሳ',
         'details.neighborBuyer': 'ጎረቤት ገዢ', 'details.title': 'የማህበረሰብ ውይይት እና ዝርዝሮች',
         'myshares.signinBtn': 'ግባ', 'myshares.emptyTitle': 'እስካሁን የቡድን ግዢ አክሲዮን አላስያዙም።',
+        'myshares.loadError': 'የተያዙ አክሲዮኖችን መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።',
         'myshares.viewVoucher': 'ቫውቸር ይመልከቱ',
         'bulk.notesPh': 'ለምሳሌ ልዩ የመላኪያ መመሪያዎች፣ የጥራት ምርጫዎች ወይም የሚመርጡት የመገናኛ ሰዓት።',
         'voucher.qrAlt': 'የQR ቫውቸር',
         'nav.marketplace': 'የገበያ ቦታ', 'nav.sellerDashboard': 'የሻጭ ዳሽቦርድ',
         'auth.roleLabel': 'ቀጥል እንደ',
+        'auth.accountType': 'የመለያ አይነት',
         'auth.roleBuyer': 'ገዢ', 'auth.roleBuyerSub': 'የግዢ ቡድኖችን ይቀላቀሉ',
         'auth.roleSeller': 'ሻጭ', 'auth.roleSellerSub': 'ምርትዎን ይዘርዝሩ',
         'unit.quintal': 'ኩንታል (100 ኪግ)', 'unit.kg': 'ኪሎግራም (ኪግ)', 'unit.mt': 'ሜትሪክ ቶን (1000 ኪግ)',
@@ -869,7 +885,7 @@ const I18N = {
         'nav.pools': 'Bituuwwan Ijoo', 'nav.calculator': 'Herrega Qusannaa',
         'nav.hubs': 'Maapa Buufataa', 'nav.myshares': 'Qooda Koo Bakka Buufame', 'nav.bulk': 'Waldaa fi Dhaabbataa',
         'nav.signin': 'Seeni', 'nav.signout': 'Ba\'i', 'nav.launch': '+ Bituu Jalqabi', 'nav.townHub': 'Buufata Magaalaa:',
-        'nav.menu': 'Menu', 'nav.home': 'Mana', 'nav.service': 'Tajaajila', 'nav.about': 'Waa\'ee Nu', 'nav.how': 'Akkamitti hojjata',
+        'nav.menu': 'Menyuu', 'nav.home': 'Mana', 'nav.service': 'Tajaajila', 'nav.about': 'Waa\'ee Nu', 'nav.how': 'Akkamitti hojjata',
         'ticker.label': 'Gatii Diinqaa',
         'hero.title': 'Gubbattii Nyaataa Waliin Haalollu',
         'hero.subtitle': 'Oomisha qonnaa naannootti kallattiin buufataa raabsaatti wal qunnamsiisuun gatii daldala gurguddaa hawaasni argatu',
@@ -918,6 +934,8 @@ const I18N = {
         'pools.sortPriceAsc': 'Gatii: Xiqqaa hanga Guddaa', 'pools.sortPriceDesc': 'Gatii: Guddaa hanga Xiqqaa',
         'pools.sortProgress': 'Sadarkaa Ka\'aabii',
         'pools.showingCount': 'Bituu(wwan) {0} mul\'isaa', 'pools.searchResults': 'Ibsa "{1}" {0} (wwan) mul\'isaa',
+        'pools.loadError': 'Bituu garee fe\'achuun hin danda\'amne. Hidhannoo kee sakatta\'iitii ammas yaali.',
+        'pools.retry': 'Ammas Yaali',
         'card.origin': 'Ka\'umsa: {0}', 'card.pickup': 'Fudhachaa: {0}', 'card.unit': 'Gita: {0}',
         'card.hub': 'Buufata {0}', 'card.groupPrice': 'Gatii Waldaa', 'card.marketRetail': 'Daldala Gabaa',
         'card.saveUnit': 'Qusadhu {0} ETB / gita', 'card.savePct': '{0}% Qusadhu',
@@ -994,7 +1012,7 @@ const I18N = {
         'create.organizerPh': 'fkn. Abebe Tadesse (Koordinaatorii Kebele)', 'create.submit': 'Bituu Uumi',
         'auth.signin': 'Seeni', 'auth.signup': 'Hertamaa Uumi', 'auth.email': 'Teessoo Imeelii',
         'auth.emailPh': 'name@example.com', 'auth.password': 'Jecha Iccitii', 'auth.passwordPh': '••••••••',
-        'auth.name': 'Maqaa Guutuu', 'auth.namePh': 'Abebe Kebede',
+        'auth.name': 'Maqaa Guutuu', 'auth.namePh': 'Ababaa Kabbadaa',
         'auth.username': 'Maqaa Fayyadamaa', 'auth.usernamePh': 'abebe123',
         'auth.emailOrUser': 'Imeelii ykn Maqaa Fayyadamaa', 'auth.emailOrUserPh': 'name@example.com ykn maqaa fayyadamaa kee',
         'auth.nameRequired': 'Maaloo maqaa guutuu kee galchi.',
@@ -1074,6 +1092,7 @@ const I18N = {
         'hubs.live': 'Hordoffii Corridoor Diinqaa: Itoophiyaa', 'hubs.hubLabel': 'Buufata:',
         'hubs.sourcingUnions': 'Waldaalee Dhiyeessaa Ijoo:', 'hubs.address': 'Teessoo Buufataa:', 'hubs.directLinks': 'Qunnamtii Aanaa Qulqullinaa:',
         'ai.title': 'Gargaaraa NuroAI', 'ai.badgeYou': 'ATI', 'ai.badgeAi': 'AI',
+        'ai.modelBadge': 'Gemini 3.6 Flash',
         'ai.noResponse': 'Deebiin hin arganne.', 'ai.error': 'Gargaaraa Gemini AI wajjin wal quunnamuu hin danda\'amne',
         'ai.prompt1': 'Akeekan daldalaa Teeffii fi mi\'eessitootaa maatii 20f Addis Ababaatti akkamitti karoorfanna?',
         'ai.prompt2': 'Shunkurtii diimaa 50kg akka hin bonquuf gorsa kuusaa kamtu jira?',
@@ -1081,6 +1100,8 @@ const I18N = {
         'ai.prompt4': 'Tarree dhiyeessaa meelaa waldaa cidhaa namoota 30f akeeki',
         'time.justNow': 'Amma gaaf', 'time.today': 'Har\'a', 'time.d': 'g', 'time.h': 's',
         'err.serverUnreachable': 'Gara serverii ga\'uun hin danda\'amne. Backend kee hojjachaa jiraachuu mirkaneessi (npm start galmee keessa).',
+        'err.serverTimeout': 'Server sun deebisuu baay\'eessa ture. Hidhannoo kee sakatta\'iitii ammas yaali.',
+        'err.unexpected': 'Fuula kana irratti dogoggorri hin eegamne ta\'e jira. Maaloo ammas haarachiisiitii yaali.',
         'err.htmlInsteadJson': 'Server HTML deebise (JSON osoo hin ta\'in)', 'err.requestFailed': 'Gaafatni hin milkoofne',
         'toast.signinReserve': 'Qooda bakka buufachuuf maaloo dura seeni.',
         'toast.poolFullyReserved': 'Bituun kun guutumaan bakka buufameera.',
@@ -1099,11 +1120,13 @@ const I18N = {
         'pool.fallbackBag': 'Korojoo 50kg',
         'details.neighborBuyer': 'Bituuftuu Gaaressa', 'details.title': 'Marii fi Ibsa Hawaasaa',
         'myshares.signinBtn': 'Seeni', 'myshares.emptyTitle': 'Amma yoomuu qooda bituu hin buufanne.',
+        'myshares.loadError': 'Qooda kee buufame fe\'achuun hin danda\'amne. Maaloo ammas yaali.',
         'myshares.viewVoucher': 'Vaawwarchaa Ilaali',
         'bulk.notesPh': 'fkn. Qajeelfama geessuu addaa, filannoo qulqullinaa, yookiin yeroo qunnamtii filattuu.',
         'voucher.qrAlt': 'Vaawwarcha QR',
         'nav.marketplace': 'Gabaa', 'nav.sellerDashboard': 'Daa\'iraa Dhi\'ooftuu',
         'auth.roleLabel': 'Itti fufi akka',
+        'auth.accountType': 'Gosa hertamaa',
         'auth.roleBuyer': 'Bituu', 'auth.roleBuyerSub': 'Waldaa bituu irratti hirmaadhu',
         'auth.roleSeller': 'Dhi\'ooftuu', 'auth.roleSellerSub': 'Midhaan kee kaayi',
         'unit.quintal': 'Kuntaala (100 kg)', 'unit.kg': 'Kiloo giraama (kg)', 'unit.mt': 'Toniin (1000 kg)',
@@ -1302,7 +1325,7 @@ function updateLangButtons() {
         opt.classList.toggle('lang-option-active', opt.dataset.lang === appLang);
     });
     const label = document.getElementById('lang-current-label');
-    if (label) label.textContent = LANG_NAMES[appLang] || appLang;
+    if (label) label.textContent = LANG_NATIVE[appLang] || LANG_NAMES[appLang] || appLang;
 }
 
 function toggleLangDropdown(e) {
@@ -1341,13 +1364,26 @@ function handleMenuAction(menu) {
     closeMenuDropdown();
     const scrollTargets = { home: 'home', service: 'service', about: 'about', how: 'how-it-works' };
     if (menu === 'home') {
-        showTab('pools');
+        // "Home" is portal-aware: buyers land on pools, sellers on their dashboard.
+        if (currentUser && currentRole === 'seller') {
+            showTab('seller');
+        } else {
+            showTab('pools');
+        }
     } else if (menu === 'service' || menu === 'about' || menu === 'how') {
     showTab('pools', true);
         const el = document.getElementById(scrollTargets[menu]);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
         showTab(menu);
+    }
+}
+
+function goHome() {
+    if (currentUser && currentRole === 'seller') {
+        showTab('seller');
+    } else {
+        showTab('pools');
     }
 }
 
@@ -1381,6 +1417,8 @@ function setLang(lang) {
     localStorage.setItem('nt-lang', lang);
     applyI18n();
     closeLangDropdown();
+    // Re-localize cached pool fallbacks (fallback titles, pickup labels, hub suffixes).
+    pools = pools.map(normalizePool);
     populateTownSelects();
     renderProduceDropdown();
     renderCategoryPills();
@@ -1397,6 +1435,16 @@ function setLang(lang) {
     renderMarketplace();
     if (activeTab === 'seller') renderSellerDashboard();
     if (currentUser) loadMyShares();
+
+    // Re-render any open modals so their text follows the new language.
+    const reserveModal = document.getElementById('reserve-modal');
+    if (reserveModal && !reserveModal.classList.contains('hidden') && reserveState.pool) renderReserveForm();
+    const detailsModal = document.getElementById('details-modal');
+    if (detailsModal && !detailsModal.classList.contains('hidden') && detailsState.pool) renderDetails();
+    const voucherModal = document.getElementById('voucher-modal');
+    if (voucherModal && !voucherModal.classList.contains('hidden') && window._activeVoucher) openVoucherModal(window._activeVoucher);
+    const productModal = document.getElementById('product-modal');
+    if (productModal && !productModal.classList.contains('hidden') && window._activeProductId) openProductModal(window._activeProductId);
 }
 
 function staggerHeroTitle() {
@@ -1532,11 +1580,23 @@ function esc(str) {
 }
 
 function fmt(n) {
-    return Number(n || 0).toLocaleString();
+    const locale = appLang === 'am' ? 'am-ET' : (appLang === 'om' ? 'en-ET' : 'en-ET');
+    try { return Number(n || 0).toLocaleString(locale); }
+    catch (e) { return Number(n || 0).toLocaleString(); }
 }
 
 function currencyUnit() {
     return appLang === 'am' ? 'ብር' : 'ETB';
+}
+
+function debounce(fn, ms) {
+    let timer = null;
+    return function () {
+        var args = arguments;
+        var self = this;
+        clearTimeout(timer);
+        timer = setTimeout(function () { fn.apply(self, args); }, ms || 250);
+    };
 }
 
 function applyCurrencyUnits() {
@@ -1592,15 +1652,25 @@ function api(path, options = {}) {
     const bases = ['http://localhost:5000'];
     if (origin !== 'http://localhost:5000') bases.unshift(origin);
 
+    const TIMEOUT_MS = options.timeout || 12000;
+    const RETRIES = options.retries != null ? options.retries : 1;
+    const useAbort = typeof AbortController !== 'undefined';
+
     function request(base) {
+        // Per-request AbortController + timer: concurrent api() calls never share
+        // (and accidentally cancel) each other's timeout.
+        const controller = useAbort ? new AbortController() : null;
+        const timer = controller ? setTimeout(function () { controller.abort(); }, TIMEOUT_MS) : null;
         return fetch(base + path, {
             headers: {
                 'Content-Type': 'application/json',
                 ...(token ? { Authorization: 'Bearer ' + token } : {}),
             },
             credentials: 'include',
+            signal: controller ? controller.signal : undefined,
             ...options,
         }).then(async (r) => {
+            clearTimeout(timer);
             let body = {};
             let jsonOk = true;
             try { body = await r.json(); } catch (e) { jsonOk = false; }
@@ -1620,10 +1690,20 @@ function api(path, options = {}) {
 
     function attempt(index) {
         return request(bases[index]).catch(function (err) {
-            const shouldRetry = (err instanceof TypeError || !err.serverReached) && index < bases.length - 1;
-            if (shouldRetry) return attempt(index + 1);
-            if (err instanceof TypeError || !err.serverReached) {
-                const netErr = new Error(t('err.serverUnreachable'));
+            const isNetwork = err instanceof TypeError || !err.serverReached;
+            const isAbort = err && err.name === 'AbortError';
+            // Try the next base first, then retry the same base up to RETRIES times.
+            if (index < bases.length - 1) return attempt(index + 1);
+            const retryIdx = (attempt._retries = (attempt._retries || 0) + 1);
+            if (retryIdx <= RETRIES && !isAbort) {
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve(attempt(index));
+                    }, 600 * retryIdx);
+                });
+            }
+            if (isNetwork || isAbort) {
+                const netErr = new Error(isAbort ? t('err.serverTimeout') : t('err.serverUnreachable'));
                 netErr.serverUnreachable = true;
                 throw netErr;
             }
@@ -1710,6 +1790,7 @@ function showTab(tab, noScroll) {
     const mobileMenu = document.getElementById('mobile-menu');
     if (mobileMenu) mobileMenu.classList.add('hidden');
 
+    if (tab === 'pools') renderPools();
     if (tab === 'calculator') renderCalculator();
     if (tab === 'hubs') renderHubs();
     if (tab === 'myshares') loadMyShares();
@@ -1788,9 +1869,11 @@ async function fetchPools() {
     try {
         const data = await api('/api/pools');
         pools = (data.pools || []).map(normalizePool);
+        poolsError = false;
     } catch (err) {
         console.error('Error fetching pools:', err.message);
         pools = [];
+        poolsError = true;
         if (err.serverUnreachable) {
             showToast(err.message, true);
         }
@@ -1924,7 +2007,15 @@ function renderPools() {
     if (poolCount) poolCount.innerText = tt('pools.showingCount', sorted.length);
 
     if (sorted.length === 0) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 text-sm">' + esc(t('card.noPools')) + '</div>';
+        if (poolsError) {
+            grid.innerHTML = '<div class="col-span-full flex flex-col items-center justify-center text-center py-14 space-y-3">' +
+                '<div class="w-12 h-12 rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-red-500 text-2xl font-black">!</div>' +
+                '<p class="text-sm font-semibold text-slate-700">' + esc(t('pools.loadError')) + '</p>' +
+                '<button type="button" onclick="fetchPools()" class="text-xs font-bold text-emerald-700 border border-emerald-600 rounded-lg px-4 py-2 hover:bg-emerald-50 transition-colors">' + esc(t('pools.retry')) + '</button>' +
+            '</div>';
+        } else {
+            grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-400 text-sm">' + esc(t('card.noPools')) + '</div>';
+        }
         updateMetrics();
         return;
     }
@@ -2025,6 +2116,11 @@ function openReserveModal(id) {
     if (!currentUser) {
         showToast(t('toast.signinReserve'));
         openAuthModal();
+        return;
+    }
+    if (currentRole === 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        showTab('seller');
         return;
     }
     const pool = pools.find(function (p) { return p.id === String(id); });
@@ -2231,6 +2327,7 @@ function renderReserveSuccess(reservation, pool) {
 function openVoucherModal(resId) {
     const res = myReservations.find(function (r) { return String(r.id) === String(resId); });
     if (!res) return;
+    window._activeVoucher = resId;
     const pool = normalizePool(res.pool || {});
     window._voucherPool = pool;
     const card = document.getElementById('voucher-modal-card');
@@ -2616,7 +2713,11 @@ function renderMarkdown(text) {
         .replace(/`([^`\n]+)`/g, '<code class="ai-code">$1</code>')
         .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
         .replace(/__([^_\n]+)__/g, '<strong>$1</strong>')
-        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener" class="ai-link">$1</a>')
+        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (match, label, href) {
+            // Only allow safe URL schemes (the label is already HTML-escaped above).
+            if (!/^(https?:|mailto:)/i.test(href.replace(/^\/\//, ''))) href = '#';
+            return '<a href="' + href + '" target="_blank" rel="noopener" class="ai-link">' + label + '</a>';
+        })
         .replace(/^[-*+]\s+(.+)$/gm, '<span class="ai-bullet">•</span> $1')
         .replace(/^(\d+)[.)]\s+(.+)$/gm, '<span class="ai-bullet">$1.</span> $2')
         .replace(/^---+$/gm, '<hr class="ai-hr">')
@@ -2652,6 +2753,164 @@ function renderAiMessages() {
     }
 
     container.scrollTop = container.scrollHeight;
+}
+
+function describeAiAction(a) {
+    if (a.type === 'reserve_shares') {
+        const pool = pools.find(function (p) { return String(p.id) === String(a.poolId); });
+        const shares = Math.max(1, Number(a.shares) || 1);
+        const total = (pool ? pool.price : 0) * shares;
+        const pay = String(a.paymentMethod || 'telebirr');
+        const payLabel = pay.charAt(0).toUpperCase() + pay.slice(1);
+        return {
+            title: t('ai.actionReserveTitle'),
+            summaryHtml: esc(tt('ai.actionReserveSummary', shares, pool ? pool.title : ('#' + a.poolId), Number(total).toLocaleString(), payLabel))
+        };
+    }
+    if (a.type === 'mark_sold') {
+        const prod = myProducts.find(function (p) { return String(p.id) === String(a.productId); });
+        const name = prod ? (prod.crop_type || 'Listing') + (prod.variety ? ' ' + prod.variety : '') : ('#' + a.productId);
+        return {
+            title: t('ai.actionSoldTitle'),
+            summaryHtml: esc(tt('ai.actionSoldSummary', name, prod ? (prod.volume || '') : '', prod ? (prod.volume_unit || '') : ''))
+        };
+    }
+    if (a.type === 'update_listing') {
+        const prod = myProducts.find(function (p) { return String(p.id) === String(a.productId); });
+        const name = prod ? ((prod.crop_type || 'Listing') + ' #' + prod.id) : ('#' + a.productId);
+        return { title: t('ai.actionUpdateTitle'), summaryHtml: esc(tt('ai.actionUpdateSummary', name)) };
+    }
+    if (a.type === 'create_listing_draft') {
+        return { title: t('ai.actionCreateTitle'), summaryHtml: esc(tt('ai.actionCreateSummary')) };
+    }
+    return { title: 'Action', summaryHtml: esc(JSON.stringify(a)) };
+}
+
+function aiActionCardHtml(msg) {
+    const a = msg.action;
+    if (!a || !a.type) return '';
+    const state = msg.actionState || 'pending';
+    if (state === 'cancelled') return '';
+    if (state === 'done') {
+        return '<div class="mt-2 flex items-center gap-1.5 text-emerald-700 text-xs font-bold bg-emerald-50 border border-emerald-200 rounded-2xl px-3 py-2"><span>&#10003;</span> ' + esc(t('ai.actionDone')) + '</div>';
+    }
+    if (state === 'failed') {
+        return '<div class="mt-2 flex items-start gap-1.5 text-rose-700 text-xs font-semibold bg-rose-50 border border-rose-200 rounded-2xl px-3 py-2"><span>&#9888;&#65039;</span><span>' + esc(t('ai.actionFailed')) + (msg.actionError ? ': ' + esc(msg.actionError) : '') + '</span></div>';
+    }
+    const desc = describeAiAction(a);
+    const working = state === 'executing';
+    return '<div class="mt-2 rounded-2xl border border-amber-300 bg-amber-50 p-3 text-xs text-slate-700">' +
+        '<p class="font-black text-amber-900 uppercase tracking-wide">&#9889; ' + esc(desc.title) + '</p>' +
+        '<p class="mt-1">' + desc.summaryHtml + '</p>' +
+        '<div class="mt-2 flex gap-2">' +
+            '<button onclick="executeAiAction(\'' + msg.id + '\')"' + (working ? ' disabled' : '') + ' class="bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl transition">' + esc(working ? t('ai.actionWorking') : t('ai.actionConfirm')) + '</button>' +
+            '<button onclick="cancelAiAction(\'' + msg.id + '\')"' + (working ? ' disabled' : '') + ' class="bg-white hover:bg-slate-100 text-slate-600 text-[11px] font-bold px-3 py-1.5 rounded-xl border border-slate-200 transition">' + esc(t('ai.actionCancel')) + '</button>' +
+        '</div>' +
+    '</div>';
+}
+
+function prefillHarvestFromAi(a) {
+    const set = function (id, val) {
+        const el = document.getElementById(id);
+        if (el && val != null && val !== '') el.value = val;
+    };
+    const cropSel = document.getElementById('harvest-crop');
+    if (cropSel && a.cropType) {
+        const has = Array.prototype.some.call(cropSel.options, function (o) { return o.value === a.cropType; });
+        if (has) cropSel.value = a.cropType;
+    }
+    set('harvest-variety', a.variety);
+    set('harvest-year', a.harvestYear);
+    set('harvest-grade', a.grade);
+    set('harvest-volume', a.volume);
+    set('harvest-volume-unit', a.volumeUnit);
+    set('harvest-min-lot', a.minOrderLot);
+    set('harvest-min-unit', a.minOrderUnit);
+    set('harvest-pricing', a.pricingModel);
+    set('harvest-price', a.pricePerUnit);
+    set('harvest-region', a.originRegion);
+    set('harvest-zone', a.originZone);
+    set('harvest-town', a.originTown);
+    set('harvest-desc', a.description);
+}
+
+async function executeAiAction(msgId) {
+    const msg = aiMessages.find(function (m) { return m.id === msgId; });
+    if (!msg || !msg.action || !msg.action.type) return;
+    msg.actionState = 'executing';
+    msg.actionError = null;
+    renderAiMessages();
+    try {
+        const result = await executeAiActionRequest(msg.action);
+        msg.actionState = 'done';
+        aiMessages.push({
+            id: 'ai-action-' + Date.now(),
+            sender: 'assistant',
+            text: result.message,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+    } catch (err) {
+        msg.actionState = 'failed';
+        msg.actionError = err.message || t('ai.error');
+        showToast(msg.actionError, true);
+    }
+    renderAiMessages();
+    renderAiChips();
+}
+
+function cancelAiAction(msgId) {
+    const msg = aiMessages.find(function (m) { return m.id === msgId; });
+    if (!msg) return;
+    msg.actionState = 'cancelled';
+    renderAiMessages();
+}
+
+async function executeAiActionRequest(action) {
+    if (action.type === 'reserve_shares') {
+        const data = await api('/api/pools/' + action.poolId + '/reserve', {
+            method: 'POST',
+            body: JSON.stringify({
+                shares: Math.max(1, Number(action.shares) || 1),
+                paymentMethod: ['telebirr', 'cbe', 'cash'].indexOf(action.paymentMethod) !== -1 ? action.paymentMethod : 'telebirr'
+            })
+        });
+        const pool = pools.find(function (p) { return String(p.id) === String(action.poolId); });
+        const title = pool ? pool.title : ('#' + action.poolId);
+        renderPools();
+        if (currentUser) loadMyShares();
+        return { message: tt('ai.actionReserved', data.reservation.shares, title, data.reservation.voucherCode) };
+    }
+    if (action.type === 'mark_sold') {
+        const data = await api('/api/products/' + action.productId, {
+            method: 'PUT',
+            body: JSON.stringify({ status: 'sold' })
+        });
+        await fetchMyProducts();
+        renderSellerDashboard();
+        return { message: tt('ai.actionSold', data.product.crop_type || 'Listing') };
+    }
+    if (action.type === 'update_listing') {
+        const body = {};
+        ['cropType', 'variety', 'grade', 'harvestYear', 'volume', 'volumeUnit', 'minOrderLot',
+         'minOrderUnit', 'pricingModel', 'pricePerUnit', 'originRegion', 'originZone',
+         'originTown', 'availabilityFrom', 'availabilityTo', 'description', 'status']
+            .forEach(function (k) {
+                if (action[k] !== undefined) body[k] = action[k];
+            });
+        const data = await api('/api/products/' + action.productId, {
+            method: 'PUT',
+            body: JSON.stringify(body)
+        });
+        await fetchMyProducts();
+        renderSellerDashboard();
+        return { message: tt('ai.actionUpdated', data.product.crop_type || 'Listing') };
+    }
+    if (action.type === 'create_listing_draft') {
+        openListHarvestModal();
+        prefillHarvestFromAi(action);
+        return { message: tt('ai.actionPrefilled') };
+    }
+    throw new Error('Unknown action type: ' + action.type);
 }
 
 function renderAiChips() {
@@ -2752,6 +3011,13 @@ async function loadMyShares() {
     const grid = document.getElementById('my-shares-grid');
     if (!grid) return;
 
+    // My Shares is a buyer-portal feature — sellers are re-routed to their dashboard.
+    if (currentUser && currentRole === 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        showTab('seller');
+        return;
+    }
+
     if (!currentUser) {
         if (empty) {
             empty.innerHTML = '<p class="text-sm font-semibold">' + esc(t('myshares.signinFirst')) + '</p>' +
@@ -2762,12 +3028,29 @@ async function loadMyShares() {
         return;
     }
 
+    const seq = sessionSeq;
+    if (empty) empty.classList.add('hidden');
+    grid.innerHTML =
+        '<div class="col-span-full flex flex-col gap-3 sm:col-span-1">' +
+            '<div class="skeleton h-20 rounded-2xl"></div>' +
+            '<div class="skeleton h-20 rounded-2xl"></div>' +
+        '</div>';
+
     try {
         const data = await api('/api/reservations/mine');
+        if (seq !== sessionSeq) return; // stale response from a previous session
         myReservations = data.reservations || [];
     } catch (err) {
         console.error('Failed to load reservations:', err.message);
+        if (seq !== sessionSeq) return;
         myReservations = [];
+        if (empty) {
+            empty.innerHTML = '<p class="text-sm font-semibold">' + esc(t('myshares.loadError')) + '</p>' +
+                '<button onclick="loadMyShares()" class="bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-emerald-700 transition">' + esc(t('pools.retry')) + '</button>';
+            empty.classList.remove('hidden');
+        }
+        grid.innerHTML = '';
+        return;
     }
 
     if (myReservations.length === 0) {
@@ -2823,6 +3106,11 @@ function handleLaunchPool() {
     if (!currentUser) {
         showToast(t('toast.signinLaunch'));
         openAuthModal();
+        return;
+    }
+    if (currentRole === 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        showTab('seller');
         return;
     }
     const modal = document.getElementById('pool-modal');
@@ -2932,19 +3220,21 @@ function closeAuthModal() {
 
 // Role chosen from the root entry gate. Both paths route through the auth
 // modal when the user is not yet signed in — the nav stays hidden until login.
+// Note: we do NOT persist 'nt-role' here. The persisted role is only written
+// after a verified auth response (me()/handleAuthSubmit) so a stale localStorage
+// value can never dictate which portal a signed-in account lands in.
 function chooseRole(role) {
     const isSeller = role === 'seller';
-    localStorage.setItem('nt-role', isSeller ? 'seller' : 'buyer');
     if (isSeller) {
         if (currentUser && currentRole === 'seller') {
             showTab('seller');
         } else {
+            authRole = 'seller';
             openAuthModal('seller');
         }
     } else {
-        currentRole = 'buyer';
-        updateRoleNav();
-        if (currentUser) {
+        authRole = 'buyer';
+        if (currentUser && currentRole === 'buyer') {
             showTab('pools');
         } else {
             openAuthModal('buyer');
@@ -3007,6 +3297,9 @@ async function handleAuthSubmit(e) {
         return;
     }
 
+    const submitBtn = document.getElementById('auth-submit-btn');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.classList.add('opacity-60', 'cursor-not-allowed'); }
+
     try {
         const endpoint = isSignup ? '/api/auth/signup' : '/api/auth/login';
         const role = authRole;
@@ -3024,6 +3317,7 @@ async function handleAuthSubmit(e) {
                 message.className = 'text-sm font-medium p-3 rounded-lg text-center bg-emerald-50 text-emerald-700';
                 message.classList.remove('hidden');
             }
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
             return;
         }
         if (data.session && data.session.access_token) {
@@ -3031,6 +3325,7 @@ async function handleAuthSubmit(e) {
         }
         currentUser = data.user;
         currentRole = (data.user && (data.user.role || data.user.user_metadata?.role)) || role;
+        sessionSeq++; // fresh session: ignore any in-flight fetches from the previous one
         localStorage.setItem('nt-role', currentRole);
         updateAuthUI();
         closeAuthModal();
@@ -3039,17 +3334,23 @@ async function handleAuthSubmit(e) {
         // Route the user dynamically to their dedicated portal after sign-in.
         showTab(currentRole === 'seller' ? 'seller' : 'pools');
     } catch (err) {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
         showAuthError(message, err.message);
     }
 }
 
 async function handleLogout() {
+    sessionSeq++; // invalidate any in-flight user-data renders from the old session
     try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
     localStorage.removeItem('sb-access-token');
     localStorage.removeItem('nt-role');
     currentUser = null;
     currentRole = 'buyer';
     myProducts = [];
+    marketProducts = [];
+    myReservations = [];
+    aiMessages = [{ id: 'welcome', from: 'ai', text: t(aiWelcomeKey()) }];
+    renderAiMessages();
     updateAuthUI();
     fetchPools();
     showTab('gate');
@@ -3472,13 +3773,7 @@ function handleSellerEntryPoint() {
 }
 
 function enterSellerPortal() {
-    const hasToken = !!localStorage.getItem('sb-access-token');
-    if (hasToken && !authReady) {
-        // Auth still resolving — the stored token already authorizes the fetch;
-        // me() finalizes routing once it returns.
-        fetchMyProducts();
-        return;
-    }
+    if (!authReady) return; // auth still resolving; me() finalizes routing + data fetch
     if (!currentUser || currentRole !== 'seller') {
         showToast(t('toast.sellerOnly'), true);
         showTab('gate');
@@ -3491,8 +3786,7 @@ function enterSellerPortal() {
 // restricted to sellers. Buyers keep pools, hubs, dashboard and procurement
 // tools but are redirected back to the role gate if they reach Marketplace.
 function enterMarketplacePortal() {
-    const hasToken = !!localStorage.getItem('sb-access-token');
-    if (hasToken && !authReady) return; // me() finalizes routing
+    if (!authReady) return; // auth still resolving; me() finalizes routing
     if (!currentUser || currentRole !== 'seller') {
         showToast(t('toast.sellerOnly'), true);
         showTab('gate');
@@ -3541,12 +3835,15 @@ function updateRoleNav() {
 // ---------- Public marketplace (browse supply) ----------
 
 async function fetchMarketplace() {
+    const seq = sessionSeq;
     const grid = document.getElementById('market-grid');
     if (grid) grid.innerHTML = renderProductSkeleton();
     try {
         const data = await api('/api/products');
+        if (seq !== sessionSeq) return; // stale response from a previous session
         marketProducts = data.products || [];
     } catch (err) {
+        if (seq !== sessionSeq) return;
         marketProducts = [];
         showToast(err.message, true);
     }
@@ -3667,6 +3964,7 @@ async function openProductModal(id) {
     const card = document.getElementById('product-modal-card');
     const modal = document.getElementById('product-modal');
     if (!card || !modal) return;
+    window._activeProductId = id;
     card.innerHTML = '<div class="animate-pulse h-64 bg-slate-100 rounded-xl"></div>';
     modal.classList.remove('hidden');
     modal.classList.add('flex');
@@ -3741,12 +4039,15 @@ function closeProductModal() {
 // ---------- Seller dashboard ----------
 
 async function fetchMyProducts() {
+    const seq = sessionSeq;
     const grid = document.getElementById('seller-grid');
     if (grid) grid.innerHTML = renderProductSkeleton();
     try {
         const data = await api('/api/products/mine');
+        if (seq !== sessionSeq) return; // stale response from a previous session
         myProducts = data.products || [];
     } catch (err) {
+        if (seq !== sessionSeq) return;
         myProducts = [];
         showToast(err.message, true);
     }
@@ -4051,6 +4352,15 @@ async function editProduct(id) {
 }
 
 function init() {
+    // Global error guardrails: surface unexpected runtime failures in a toast
+    // instead of silently breaking an interaction.
+    window.addEventListener('error', function (e) {
+        try { showToast(t('err.unexpected') + (e.message ? ': ' + e.message : ''), true); } catch (err) { /* noop */ }
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+        try { showToast(t('err.unexpected'), true); } catch (err) { /* noop */ }
+    });
+
     initTheme();
     applyI18n();
     initCountdown();
@@ -4082,10 +4392,18 @@ function init() {
 
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
+        const debouncedPoolsSearch = debounce(function () { renderPools(); }, 200);
         searchInput.addEventListener('input', function (e) {
             currentSearchQuery = e.target.value;
-            renderPools();
+            debouncedPoolsSearch();
         });
+    }
+
+    const marketSearchInput = document.getElementById('market-search-input');
+    if (marketSearchInput) {
+        const debouncedMarketSearch = debounce(function () { applyMarketFilters(); }, 200);
+        marketSearchInput.removeAttribute('oninput');
+        marketSearchInput.addEventListener('input', debouncedMarketSearch);
     }
 
     const sortSelect = document.getElementById('sort-select');
@@ -4194,7 +4512,9 @@ function init() {
     api('/api/auth/me')
         .then(function (data) {
             currentUser = data.user || null;
-            currentRole = (data.user && data.user.role) || localStorage.getItem('nt-role') || 'buyer';
+            // Server-authoritative role only; never fall back to localStorage for a
+            // signed-in account (a stale value would route them into the wrong portal).
+            currentRole = data.user ? (data.user.role || 'buyer') : 'buyer';
             if (data.user && data.user.role) localStorage.setItem('nt-role', data.user.role);
         })
         .catch(function () {
@@ -4206,10 +4526,21 @@ function init() {
             fetchPools();
             if (currentUser && currentRole === 'seller') fetchMarketplace();
             if (currentUser) {
-                // Signed in: route straight to the portal for the server-authoritative role.
-                if (activeTab === 'gate') showTab(currentRole === 'seller' ? 'seller' : 'pools');
-            } else if (activeTab === 'seller') {
-                // Signed out seller preference — send back to the role-selection gate.
+                // Signed in: route to the portal that matches the SERVER-authoritative
+                // role, even if the current tab (from a stale localStorage role) belongs
+                // to the other portal.
+                const BUYER_ONLY = ['pools', 'calculator', 'hubs', 'myshares'];
+                const SELLER_ONLY = ['marketplace', 'seller'];
+                const inWrongPortal = currentRole === 'seller'
+                    ? BUYER_ONLY.indexOf(activeTab) !== -1
+                    : SELLER_ONLY.indexOf(activeTab) !== -1;
+                if (inWrongPortal || activeTab === 'gate') {
+                    showTab(currentRole === 'seller' ? 'seller' : 'pools');
+                } else {
+                    showTab(activeTab);
+                }
+            } else if (activeTab !== 'gate') {
+                // Signed out: the only reachable view is the role-selection gate.
                 showTab('gate');
             }
         });
@@ -4218,6 +4549,11 @@ function init() {
 // ---------- Bulk Order Portal ----------
 
 function openBulkModal() {
+    if (currentUser && currentRole === 'seller') {
+        showToast(t('toast.sellerOnly'), true);
+        showTab('seller');
+        return;
+    }
     const modal = document.getElementById('bulk-modal');
     if (!modal) return;
     const summary = document.getElementById('bulk-summary');
@@ -4363,6 +4699,8 @@ window.closeBulkModal = closeBulkModal;
 window.handleBulkSubmit = handleBulkSubmit;
 window.updateBulkSummary = updateBulkSummary;
 window.toggleAiFab = toggleAiFab;
+window.executeAiAction = executeAiAction;
+window.cancelAiAction = cancelAiAction;
 window.toggleLangDropdown = toggleLangDropdown;
 window.toggleTownDropdown = toggleTownDropdown;
 window.selectTownFromDropdown = selectTownFromDropdown;

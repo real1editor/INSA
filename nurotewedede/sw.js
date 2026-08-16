@@ -1,8 +1,10 @@
 // NuroTewedede Service Worker - simple app-shell cache for offline use.
-const CACHE = 'nurotewedede-v1';
+// Bump CACHE below (and re-register) whenever app shell assets change to avoid stale caches.
+const CACHE = 'nurotewedede-v2';
 const ASSETS = [
   './',
   './index.html',
+  './tailwind.css',
   './style.css',
   './script.js',
   './manifest.json',
@@ -30,6 +32,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   // Never intercept API calls or cross-origin requests (Tailwind CDN, images, QR).
+  // Only serve the cached app shell for same-origin GETs.
   if (event.request.method !== 'GET' || url.pathname.startsWith('/api/') || url.origin !== self.location.origin) {
     return;
   }
@@ -44,7 +47,13 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(() => caches.match('./index.html'));
+        .catch(() => {
+          // Offline fallback: only offer the shell for navigation requests so that
+          // sub-resource failures (fonts, images) surface as broken elements instead
+          // of the whole page being replaced by the app shell.
+          if (event.request.mode === 'navigate') return caches.match('./index.html');
+          return Response.error();
+        });
     })
   );
 });
