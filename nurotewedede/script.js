@@ -2089,25 +2089,120 @@ function renderPools() {
 
 // ---------- Live Price Ticker ----------
 
+const tickerState = {
+    offset: 0,
+    speed: 1.2,
+    paused: false,
+    rafId: null,
+    halfWidth: 0,
+    initialized: false
+};
+
+function getTickerData() {
+    const items = [];
+    const maxPools = 20;
+    const maxProducts = 10;
+    for (let i = 0; i < Math.min(pools.length, maxPools); i++) {
+        const p = pools[i];
+        const savePct = p.retailPrice > 0
+            ? Math.round(((p.retailPrice - p.price) / p.retailPrice) * 100)
+            : 0;
+        items.push({
+            type: 'pool',
+            town: localizeTown(p.town),
+            title: p.title,
+            price: p.price,
+            retailPrice: p.retailPrice,
+            savePct: Math.max(0, Math.min(100, savePct)),
+            unit: currencyUnit()
+        });
+    }
+    for (let i = 0; i < Math.min(marketProducts.length, maxProducts); i++) {
+        const p = marketProducts[i];
+        const price = Number(p.price_per_unit) || 0;
+        const entry = produceEntry(p.crop_type);
+        const name = entry ? produceLabel(entry) : (p.crop_type || '');
+        items.push({
+            type: 'product',
+            town: localizeTown(p.origin_town || ''),
+            title: name + (p.variety ? ' · ' + esc(p.variety) : ''),
+            price: price,
+            retailPrice: 0,
+            savePct: 0,
+            unit: currencyUnit()
+        });
+    }
+    return items;
+}
+
+function buildTickerHTML(items) {
+    if (!items.length) {
+        return '<span class="text-[11px] text-slate-500 px-2">' + esc(t('ticker.label')) + ' —</span>';
+    }
+    return items.map(function(item) {
+        let html = '<span class="ticker-item-card">';
+        html += '<span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">' + esc(item.town) + '</span>';
+        html += '<span class="text-white text-xs font-bold">' + esc(item.title) + '</span>';
+        html += '<span class="text-emerald-300 text-xs font-black">' + fmt(item.price) + ' ' + item.unit + '</span>';
+        if (item.retailPrice > 0) {
+            html += '<span class="text-slate-500 line-through text-[10px]">' + fmt(item.retailPrice) + '</span>';
+        }
+        if (item.savePct > 0) {
+            html += '<span class="text-amber-300 bg-amber-500/15 text-[10px] font-black px-1.5 py-0.5 rounded-md">-' + item.savePct + '%</span>';
+        }
+        html += '</span>';
+        return html;
+    }).join('<span class="text-slate-700 select-none text-xs">•</span>');
+}
+
 function renderTicker() {
     const track = document.getElementById('ticker-track');
     if (!track) return;
-    if (!pools.length) {
-        track.innerHTML = '<span class="text-[11px] text-slate-500">' + esc(t('ticker.label')) + ' —</span>';
-        return;
+
+    const items = getTickerData();
+    const half = buildTickerHTML(items);
+    if (!half) return;
+
+    track.innerHTML = half + '<span class="text-slate-700 select-none text-xs">•</span>' + half;
+
+    if (!tickerState.initialized) {
+        tickerState.halfWidth = track.scrollWidth / 2;
+        tickerState.initialized = true;
+        startTickerAnimation();
+    } else {
+        requestAnimationFrame(function() {
+            tickerState.halfWidth = track.scrollWidth / 2;
+        });
     }
-    const items = pools.slice(0, 14).map(function (p) {
-        const savePct = p.retailPrice > 0 ? Math.round(((p.retailPrice - p.price) / p.retailPrice) * 100) : 0;
-        return '<span class="inline-flex items-center gap-2 text-xs font-bold">' +
-            '<span class="text-slate-500">' + esc(localizeTown(p.town)) + '</span>' +
-            '<span class="text-white">' + esc(p.title) + '</span>' +
-            '<span class="text-emerald-300">' + fmt(p.price) + ' ' + currencyUnit() + '</span>' +
-            '<span class="text-slate-500 line-through text-[10px]">' + fmt(p.retailPrice) + '</span>' +
-            '<span class="text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded-md">' + savePct + '%</span>' +
-        '</span>';
-    });
-    const row = items.join('<span class="text-slate-700">•</span>');
-    track.innerHTML = row + '<span class="text-slate-700">•</span>' + row;
+}
+
+function startTickerAnimation() {
+    const track = document.getElementById('ticker-track');
+    const viewport = document.querySelector('.ticker-viewport');
+    if (!track || !viewport) return;
+
+    if (tickerState.rafId) cancelAnimationFrame(tickerState.rafId);
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+        tickerState.speed = 0.3;
+    }
+
+    function step() {
+        if (!tickerState.paused) {
+            tickerState.offset -= tickerState.speed;
+            if (tickerState.halfWidth > 0 && Math.abs(tickerState.offset) >= tickerState.halfWidth) {
+                tickerState.offset = 0;
+            }
+            track.style.transform = 'translate3d(' + tickerState.offset + 'px, 0, 0)';
+        }
+        tickerState.rafId = requestAnimationFrame(step);
+    }
+
+    viewport.addEventListener('mouseenter', function() { tickerState.paused = true; });
+    viewport.addEventListener('mouseleave', function() { tickerState.paused = false; });
+
+    tickerState.rafId = requestAnimationFrame(step);
 }
 
 // ---------- Reserve Modal ----------
@@ -3151,6 +3246,7 @@ async function handleCreatePool(e) {
         if (form) form.reset();
         renderCategoryPills();
         renderPools();
+        renderTicker();
         showToast(t('toast.poolLaunched'));
     } catch (err) {
         showToast(t('toast.poolCreateError') + ': ' + err.message, true);
@@ -3848,6 +3944,7 @@ async function fetchMarketplace() {
         showToast(err.message, true);
     }
     renderMarketplace();
+    renderTicker();
 }
 
 function renderMarketplace() {

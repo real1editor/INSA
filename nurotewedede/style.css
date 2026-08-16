@@ -538,23 +538,45 @@ input[type="range"]::-webkit-slider-thumb {
     background-color: #b45309;
 }
 
-/* ===== Live price ticker marquee ===== */
-@keyframes ticker-scroll {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
-    }
+/* ===== Live price ticker marquee (JS-driven, seamless dual-track) ===== */
+.ticker-viewport {
+    mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
 }
 .ticker-track {
-    animation: ticker-scroll 45s linear infinite;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     will-change: transform;
 }
 .ticker-track:hover {
-    animation-play-state: paused;
+    /* pause handled in JS via animation state */
 }
-
+.ticker-item-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.625rem;
+    padding: 0.4rem 0.75rem;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.ticker-item-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+#ticker > div > span.shrink-0 {
+    position: relative;
+    animation: live-pulse 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes live-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
 /* ===== NuroAI floating assistant ===== */
 .ai-fab {
     position: fixed;
