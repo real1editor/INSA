@@ -517,6 +517,24 @@ const I18N = {
         'seller.workflowDirect': '🛍️ Direct Selling',
         'seller.workflowCollective': '🤝 Collective Pools',
         'seller.collectiveCta': '⚡ Pool & Sell Together',
+        'seller.collectiveEmpty': 'No collective pools yet.',
+        'seller.collectiveEmptyCta': 'Create your first collective pool',
+        'collective.title': 'Create Collective Pool',
+        'collective.subtitle': 'Pool produce with neighbors for better prices',
+        'collective.poolName': 'Pool Name',
+        'collective.poolNamePh': 'e.g. Bole Teff Pool',
+        'collective.crop': 'Crop',
+        'collective.hub': 'Hub Location',
+        'collective.targetQty': 'Target Quantity',
+        'collective.targetQtyPh': 'e.g. 500',
+        'collective.unit': 'Unit',
+        'collective.contributions': 'Contributions',
+        'collective.addContributor': 'Add Contributor',
+        'collective.priceUnit': 'Price per unit',
+        'collective.pricing': 'Pricing',
+        'collective.desc': 'Description',
+        'collective.descPh': 'Describe the pool goals...',
+        'collective.submit': 'Create Collective Pool',
         'seller.demandTitle': 'Live Buyer Demand',
         'seller.demandSubtitle': 'Active neighborhood pools looking for supply like yours.',
         'seller.viewAllPools': 'View all pools →',
@@ -859,6 +877,24 @@ const I18N = {
         'seller.workflowDirect': '🛍️ ቀጥታ ሽያጥ',
         'seller.workflowCollective': '🤝 የጋራ ግዢዎች',
         'seller.collectiveCta': '⚡ አብሮ ሽያጥ እና ይሸጡ',
+        'seller.collectiveEmpty': 'የጋራ ግዢዎች አልተፈጠሩም።',
+        'seller.collectiveEmptyCta': 'የመጀመሪያ የጋራ ግዢዎን ይፍጠሩ',
+        'collective.title': 'የጋራ ግዢ ይፍጠሩ',
+        'collective.subtitle': 'ከጎረቤቶቻችሁ ጋር ምርት ያግቡ ለተሻለ ዋጋ',
+        'collective.poolName': 'የግዢ ስም',
+        'collective.poolNamePh': 'ለምሳሌ ቦሌ ትፍ ግዢ',
+        'collective.crop': 'ሰብል',
+        'collective.hub': 'ማዕከል ቦታ',
+        'collective.targetQty': 'የኢላማ መጠን',
+        'collective.targetQtyPh': 'ለምሳሌ 500',
+        'collective.unit': 'አንድ ክፍል',
+        'collective.contributions': 'የተዋዩ ክፍሎች',
+        'collective.addContributor': 'ተዋጊ ያክሉ',
+        'collective.priceUnit': 'በአንድ ክፍል ዋጋ',
+        'collective.pricing': 'ዋጋ',
+        'collective.desc': 'መግለጫ',
+        'collective.descPh': 'የግዢ ዓላማዎችን ይግለጹ...',
+        'collective.submit': 'የጋራ ግዢ ይፍጠሩ',
         'seller.demandTitle': 'የገዢ ድርላይ ፍላጎት',
         'seller.demandSubtitle': 'ንቁ የሰፈር ግዢዎች እንደ እርስዎ ያለ አቅርቦት ይፈልጋሉ።',
         'seller.viewAllPools': 'ሁሉንም ግዢዎች ይመልከቱ →',
@@ -1203,6 +1239,24 @@ const I18N = {
         'seller.workflowDirect': '🛍️ Gurguruun Kallattii',
         'seller.workflowCollective': '🤝 Poolii Waldaa',
         'seller.collectiveCta': '⚡ Poolii Hojjechuu & Gurguruu',
+        'seller.collectiveEmpty': 'Poolii waldaa amma hin jiru.',
+        'seller.collectiveEmptyCta': 'Poolii waldaa jalqabaa kee uumi',
+        'collective.title': 'Poolii Waldaa Uumi',
+        'collective.subtitle': 'Harca midhaan waliin godhu gatii hedgeessaa qabu',
+        'collective.poolName': 'Maqaa Poolii',
+        'collective.poolNamePh': 'fakkenya Poolii Teff Bolee',
+        'collective.crop': 'Harca',
+        'collective.hub': 'Iddoo Hub',
+        'collective.targetQty': 'Hamma Iyyee',
+        'collective.targetQtyPh': 'fakkenya 500',
+        'collective.unit': 'Iskii',
+        'collective.contributions': 'Waliigaltii',
+        'collective.addContributor': 'Waliigaltaa Dabalii',
+        'collective.priceUnit': 'Gatii iskii',
+        'collective.pricing': 'Gatii',
+        'collective.desc': 'Ibsa',
+        'collective.descPh': 'Karama poolii ibsi...',
+        'collective.submit': 'Poolii Waldaa Uumi',
         'seller.demandTitle': 'Fedhii Bittii Bultii',
         'seller.demandSubtitle': 'Pooliin naannoo bultii kanneen akka keetitti dhiyeessii barbaadu.',
         'seller.viewAllPools': 'Pooli hunda ilaali →',
@@ -1731,7 +1785,6 @@ function normalizePool(p) {
 }
 
 function api(path, options = {}) {
-    const token = localStorage.getItem('sb-access-token');
     const origin = (window.location.origin && window.location.origin !== 'null')
         ? window.location.origin
         : 'http://localhost:5000';
@@ -1752,7 +1805,6 @@ function api(path, options = {}) {
         return fetch(base + path, {
             headers: {
                 'Content-Type': 'application/json',
-                ...(token ? { Authorization: 'Bearer ' + token } : {}),
             },
             credentials: 'include',
             signal: controller ? controller.signal : undefined,
@@ -3658,7 +3710,8 @@ async function handleAuthSubmit(e) {
             return;
         }
         if (data.session && data.session.access_token) {
-            localStorage.setItem('sb-access-token', data.session.access_token);
+            // Token is stored as an httpOnly cookie by the server.
+            // Do NOT copy it to localStorage — that would expose it to XSS.
         }
         currentUser = data.user;
         currentRole = (data.user && (data.user.role || data.user.user_metadata?.role)) || role;
@@ -3679,7 +3732,6 @@ async function handleAuthSubmit(e) {
 async function handleLogout() {
     sessionSeq++; // invalidate any in-flight user-data renders from the old session
     try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) { /* ignore */ }
-    localStorage.removeItem('sb-access-token');
     localStorage.removeItem('nt-role');
     currentUser = null;
     currentRole = 'buyer';
@@ -4263,7 +4315,7 @@ function productCardHtml(p) {
     const variety = p.variety ? ' · ' + esc(p.variety) : '';
     const photos = productPhotos(p);
     const img = photos.length
-        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-40 object-cover" onerror="this.style.display=\'none\'">'
+        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-40 object-cover" loading="lazy" onerror="this.style.display=\'none\'">'
         : '<div class="w-full h-40 bg-gradient-to-br from-emerald-100 to-amber-100 flex items-center justify-center text-4xl">🌾</div>';
 
     const origin = productOriginText(p);
@@ -4326,7 +4378,7 @@ function productDetailHtml(p) {
     const name = entry ? produceLabel(entry) : (p.crop_type || '');
     const photos = productPhotos(p);
     const img = photos.length
-        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-56 object-cover rounded-xl" onerror="this.style.display=\'none\'">'
+        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-56 object-cover rounded-xl" loading="lazy" onerror="this.style.display=\'none\'">'
         : '<div class="w-full h-56 bg-gradient-to-br from-emerald-100 to-amber-100 rounded-xl flex items-center justify-center text-6xl">🌾</div>';
 
     const qualityBits = [];
@@ -4495,7 +4547,7 @@ function sellerProductCardHtml(p) {
     const name = entry ? produceLabel(entry) : (p.crop_type || '');
     const photos = productPhotos(p);
     const img = photos.length
-        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-36 object-cover" onerror="this.style.display=\'none\'">'
+        ? '<img src="' + esc(photos[0]) + '" alt="' + esc(name) + '" class="w-full h-36 object-cover" loading="lazy" onerror="this.style.display=\'none\'">'
         : '<div class="w-full h-36 bg-gradient-to-br from-emerald-100 to-amber-100 flex items-center justify-center text-4xl">🌾</div>';
     const statusColor = p.status === 'active'
         ? 'bg-emerald-100 text-emerald-800'
@@ -4787,10 +4839,9 @@ function init() {
     });
 
     // Root entry: the role-selection gate is the home page for every anonymous
-    // visitor. Only signed-in users (token present) are routed straight to their portal.
+    // visitor. Only signed-in users (nt-role persisted) are routed straight to their portal.
     const savedRole = localStorage.getItem('nt-role');
-    const hasToken = !!localStorage.getItem('sb-access-token');
-    showTab(!hasToken ? 'gate' : (savedRole === 'seller' ? 'seller' : 'pools'), true);
+    showTab(!savedRole ? 'gate' : (savedRole === 'seller' ? 'seller' : 'pools'), true);
 
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     if (mobileToggle) mobileToggle.addEventListener('click', toggleMobileMenu);

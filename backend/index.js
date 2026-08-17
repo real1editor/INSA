@@ -1,7 +1,9 @@
 require('dotenv').config({ path: require('node:path').join(__dirname, '.env') });
 const path = require('node:path');
+const crypto = require('node:crypto');
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { createClient } = require('@supabase/supabase-js');
 
@@ -11,10 +13,6 @@ const IS_PROD = process.env.NODE_ENV === 'production';
 
 // Behind TLS-terminating reverse proxies (Render, Railway, Fly, Nginx).
 if (IS_PROD) app.set('trust proxy', 1);
-
-// Serve the frontend site from the sibling 'nurotewedede' folder
-const FRONTEND_DIR = path.join(__dirname, '..', 'nurotewedede');
-app.use(express.static(FRONTEND_DIR));
 
 // Initialize Supabase Client
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -45,6 +43,12 @@ app.use(cors({
     : true,
   credentials: true
 }));
+// Security headers. CSP is disabled because the frontend uses inline onclick handlers.
+// The remaining headers (HSTS, X-Frame-Options, X-Content-Type-Options, etc.) still apply.
+app.use(helmet({ contentSecurityPolicy: false }));
+// Serve the frontend site from the sibling 'nurotewedede' folder
+const FRONTEND_DIR = path.join(__dirname, '..', 'nurotewedede');
+app.use(express.static(FRONTEND_DIR));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -113,7 +117,7 @@ async function requireAuth(req, res, next) {
         req.user.username = profile.username;
         req.user.role = profile.role || 'buyer';
       }
-    } catch (_) { /* profiles table may not exist yet */ }
+    } catch (e) { if (!IS_PROD) console.warn('profiles table lookup failed:', e.message); }
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Authentication failed: ' + err.message });
@@ -644,7 +648,7 @@ app.post('/api/pools/:id/reserve', requireAuth, async (req, res) => {
   }
 
   const addedShares = Math.min(shares, target - current);
-  const voucherCode = `NT-${Math.floor(100000 + Math.random() * 900000)}`;
+  const voucherCode = 'NT-' + crypto.randomBytes(4).toString('hex').toUpperCase();
 
   // 2. Insert reservation record
   const { error: reserveError } = await supabase
@@ -714,7 +718,7 @@ app.get('/api/pools/:id/comments', async (req, res) => {
           .in('comment_id', ids);
         if (likes) likes.forEach(l => { likedByMe[l.comment_id] = true; });
       }
-    } catch (_) { /* optional enhancement */ }
+    } catch (e) { if (!IS_PROD) console.warn('comment_likes query failed:', e.message); }
   }
 
   if (error) {
@@ -905,9 +909,10 @@ async function resolveAiUser(req) {
         .eq('id', user.id)
         .maybeSingle();
       if (data) profile = data;
-    } catch (_) { /* profiles table may not exist yet */ }
+    } catch (e) { if (!IS_PROD) console.warn('resolveAiUser profile lookup:', e.message); }
     return { id: user.id, email: user.email, name: profile.name || '', username: profile.username || '', role: profile.role || 'buyer' };
-  } catch (_) {
+  } catch (e) {
+    if (!IS_PROD) console.warn('resolveAiUser failed:', e.message);
     return null;
   }
 }
@@ -951,23 +956,23 @@ app.post('/api/ai-assistant', async (req, res) => {
     try {
       const { data } = await supabase.from('pools').select('*').order('created_at', { ascending: false }).limit(8);
       pools = data || [];
-    } catch (_) { /* pools may be unavailable */ }
+    } catch (e) { if (!IS_PROD) console.warn('init pools query:', e.message); }
 
     try {
       const { data } = await supabase.from('products').select('*').eq('status', 'active').order('created_at', { ascending: false }).limit(10);
       products = data || [];
-    } catch (_) { /* products table may not exist yet */ }
+    } catch (e) { if (!IS_PROD) console.warn('init products query:', e.message); }
 
     if (user) {
       try {
         const { data } = await supabase.from('reservations').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(8);
         reservations = data || [];
-      } catch (_) { /* reservations may be unavailable */ }
+      } catch (e) { if (!IS_PROD) console.warn('init reservations query:', e.message); }
       if (effectiveRole === 'seller') {
         try {
           const { data } = await supabase.from('products').select('*').eq('seller_id', user.id).order('created_at', { ascending: false }).limit(10);
           myListings = data || [];
-        } catch (_) { /* products table may not exist yet */ }
+        } catch (e) { if (!IS_PROD) console.warn('init seller listings query:', e.message); }
       }
     }
 

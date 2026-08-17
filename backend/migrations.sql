@@ -179,12 +179,12 @@ CREATE POLICY "products_insert_auth" ON public.products
   FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
 
 DROP POLICY IF EXISTS "products_update_all" ON public.products;
-CREATE POLICY "products_update_all" ON public.products
-  FOR UPDATE USING (true) WITH CHECK (true);
+CREATE POLICY "products_update_owner" ON public.products
+  FOR UPDATE USING (auth.uid() = seller_id) WITH CHECK (auth.uid() = seller_id);
 
 DROP POLICY IF EXISTS "products_delete_all" ON public.products;
-CREATE POLICY "products_delete_all" ON public.products
-  FOR DELETE USING (true);
+CREATE POLICY "products_delete_owner" ON public.products
+  FOR DELETE USING (auth.uid() = seller_id);
 
 CREATE INDEX IF NOT EXISTS products_seller_id_idx ON public.products (seller_id);
 CREATE INDEX IF NOT EXISTS products_crop_type_idx ON public.products (crop_type);
