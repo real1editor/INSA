@@ -459,7 +459,12 @@ const I18N = {
         'hubs.sourcingUnions': 'Primary Sourcing Unions:', 'hubs.address': 'Hub Address:', 'hubs.directLinks': 'Direct Woreda Links:',
         'ai.title': 'NuroAI Assistant', 'ai.badgeYou': 'YOU', 'ai.badgeAi': 'AI',
         'ai.modelBadge': 'Gemini 3.6 Flash',
-        'ai.noResponse': 'No response received.', 'ai.error': 'Unable to connect to Gemini AI Assistant',
+        'ai.noResponse': 'No response received.', 'ai.error': 'Something went wrong',
+        'ai.errorTitle': 'NuroAI is resting',
+        'ai.errorFriendly': "NuroAI took a quick break. This is usually temporary — while we get things running again, you can still explore pools, check live prices, and browse the marketplace.",
+        'ai.errorRetry': '↻ Try Again',
+        'ai.errorSignIn': 'Sign In',
+        'ai.errorGuest': 'Continue Browsing',
         'ai.prompt1': 'How do we plan a 20-family Teff & Spice group order for Addis Ababa?',
         'ai.prompt2': 'What are the best storage tips for 50kg red onions to prevent rotting?',
         'ai.prompt3': 'When is peak harvest season for Gojjam White Teff and price trends?',
@@ -518,6 +523,13 @@ const I18N = {
         'seller.collectiveCta': '⚡ Pool & Sell Together',
         'seller.collectiveEmpty': 'No collective pools yet.',
         'seller.collectiveEmptyCta': 'Create your first collective pool',
+        'seller.subnav.breadcrumb': 'Seller Command Center',
+        'seller.subnav.context': 'Inventory &amp; Pool Fulfillment',
+        'seller.subnav.listings': '📦 My Listings',
+        'seller.subnav.pools': '🤝 Active Pools',
+        'seller.subtab.escrow': '💰 Escrow &amp; Payouts',
+        'seller.notifications': 'Notifications',
+        'seller.settings': 'Settings',
         'collective.title': 'Create Collective Pool',
         'collective.subtitle': 'Pool produce with neighbors for better prices',
         'collective.poolName': 'Pool Name',
@@ -818,7 +830,12 @@ const I18N = {
         'hubs.sourcingUnions': 'ዋና የአቅርቦት ህብረት ስራዎች:', 'hubs.address': 'የማዕከል አድራሻ:', 'hubs.directLinks': 'ቀጥተኛ የወረዳ አገናኞች:',
         'ai.title': 'NuroAI ረዳት', 'ai.badgeYou': 'እርስዎ', 'ai.badgeAi': 'AI',
         'ai.modelBadge': 'Gemini 3.6 Flash',
-        'ai.noResponse': 'ምንም ምላሽ አልተቀበለም።', 'ai.error': 'ከGemini AI ረዳት ጋር መገናኘት አልተቻለም',
+        'ai.noResponse': 'ምንም ምላሽ አልተቀበለም።', 'ai.error': 'ችግር ተፈጥሯል',
+        'ai.errorTitle': 'NuroAI እየተገለለ ነው',
+        'ai.errorFriendly': 'NuroAI ለጊዜው ተገልሎአል። ይህ ሊሆን የሚችል ጊዜ ጉዳት ነው። እርስዎ በዚህ ጊዜ ግዢዎችን ማሰስ፣ የሕይወት ዋጋዎችን ማየት እና ገበያውን ማሰስ ይችላሉ።',
+        'ai.errorRetry': '↻ እንደገና ሞክር',
+        'ai.errorSignIn': 'ግባ',
+        'ai.errorGuest': 'መቀጠል ይችላሉ',
         'ai.prompt1': 'የ20 ቤተሰብ ጤፍ እና ቅመማ ቅመም የቡድን ትዕዛዝ ለአዲስ አበባ እንዴት እናቅዳለን?',
         'ai.prompt2': 'የ50ኪግ ቀይ ሽንኩርት መበስበስን ለመከላከል ምን የማከማቻ ምክሮች አሉ?',
         'ai.prompt3': 'የጎጃም ነጭ ጤፍ የመኸር ሰሞን መቼ ነው እና የዋጋ አዝማሚያው ምን ይመስላል?',
@@ -877,6 +894,13 @@ const I18N = {
         'seller.collectiveCta': '⚡ አብሮ ሽያጥ እና ይሸጡ',
         'seller.collectiveEmpty': 'የጋራ ግዢዎች አልተፈጠሩም።',
         'seller.collectiveEmptyCta': 'የመጀመሪያ የጋራ ግዢዎን ይፍጠሩ',
+        'seller.subnav.breadcrumb': 'የሻጭ ትዕዛዝ ማዕከል',
+        'seller.subnav.context': 'የእሃት እና የግዢ ማስፈጫ ስራዎች',
+        'seller.subnav.listings': '📦 የእኔ ዝርዝሮች',
+        'seller.subnav.pools': '🤝 ንቁ ግዢዎች',
+        'seller.subtab.escrow': '💰 ኤስክሮው እና ክፍያዎች',
+        'seller.notifications': 'ማሳወቂያዎች',
+        'seller.settings': 'ማዋቀሪያ',
         'collective.title': 'የጋራ ግዢ ይፍጠሩ',
         'collective.subtitle': 'ከጎረቤቶቻችሁ ጋር ምርት ያግቡ ለተሻለ ዋጋ',
         'collective.poolName': 'የግዢ ስም',
@@ -1179,7 +1203,12 @@ const I18N = {
         'hubs.sourcingUnions': 'Waldaalee Dhiyeessaa Ijoo:', 'hubs.address': 'Teessoo Buufataa:', 'hubs.directLinks': 'Qunnamtii Aanaa Qulqullinaa:',
         'ai.title': 'Gargaaraa NuroAI', 'ai.badgeYou': 'ATI', 'ai.badgeAi': 'AI',
         'ai.modelBadge': 'Gemini 3.6 Flash',
-        'ai.noResponse': 'Deebiin hin arganne.', 'ai.error': 'Gargaaraa Gemini AI wajjin wal quunnamuu hin danda\'amne',
+        'ai.noResponse': 'Deebiin hin arganne.', 'ai.error': 'Rakkii ta\u2019e jira',
+        'ai.errorTitle': 'NuroAI boqonnaa taasifamaa jira',
+        'ai.errorFriendly': 'NuroAI yeroo gabaabuu boqateera. Kun yeroo itti aanutti ta\u2019u danda\u2019a — nuti wantoota sirreessinu jirru, ati garuu poolwwan ilaali, gatii daldalaa hordofi, gabaa dhiyeessii ilaali.',
+        'ai.errorRetry': '↻ Ammas Yaali',
+        'ai.errorSignIn': 'Galmaa\u2019i',
+        'ai.errorGuest': 'Ilaaluu Itti Fufadhu',
         'ai.prompt1': 'Akeekan daldalaa Teeffii fi mi\'eessitootaa maatii 20f Addis Ababaatti akkamitti karoorfanna?',
         'ai.prompt2': 'Shunkurtii diimaa 50kg akka hin bonquuf gorsa kuusaa kamtu jira?',
         'ai.prompt3': 'Yoomtu yeroo midhaan Xaafii Adii Gojjam fi gatii isaa akkamitti jijjirra?',
@@ -1238,6 +1267,20 @@ const I18N = {
         'seller.collectiveCta': '⚡ Poolii Hojjechuu & Gurguruu',
         'seller.collectiveEmpty': 'Poolii waldaa amma hin jiru.',
         'seller.collectiveEmptyCta': 'Poolii waldaa jalqabaa kee uumi',
+        'seller.subnav.breadcrumb': 'Garee Ajajaa Bittaa',
+        'seller.subnav.context': 'Galmeen & Guutuu Poolii',
+        'seller.subnav.listings': '📦 Galmeewwan Kiyya',
+        'seller.subnav.pools': '🤝 Poolii Jiru',
+        'seller.subtab.escrow': '💰 Escrow & Kaffaltii',
+        'seller.notifications': 'Beeksisoota',
+        'seller.settings': 'Qindeessituu',
+        'seller.subnav.breadcrumb': 'Lammiyyaa Abbaa Gahee',
+        'seller.subnav.context': 'Otuun fi Poolii Guyyuu',
+        'seller.subnav.listings': '📦 Galmee Keenya',
+        'seller.subnav.pools': '🤝 Poolii Payyee',
+        'seller.subtab.escrow': '💰 Escrow fi Fuudha',
+        'seller.notifications': 'Isxaashiinsa',
+        'seller.settings': 'Qinda\'ina',
         'collective.title': 'Poolii Waldaa Uumi',
         'collective.subtitle': 'Harca midhaan waliin godhu gatii hedgeessaa qabu',
         'collective.poolName': 'Maqaa Poolii',
@@ -3115,6 +3158,39 @@ function renderAiMessages() {
 
     container.innerHTML = aiMessages.map(function (msg) {
         const isUser = msg.sender === 'user';
+
+        // Graceful error card — friendly tone, retry + sign-in + guest actions
+        if (msg.isError) {
+            const retryId = 'retry-' + msg.id;
+            return '<div class="flex items-start gap-3">' +
+                '<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold bg-amber-500 text-white shadow-sm">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                '</div>' +
+                '<div class="max-w-[92%] glass-card border border-amber-200/60 rounded-3xl rounded-tl-none p-5 space-y-3 shadow-sm">' +
+                    '<div class="flex items-center gap-2">' +
+                        '<h4 class="text-sm font-extrabold text-slate-900">' + esc(t('ai.errorTitle')) + '</h4>' +
+                        '<span class="inline-flex items-center gap-1 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">NuroAI</span>' +
+                    '</div>' +
+                    '<p class="text-xs text-slate-600 leading-relaxed">' + esc(msg.text) + '</p>' +
+                    '<div class="flex flex-wrap items-center gap-2 pt-1">' +
+                        '<button onclick="retryAiMessage(\'' + esc(msg.id) + '\')" class="btn-press bg-emerald-800 hover:bg-emerald-700 text-white text-[11px] font-bold px-4 py-2 rounded-xl transition shadow-sm flex items-center gap-1.5">' +
+                            '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>' +
+                            esc(t('ai.errorRetry')) +
+                        '</button>' +
+                        '<button onclick="closeAiFab(); openAuthModal()" class="btn-press bg-white hover:bg-slate-50 text-slate-700 text-[11px] font-bold px-4 py-2 rounded-xl border border-slate-200 transition flex items-center gap-1.5">' +
+                            '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>' +
+                            esc(t('ai.errorSignIn')) +
+                        '</button>' +
+                        '<button onclick="toggleAiFab()" class="btn-press text-[11px] font-semibold text-slate-500 hover:text-emerald-700 px-3 py-2 transition flex items-center gap-1.5">' +
+                            '<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m7 7l-2-2m-2 2l2 2m-2-2l-2 2m11-7a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
+                            esc(t('ai.errorGuest')) +
+                        '</button>' +
+                    '</div>' +
+                    '<p class="text-[10px] font-medium text-right text-slate-400">' + esc(msg.timestamp) + '</p>' +
+                '</div>' +
+            '</div>';
+        }
+
         return '<div class="flex items-start gap-3 ' + (isUser ? 'flex-row-reverse' : '') + '">' +
             '<div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ' + (isUser ? 'bg-slate-900 text-white' : 'bg-emerald-800 text-white') + '">' +
                 (isUser ? '<span class="text-[10px]">' + esc(t('ai.badgeYou')) + '</span>' : '<span class="text-[10px]">' + esc(t('ai.badgeAi')) + '</span>') +
@@ -3356,7 +3432,9 @@ async function sendAiMessage(textToSend) {
         aiMessages.push({
             id: 'err-' + Date.now(),
             sender: 'assistant',
-            text: '⚠️ ' + t('ai.error') + ': ' + err.message,
+            text: t('ai.errorFriendly'),
+            isError: true,
+            errorPrompt: prompt,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
     } finally {
@@ -3373,6 +3451,26 @@ function sendQuickPrompt(btn) {
 function submitAiForm(e) {
     e.preventDefault();
     sendAiMessage();
+}
+
+// Retry a failed AI message: remove the error card and re-send the original prompt.
+function retryAiMessage(errId) {
+    aiMessages = aiMessages.filter(function (m) { return m.id !== errId; });
+    // Find the last user message before this error to get the original prompt.
+    var lastUser = null;
+    for (var i = aiMessages.length - 1; i >= 0; i--) {
+        if (aiMessages[i].sender === 'user') { lastUser = aiMessages[i]; break; }
+    }
+    if (lastUser) sendAiMessage(lastUser.text);
+    else renderAiMessages();
+}
+
+// Close the AI panel and reset the FAB icon.
+function closeAiFab() {
+    var panel = document.getElementById('ai-fab-panel');
+    if (panel) panel.classList.add('hidden');
+    var fab = document.getElementById('ai-fab');
+    if (fab) fab.classList.remove('ai-fab-open');
 }
 
 function toggleAiFab() {
@@ -4537,6 +4635,75 @@ function openReserveModalFromDemand(id) {
         return;
     }
     openReserveModal(id);
+}
+
+// ---------- Seller sub-navigation ----------
+
+function setSellerWorkflow(mode) {
+    const directPanel = document.getElementById('seller-direct-panel');
+    const collectivePanel = document.getElementById('seller-collective-panel');
+    const directTab = document.getElementById('seller-tab-direct');
+    const collectiveTab = document.getElementById('seller-tab-collective');
+
+    if (mode === 'collective') {
+        if (directPanel) directPanel.classList.add('hidden');
+        if (collectivePanel) collectivePanel.classList.remove('hidden');
+        if (directTab) {
+            directTab.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+            directTab.classList.add('text-slate-600', 'hover:text-slate-900');
+        }
+        if (collectiveTab) {
+            collectiveTab.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            collectiveTab.classList.remove('text-slate-600', 'hover:text-slate-900');
+        }
+    } else {
+        if (directPanel) directPanel.classList.remove('hidden');
+        if (collectivePanel) collectivePanel.classList.add('hidden');
+        if (directTab) {
+            directTab.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            directTab.classList.remove('text-slate-600', 'hover:text-slate-900');
+        }
+        if (collectiveTab) {
+            collectiveTab.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+            collectiveTab.classList.add('text-slate-600', 'hover:text-slate-900');
+        }
+    }
+}
+
+function setSellerSubTab(tab) {
+    const directPanel = document.getElementById('seller-direct-panel');
+    const collectivePanel = document.getElementById('seller-collective-panel');
+    const escrowPanel = document.getElementById('seller-escrow-panel');
+    const tabs = document.querySelectorAll('.seller-subtab');
+
+    tabs.forEach(function (btn) {
+        btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-300', 'hover:text-white', 'hover:bg-slate-700/60');
+    });
+
+    const activeBtn = document.getElementById('seller-subtab-' + tab);
+    if (activeBtn) {
+        activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-slate-700/60');
+    }
+
+    if (tab === 'listings') {
+        if (directPanel) directPanel.classList.remove('hidden');
+        if (collectivePanel) collectivePanel.classList.add('hidden');
+        if (escrowPanel) escrowPanel.classList.add('hidden');
+    } else if (tab === 'pools') {
+        if (directPanel) directPanel.classList.add('hidden');
+        if (collectivePanel) collectivePanel.classList.remove('hidden');
+        if (escrowPanel) escrowPanel.classList.add('hidden');
+    } else if (tab === 'escrow') {
+        if (directPanel) directPanel.classList.add('hidden');
+        if (collectivePanel) collectivePanel.classList.add('hidden');
+        if (escrowPanel) escrowPanel.classList.remove('hidden');
+    }
+}
+
+function openSellerSettings() {
+    showToast(t('seller.settings') + ': Coming soon');
 }
 
 function sellerProductCardHtml(p) {
