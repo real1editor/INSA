@@ -474,7 +474,7 @@ const I18N = {
         'err.serverTimeout': 'The server took too long to respond. Check your connection and try again.',
         'err.unexpected': 'Something went wrong on this page. Please reload and try again.',
         'err.htmlInsteadJson': 'Server answered with HTML instead of JSON', 'err.requestFailed': 'Request failed',
-        'toast.signinReserve': 'Please sign in first to reserve a share.',
+        'toast.signinReserve': 'Please sign in first to reserve a share.', 'toast.sessionExpired': 'Your session has expired. Please sign in again.',
         'toast.poolFullyReserved': 'This pool is already fully reserved.',
         'toast.signinComment': 'Please sign in first to post a comment.',
         'toast.commentPosted': 'Comment posted to the community board.',
@@ -846,6 +846,7 @@ const I18N = {
         'err.unexpected': 'በዚህ ገጽ ላይ ያልተጠበቀ ስህተት ተከስቷል። እባክዎ ያድሱና እንደገና ይሞክሩ።',
         'err.htmlInsteadJson': 'አገልጋዩ ከJSON ይልቅ በHTML መልሷል', 'err.requestFailed': 'ጥያቄው አልተሳካም',
         'toast.signinReserve': 'አክሲዮን ለማስያዝ እባክዎ መጀመሪያ ይግቡ።',
+        'toast.sessionExpired': 'ክፍለ ጊዜዎ አብቅቷል። እባክዎ እንደገና ይግቡ።',
         'toast.poolFullyReserved': 'ይህ ግዢ ሙሉ በሙሉ ተይዟል።',
         'toast.signinComment': 'አስተያየት ለመለጠፍ እባክዎ መጀመሪያ ይግቡ።',
         'toast.commentPosted': 'አስተያየት በማህበረሰብ መግለጫ ሰሌዳ ላይ ተለጠፈ።',
@@ -1218,7 +1219,7 @@ const I18N = {
         'err.serverTimeout': 'Server sun deebisuu baay\'eessa ture. Hidhannoo kee sakatta\'iitii ammas yaali.',
         'err.unexpected': 'Fuula kana irratti dogoggorri hin eegamne ta\'e jira. Maaloo ammas haarachiisiitii yaali.',
         'err.htmlInsteadJson': 'Server HTML deebise (JSON osoo hin ta\'in)', 'err.requestFailed': 'Gaafatni hin milkoofne',
-        'toast.signinReserve': 'Qooda bakka buufachuuf maaloo dura seeni.',
+        'toast.signinReserve': 'Qooda bakka buufachuuf maaloo dura seeni.', 'toast.sessionExpired': 'Seensi kee dhumaate. Maaloo irra deebi\'aan seeni.',
         'toast.poolFullyReserved': 'Bituun kun guutumaan bakka buufameera.',
         'toast.signinComment': 'Yaada galchuuf maaloo dura seeni.',
         'toast.commentPosted': 'Yaadni gabatee hawaasaatti galateeffame.',
@@ -2251,21 +2252,26 @@ function renderPools() {
                     '</div>' +
                 '</div>' +
             '</div>' +
-            '<div class="p-5 pt-0 flex gap-2">' +
-                '<button onclick="sharePool(\'' + pool.id + '\', event)" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="' + esc(t('card.share')) + '">' +
-                    '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>' +
-                '</button>' +
-                '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1" title="' + esc(t('details.title')) + '">' +
-                    '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
-                    '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
-                '</button>' +
-                '<button onclick="openSourcingModal(\'' + pool.id + '\')" class="p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1 text-[11px] font-bold" title="' + esc(t('sourcing.title')) + '">' +
-                    '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>' +
-                    '<span class="hidden sm:inline">' + esc(t('sourcing.title')) + '</span>' +
-                '</button>' +
-                '<button onclick="openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="btn-press flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
-                    (isReservable ? esc(t('card.reserve')) : esc(t('card.fullyReserved'))) +
-                '</button>' +
+            '<div class="p-5 pt-0 space-y-2">' +
+                '<div class="flex gap-2">' +
+                    '<button onclick="openSourcingModal(\'' + pool.id + '\')" class="btn-press flex-1 py-2.5 rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition flex items-center justify-center gap-1.5 text-[11px] font-bold" title="' + esc(t('sourcing.title')) + '">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>' +
+                        '<span>' + esc(t('sourcing.title')) + '</span>' +
+                    '</button>' +
+                    '<button onclick="openReserveModal(\'' + pool.id + '\')" ' + (isReservable ? '' : 'disabled') + ' class="btn-press flex-1 py-2.5 rounded-2xl text-xs font-black transition shadow-sm flex items-center justify-center gap-1.5 ' + (isReservable ? 'bg-emerald-800 hover:bg-emerald-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed') + '">' +
+                        (isReservable ? esc(t('card.reserve')) : esc(t('card.fullyReserved'))) +
+                    '</button>' +
+                '</div>' +
+                '<div class="flex gap-2">' +
+                    '<button onclick="openPoolDetails(\'' + pool.id + '\')" class="flex-1 p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1.5" title="' + esc(t('details.title')) + '">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>' +
+                        '<span class="text-xs font-bold" data-cc="' + pool.id + '">' + pool.commentsCount + '</span>' +
+                    '</button>' +
+                    '<button onclick="sharePool(\'' + pool.id + '\', event)" class="flex-1 p-2.5 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition flex items-center justify-center gap-1.5" title="' + esc(t('card.share')) + '">' +
+                        '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>' +
+                        '<span class="text-xs font-bold">' + esc(t('card.share')) + '</span>' +
+                    '</button>' +
+                '</div>' +
             '</div>';
         grid.appendChild(card);
     });
@@ -2603,7 +2609,7 @@ function renderReserveForm() {
         '<div class="space-y-5">' +
             '<div>' +
                 '<span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-2">' + esc(t('reserve.badge')) + '</span>' +
-                '<h3 class="text-2xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
+                '<h3 class="text-xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
                 '<p class="text-xs text-slate-500 mt-1">' + esc(tt('reserve.direct', pool.woreda, pool.hubLocation)) + '</p>' +
             '</div>' +
             '<div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">' +
@@ -2649,6 +2655,20 @@ function setPayment(method) {
     renderReserveForm();
 }
 
+// The client thinks a session exists but the server disagrees (cookie expired,
+// cleared, or dropped). Reset local state and prompt a fresh sign-in instead
+// of leaving the user stuck with an "Authentication required" dead end.
+function handleAuthLoss() {
+    currentUser = null;
+    localStorage.removeItem('nt-role');
+    currentRole = 'buyer';
+    sessionSeq++;
+    updateAuthUI();
+    closeReserveModal();
+    showToast(t('toast.sessionExpired'), true);
+    openAuthModal();
+}
+
 async function confirmReservation() {
     const pool = reserveState.pool;
     const shares = reserveState.shares;
@@ -2675,6 +2695,7 @@ async function confirmReservation() {
             confirmBtn.disabled = false;
             confirmBtn.textContent = tt('reserve.confirm', fmt(pool.price * shares));
         }
+        if (err.status === 401) { handleAuthLoss(); return; }
         showToast(err.message, true);
     }
 }
@@ -2718,7 +2739,7 @@ function buildVoucherHTML(reservation, pool, closeFn) {
                 '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
             '</div>' +
             '<div>' +
-                '<h3 class="text-2xl font-black text-slate-900">' + esc(t('success.title')) + '</h3>' +
+                '<h3 class="text-xl font-black text-slate-900">' + esc(t('success.title')) + '</h3>' +
                 '<p class="text-xs text-slate-500 mt-1">' + esc(tt('success.subtitle', pool.title)) + '</p>' +
             '</div>' +
             '<div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 max-w-xs mx-auto space-y-3">' +
@@ -2844,7 +2865,7 @@ function renderDetails() {
                     '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full">' + esc(tt('card.hub', localizeTown(pool.town))) + '</span>' +
                     '<span class="text-xs text-slate-400 font-bold">' + esc(tt('details.origin', pool.woreda)) + '</span>' +
                 '</div>' +
-                '<h3 class="text-2xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
+                '<h3 class="text-xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
                 '<p class="text-xs text-slate-500">' + esc(tt('details.unit', pool.unit, pool.hubLocation)) + '</p>' +
                 '<div class="pt-1 flex items-center gap-3">' +
                     '<span class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ' + currencyUnit() + '</span>' +
@@ -2899,6 +2920,7 @@ async function postComment(e) {
         renderDetails();
         showToast(t('toast.commentPosted'));
     } catch (err) {
+        if (err.status === 401) { handleAuthLoss(); return; }
         showToast(err.message, true);
     }
 }
@@ -2936,6 +2958,7 @@ async function likeComment(commentId, btn) {
         showToast(data.liked ? t('details.likeToast') : t('details.unlikeToast'));
     } catch (err) {
         optimistic(prevLiked, curLikes);
+        if (err.status === 401) { handleAuthLoss(); return; }
         showToast(err.message, true);
     }
 }
@@ -3311,6 +3334,7 @@ async function executeAiAction(msgId) {
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
     } catch (err) {
+        if (err.status === 401) { handleAuthLoss(); return; }
         msg.actionState = 'failed';
         msg.actionError = err.message || t('ai.error');
         showToast(msg.actionError, true);
