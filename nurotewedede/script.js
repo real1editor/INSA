@@ -1902,7 +1902,11 @@ function showToast(msg, isError) {
     if (!toast) return;
     clearTimeout(toastTimer);
     toast.textContent = msg;
-    toast.className = 'fixed bottom-6 right-6 z-50 hidden bg-' + (isError ? 'rose' : 'emerald') + '-900 text-white border border-' + (isError ? 'rose' : 'emerald') + '-700 px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold toast-enter';
+    // Literal class names only — concatenated classes (bg-'+'rose'-900) are never
+    // seen by the Tailwind compiler, so those utilities don't exist in the CSS.
+    toast.className = isError
+        ? 'fixed bottom-6 right-6 z-50 hidden bg-rose-900 border border-rose-700 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold toast-enter'
+        : 'fixed bottom-6 right-6 z-50 hidden bg-emerald-900 border border-emerald-700 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold toast-enter';
     toast.classList.remove('hidden');
     toast.classList.add('flex');
     toastTimer = setTimeout(function () {
@@ -4549,7 +4553,7 @@ function closeProductModal() {
 
 async function fetchMyProducts() {
     const seq = sessionSeq;
-    const grid = document.getElementById('seller-grid');
+    const grid = document.getElementById('seller-direct-grid');
     if (grid) grid.innerHTML = renderProductSkeleton();
     try {
         const data = await api('/api/products/mine');
@@ -4564,7 +4568,7 @@ async function fetchMyProducts() {
 }
 
 function renderSellerDashboard() {
-    const grid = document.getElementById('seller-grid');
+    const grid = document.getElementById('seller-direct-grid');
     const empty = document.getElementById('seller-empty');
     const stats = document.getElementById('seller-stats');
     if (!grid) return;
