@@ -91,20 +91,62 @@ const aiLimiter = rateLimit({
 app.use('/api/auth', authLimiter);
 app.use('/api/ai-assistant', aiLimiter);
 
+// ---------- Session helpers ----------
+// Supabase access tokens expire after ~1 hour, so storing only the access
+// token in a 7-day cookie guarantees "Authentication required" errors later.
+// We also store the refresh token and transparently rotate BOTH cookies when
+// the access token has expired.
+const SESSION_COOKIE_OPTS = {
+  httpOnly: true,
+  secure: IS_PROD,
+  sameSite: 'lax',
+  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+};
+
+function setSessionCookies(res, session) {
+  if (!session) return;
+  res.cookie('sb-access-token', session.access_token, SESSION_COOKIE_OPTS);
+  if (session.refresh_token) {
+    res.cookie('sb-refresh-token', session.refresh_token, SESSION_COOKIE_OPTS);
+  }
+}
+
+// Resolve the current user from cookies/headers, refreshing an expired access
+// token via the refresh-token cookie when possible. Returns { user, token },
+// or null after clearing dead cookies so stale state never lingers.
+async function resolveUser(req, res) {
+  const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
+  const refreshToken = req.cookies['sb-refresh-token'];
+
+  if (token) {
+    const { data, error } = await supabase.auth.getUser(token);
+    if (!error && data?.user) return { user: data.user, token };
+  }
+
+  if (refreshToken) {
+    const { data, error } = await supabase.auth.refreshSession({ refresh_token: refreshToken });
+    if (!error && data?.session && data?.user) {
+      setSessionCookies(res, data.session); // refresh tokens are single-use: store the rotated pair
+      return { user: data.user, token: data.session.access_token };
+    }
+  }
+
+  res.clearCookie('sb-access-token');
+  res.clearCookie('sb-refresh-token');
+  return null;
+}
+
 // Helper middleware to verify Supabase session token from cookies or headers
 async function requireAuth(req, res, next) {
   try {
-    const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
-    if (!token) {
+    const resolved = await resolveUser(req, res);
+    if (!resolved) {
       return res.status(401).json({ error: 'Authentication required. Please sign in.' });
     }
 
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error || !user) {
-      return res.status(401).json({ error: 'Invalid or expired session.' });
-    }
-
+    const user = resolved.user;
     req.user = user;
+    req.authToken = resolved.token; // post-refresh token, for authedSupabase()
     // Attach the public profile (name/username/role) if one exists.
     try {
       const { data: profile } = await supabase
@@ -137,7 +179,7 @@ function requireSeller(req, res, next) {
 // policies see auth.uid() = the signed-in user (the shared anon client
 // cannot pass RLS checks that depend on the user's identity).
 function authedSupabase(req) {
-  const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
+  const token = req.authToken || req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
   if (!token) return null;
   return createClient(supabaseUrl, supabaseKey, {
     global: { headers: { Authorization: 'Bearer ' + token } }
@@ -210,12 +252,7 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 
   if (data.session) {
-    res.cookie('sb-access-token', data.session.access_token, {
-      httpOnly: true,
-      secure: IS_PROD,
-      sameSite: IS_PROD ? 'lax' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
+    setSessionCookies(res, data.session);
   }
 
   res.json({
@@ -287,39 +324,40 @@ app.post('/api/auth/login', async (req, res) => {
     // routes using the server-authoritative role from the profile.
   }
 
-  // Set secure cookie for session
-  res.cookie('sb-access-token', data.session.access_token, {
-    httpOnly: true,
-    secure: IS_PROD,
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-  });
+  // Set secure cookies for the session (access + refresh tokens)
+  setSessionCookies(res, data.session);
 
   res.json({ message: 'Signed in successfully', user: { ...data.user, ...(profile || {}) }, session: data.session });
 });
 
 // Get Current User Session
 app.get('/api/auth/me', async (req, res) => {
-  const token = req.cookies['sb-access-token'] || req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ user: null });
+  try {
+    const resolved = await resolveUser(req, res);
+    if (!resolved) return res.status(401).json({ user: null });
+    const user = resolved.user;
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  if (error || !user) return res.status(401).json({ user: null });
+    let profile = null;
+    const { data: prof } = await supabase
+      .from('profiles')
+      .select('name, username, role')
+      .eq('id', user.id)
+      .maybeSingle();
+    if (prof) profile = prof;
 
-  let profile = null;
-  const { data: prof } = await supabase
-    .from('profiles')
-    .select('name, username, role')
-    .eq('id', user.id)
-    .maybeSingle();
-  if (prof) profile = prof;
-
-  res.json({ user: { ...user, ...(profile || {}) } });
+    res.json({ user: { ...user, ...(profile || {}) } });
+  } catch (err) {
+    res.status(401).json({ user: null });
+  }
 });
 
 // Sign Out
 app.post('/api/auth/logout', (req, res) => {
+  // Clearing both cookies is what ends the session client-side. Server-side
+  // revocation would require the service-role key, which we deliberately
+  // don't hold on this server.
   res.clearCookie('sb-access-token');
+  res.clearCookie('sb-refresh-token');
   res.json({ message: 'Signed out successfully' });
 });
 
