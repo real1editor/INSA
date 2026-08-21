@@ -2603,7 +2603,7 @@ function renderReserveForm() {
         '<div class="space-y-5">' +
             '<div>' +
                 '<span class="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full mb-2">' + esc(t('reserve.badge')) + '</span>' +
-                '<h3 class="text-xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
+                '<h3 class="text-2xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
                 '<p class="text-xs text-slate-500 mt-1">' + esc(tt('reserve.direct', pool.woreda, pool.hubLocation)) + '</p>' +
             '</div>' +
             '<div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">' +
@@ -2718,7 +2718,7 @@ function buildVoucherHTML(reservation, pool, closeFn) {
                 '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' +
             '</div>' +
             '<div>' +
-                '<h3 class="text-xl font-black text-slate-900">' + esc(t('success.title')) + '</h3>' +
+                '<h3 class="text-2xl font-black text-slate-900">' + esc(t('success.title')) + '</h3>' +
                 '<p class="text-xs text-slate-500 mt-1">' + esc(tt('success.subtitle', pool.title)) + '</p>' +
             '</div>' +
             '<div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 max-w-xs mx-auto space-y-3">' +
@@ -2844,7 +2844,7 @@ function renderDetails() {
                     '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full">' + esc(tt('card.hub', localizeTown(pool.town))) + '</span>' +
                     '<span class="text-xs text-slate-400 font-bold">' + esc(tt('details.origin', pool.woreda)) + '</span>' +
                 '</div>' +
-                '<h3 class="text-xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
+                '<h3 class="text-2xl font-black text-slate-900">' + esc(pool.title) + '</h3>' +
                 '<p class="text-xs text-slate-500">' + esc(tt('details.unit', pool.unit, pool.hubLocation)) + '</p>' +
                 '<div class="pt-1 flex items-center gap-3">' +
                     '<span class="text-lg font-black text-emerald-800">' + fmt(pool.price) + ' ' + currencyUnit() + '</span>' +

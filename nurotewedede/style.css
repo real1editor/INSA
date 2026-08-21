@@ -1,7 +1,27 @@
 /* Custom styles to complement Tailwind v4 layout */
+
+/* ===== Global Typography Scale =====
+   Tailwind text utilities are rem-based, so raising the root font size
+   scales the ENTIRE interface coherently (body copy, buttons, labels,
+   spacing all grow together — no cramped or mismatched components).
+   Base 16px -> 17px mobile, 18px tablet/desktop, 19px large desktop. */
 html {
     scroll-behavior: smooth;
+    font-size: 17px;
 }
+@media (min-width: 768px) {
+    html { font-size: 18px; }
+}
+@media (min-width: 1280px) {
+    html { font-size: 19px; }
+}
+
+/* Remap pixel-locked micro-labels to scalable rem sizes so they grow
+   with the root scale too (previously hard-coded 9/10/11px). */
+.text-\[9px\]  { font-size: 0.72rem; }  /* ~12px @17 root, ~13.7px @19 */
+.text-\[10px\] { font-size: 0.78rem; }  /* ~13px @17 root, ~14.8px @19 */
+.text-\[11px\] { font-size: 0.84rem; }  /* ~14px @17 root, ~16px @19 */
+
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
